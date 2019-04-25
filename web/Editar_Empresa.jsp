@@ -62,7 +62,6 @@
                         <div class="form-row">
                             <div style="display: none">
                                 <input type="number" name="nit_original" class="form-control" value="<%= nit%>" id="">
-
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">Nombre: </label>
@@ -76,12 +75,15 @@
                                 <label for="">Descripción Empresa</label>
                                 <textarea name="desc_empresa_edit" id="" class="form-control" rows="6"><%= desc%></textarea>
                             </div>
-                            <div class="form-row">
-                                <div class="col-md-6"> <a href="Administrar_Empresa.jsp"> <button type="button" class="form-control"> Cancelar </button> </a> </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
                                 <div class="col-md-6"> <input type="submit" name="enviar" value="Guardar cambios" class="form-control btn btn-primary" id="enviar-submit"> </div>
                             </div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-6"> <a href="Administrar_Empresa.jsp"> <button type="button" class="form-control btn btn-primary"> Cancelar </button> </a> </div>
+                            </div>
                         </div>
-
                     </form>
                 </article>
                 <aside class="col-md-2">
