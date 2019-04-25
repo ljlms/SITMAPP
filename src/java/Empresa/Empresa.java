@@ -48,13 +48,15 @@ public class Empresa {
         Connection connect;
         try {
             connect = JdbcConnect.connect();
-            PreparedStatement pst = connect.prepareStatement("update"
-                    + "empresa set IdEmpresa=?, Nombre=?,Descripcion=? where Idempresa=" + nit + "");
+            PreparedStatement pst = connect.prepareStatement("update "
+                    + "empresa set IdEmpresa=?, Nombre=?, Descripcion=? where IdEmpresa=" + nit + "");
+            
             pst.setInt(1, empresa.getIdEmpresa());
             pst.setString(2, empresa.getNombre());
             pst.setString(3, empresa.getDescripcion());
 
             pst.executeUpdate();
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Empresa.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

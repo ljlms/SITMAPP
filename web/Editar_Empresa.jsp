@@ -76,12 +76,12 @@
                                 <label for="">Descripción Empresa</label>
                                 <textarea name="desc_empresa_edit" id="" class="form-control" rows="6"><%= desc%></textarea>
                             </div>
+                            <div class="form-row">
+                                <div class="col-md-6"> <a href="Administrar_Empresa.jsp"> <button type="button" class="form-control"> Cancelar </button> </a> </div>
+                                <div class="col-md-6"> <input type="submit" name="enviar" value="Guardar cambios" class="form-control btn btn-primary" id="enviar-submit"> </div>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-2"> </div>
-                            <div class="col-md-6"> <input type="submit" name="enviar" value="Guardar cambios" class="form-control btn btn-primary" id="enviar-submit"> </div>
-                        </div>
+
                     </form>
                 </article>
                 <aside class="col-md-2">
