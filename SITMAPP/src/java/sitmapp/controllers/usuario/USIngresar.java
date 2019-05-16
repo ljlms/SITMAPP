@@ -36,47 +36,37 @@ public class USIngresar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            String error = null;
             String correo = request.getParameter("correo_usuario");
-            String contraseña  = request.getParameter("contra_usuario");
-//            List<Usuario> listado = UsuarioController.list();
-            
+            String contraseña = request.getParameter("contra_usuario");
+            Usuario iniciar_sesion = null;
             System.out.println("Correo: " + correo);
             System.out.println("Contraseña: " + contraseña);
-            Usuario iniciar_sesion = UsuarioController.Iniciar_Sesion(correo, contraseña);
-            HttpSession session=request.getSession();
-          
-            session.setAttribute("usuario", iniciar_sesion);
-                   
-            //kill session  session.invalidate(); 
-            RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
-             rd.forward(request, response);
 
-//                    RequestDispatcher rd2 = request.getRequestDispatcher("Home.jsp");
-//                    rd.forward(request, response);
-//                    RequestDispatcher rd3 = request.getRequestDispatcher("Home.jsp");
-//                    rd.forward(request, response);
-                    
-//            for (Usuario u : listado) {
-//                String correo_lista = u.getEmail();
-//                String contraseña_lista = u.getContraseña();
-//                
-//                System.out.println("Correo lista: "+ correo_lista);
-//                System.out.println("Contraseña lista: "+contraseña_lista);
-//                
-//                if (correo.equals(correo_lista) && contraseña.equals(contraseña_lista)) {
-//                    //String Nombre, String Apellidos, String NombreUsuario,
-//                    //String Contraseña, String Email, long Numero_telefono, 
-//                    //String tipo_usuario, int id_usuario
-//                    Usuario usuario = new Usuario(u.getNombre(),u.getApellidos(),u.getNombreUsuario(),u.getContraseña(),u.getEmail(), u.getNumero_telefono(),u.getTipo_usuario(),u.getId_usuario());
-//                    request.setAttribute("usuario", usuario);
-//                    RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
-//                    rd.forward(request, response);
-//                }else{
-//                    System.out.println("Error");
-//                }
-//            }
+            try {
+                iniciar_sesion = UsuarioController.Iniciar_Sesion(correo, contraseña);
+            } catch (Exception e) {
+                error = "Estamos teniendo problemas tecnicos, intenta nuevamente dentro de unos minutos";
+                System.out.println(error);
+                request.setAttribute("error", error);
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                rd.forward(request, response);
+            }
 
+            if (iniciar_sesion == null) {
+                error = "Usuario o contraseña incorrecto, intenta nuevamente";
+                System.out.println(error);
+                request.setAttribute("error", error);
+                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+                rd.forward(request, response);
+
+            } else {
+
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", iniciar_sesion);
+                RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
+                rd.forward(request, response);
+            }
         }
     }
 

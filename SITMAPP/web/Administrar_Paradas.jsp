@@ -116,7 +116,7 @@
                                 <td><%= x.getIdParada()%></td>
                                 <td><%= x.getNombre()%></td>
                                 <td><%= x.getTipo()%></td>
-                                <td><a style='font-size:24px' class='fas' href="#"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
+                                <td><a style='font-size:24px' class='fas' href="./PModificar?Id=<%=x.getIdParada()%>&Nom=<%=x.getNombre()%>&Lat=<%=x.getLatitud()%>&Lng=<%=x.getLongitud()%>&Tipo=<%=x.getTipo()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
                                 <td><a style='font-size:24px' class='fas' href="./PEliminar?Id=<%=x.getIdParada()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
                             </tr>
                             <%}%>

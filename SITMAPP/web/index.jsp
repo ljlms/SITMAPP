@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>  
- <html>
+<html>
     <head>
         <meta charset="utf-8">
         <title>Iniciar Sesión</title>
@@ -32,7 +32,7 @@
                     <div></div>
                     <label>¿Ya tienes cuenta? </label>
 
-                    <input type="email" name="correo_usuario" id="email_usuario" class="form-control" placeholder="Ingresar correo electronico" required>
+                    <input type="text" name="correo_usuario" id="email_usuario" class="form-control" placeholder="Ingresar correo electronico" required>
                     <div style="margin-top: 10px"></div>
                     <input type="password" name="contra_usuario" id="pass_usuario"
                            class="form-control" placeholder="Ingresar contraseña" required>
@@ -49,7 +49,17 @@
                     </div>
 
                 </div>
-                <div class="col-md-2 col-xs-2"></div>
+                <div class="col-md-2 col-xs-2">
+
+                    <%String error = (String) request.getAttribute("error");
+                        if (error != null) {
+                    %>
+                    <div class="alert alert-danger" role="alert">
+                        Correo o contraseña no valido, Intente nuevamente
+                    </div>
+                    <%}%>
+
+                </div>
             </form>
         </div>
         <script src="js/jquery.js" type="text/javascript"></script>
@@ -57,4 +67,3 @@
         <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
     </body>
 </html>
-

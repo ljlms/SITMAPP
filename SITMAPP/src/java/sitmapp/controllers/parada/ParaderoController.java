@@ -35,7 +35,27 @@ public class ParaderoController {
         pst.setString(5, parada.getTipo());
         pst.executeUpdate();
     }
-    
+
+    public static void update(int id, Parada parada) {
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("update "
+                    + "parada set Nombre=?, Ubicacion_Latitud=?, Ubicacion_Longitud=?, Tipo=? where IdParada=" + id + "");
+
+            pst.setString(1, parada.getNombre());
+            pst.setDouble(2, parada.getLatitud());
+            pst.setDouble(3, parada.getLongitud());
+            pst.setString(4, parada.getTipo());
+
+            pst.executeUpdate();
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Parada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public static void delete(int id) {
         Connection connect;
         try {
@@ -60,9 +80,9 @@ public class ParaderoController {
                     + "from parada order by 5");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                
+
                 Parada c = new Parada();
-                
+
                 c.setIdParada(rs.getInt(1));
                 c.setNombre(rs.getString(2));
                 c.setLatitud(rs.getDouble(3));
