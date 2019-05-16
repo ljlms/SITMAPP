@@ -8,8 +8,8 @@ import java.sql.SQLException;
 public class JdbcConnect {
     
     
-    private final static String USER = "root";
-    private final static String PASSWORD = "";
+    private final static String USER = "manuponton";
+    private final static String PASSWORD = "adminponton";
     private final static String URL = "jdbc:mysql://localhost:3308/sitmapp";
     private final static String DRIVER = "com.mysql.jdbc.Driver";
 

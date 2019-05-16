@@ -14,7 +14,16 @@
         <script type="text/javascript" src="js/visualizar_ruta.js"> // Script externo
         </script>
         <link href="css/principalStyle.css" rel="stylesheet" type="text/css"/>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8"></script>
+        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8"></script>-->
+        <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <style>
+            #map {
+                width: 700px;
+                height: 550px;
+            }
+        </style>
     </head>
     <body> 
         <!-- Java Space -->  
@@ -60,8 +69,8 @@
                                     <img src="templates/icons8-info.svg" class="iconos" ></a>
                                 </i></a></li>
 
-                        <li><a href="Home_Administrador.jsp"><i>   
-                                    <img src="templates/icons8-puzzle.svg" class="iconos" ></a>
+                        <li id="adm_home"><a href="Home_Administrador.jsp"><i>   
+                                    <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos" ></a>
                                 </i></a></li>
                         <li><a href="#"><i>   
                                     <img src="templates/icons8-settings-50.svg" class="iconos" ></a>
@@ -72,143 +81,149 @@
                                 </i></a></li>
                     </ul>
 
+                    <script>
+            var tipo = '<%=valor%>';
+            if (tipo === 'usuario') {
+                $('#adm_home').hide();
+            }
+                    </script>
+
                     <div class="right">
                         <p>Copyright © 2019.</p>
                     </div>
                 </div>
             </header>
             <br>
-            <div class="row">
-                <div class="col-md-8"> 
-                    <div id="map"></div>
-                </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8"> 
+                        <div id="map"></div>
+                        <script>
+                            function showPosition(position) {
+                                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
 
-                <script>
-            findMe()
-            function findMe() {
-                var output = document.getElementById('map');
-                // Verificar si soporta geolocalizacion
-                if (navigator.geolocation) {
-                    output.innerHTML = "<p>Tu navegador soporta Geolocalizacion</p>";
-                } else {
-                    output.innerHTML = "<p>Tu navegador no soporta Geolocalizacion</p>";
-                }
-                //Obtenemos latitud y longitud
-                function localizacion(posicion) {
-                    var latitude = posicion.coords.latitude;
-                    var longitude = posicion.coords.longitude;
-                    var imgURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&size=600x300&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8";
-                    output.innerHTML = "<img src='" + imgURL + "'>";
+                                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                                    maxZoom: 18
+                                }).addTo(map);
+                                L.control.scale().addTo(map);
+                                L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+                            }
 
-                }
-                function error() {
-                    output.innerHTML = "<p>No se pudo obtener tu ubicación</p>";
-                }
-                navigator.geolocation.getCurrentPosition(localizacion, error);
-            }
-                </script>
-                <!-- Menu -->
-                <div>
-                    <br>
-                </div>	
-                <div class="col-md-4"> 
-                    <table class="table" style="text-align: center; border: 1px solid black">
-                        <th style="text-align: center; border: 1px solid black">
-                            <label for=""><h3>Visualizar Articulados</h3></label>
-                        </th>
-                        <tr>   
-                            <td>
-                                <div>
-                                    <h4>Tipo Ruta</h4>
-                                    <select id="tipo_ruta" onchange="tipo_ruta()">
-                                        <option value="nada"></option>                        
-                                        <option value="t_troncal">Troncales</option>
-                                        <option value="t_pre">Pre-Troncales</option>
-                                        <option value="t_alimentadoras">Alimentadoras</option>
-                                        <option value="t_circulares">Circulares</option>
-                                    </select>
-                                    <div style="margin: 5px;">
+                            function geo_error() {
+                                alert("Sorry, no position available.");
+                            }
 
+                            function acucuracy() {
+                                var geo_options = {
+                                    enableHighAccuracy: true,
+                                    maximumAge: 30000,
+                                    timeout: 27000
+                                };
+                            }
+
+                            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+
+                        </script>
+                    </div>
+                    <div class="col-md-4"> 
+                        <table class="table table-bordered" style="text-align: center;">
+                            <th style="text-align: center;">
+                                <label for=""><h3>Visualizar Articulados</h3></label>
+                            </th>
+                            <tr>   
+                                <td>
+                                    <div>
+                                        <h4>Tipo Ruta</h4>
+                                        <select id="tipo_ruta" onchange="tipo_ruta()">
+                                            <option value="nada"></option>                        
+                                            <option value="t_troncal">Troncales</option>
+                                            <option value="t_pre">Pre-Troncales</option>
+                                            <option value="t_alimentadoras">Alimentadoras</option>
+                                            <option value="t_circulares">Circulares</option>
+                                        </select>
+                                        <div style="margin: 5px;">
+
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>
-                                    <h4>Seleccione Articulado</h4>
-                                </div>
-                                <div id="div_troncales" style="display: none;">  Troncales 
-                                    <select id="" >
-                                        <option value="">T100E</option>
-                                        <option value="">T101</option>
-                                        <option value="">T102</option>
-                                        <option value="">T103</option>
-                                    </select>
-                                </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <h4>Seleccione Articulado</h4>
+                                    </div>
+                                    <div id="div_troncales" style="display: none;">  Troncales 
+                                        <select id="" >
+                                            <option value="">T100E</option>
+                                            <option value="">T101</option>
+                                            <option value="">T102</option>
+                                            <option value="">T103</option>
+                                        </select>
+                                    </div>
 
-                                <div style="margin: 10px;">
-                                </div>
+                                    <div style="margin: 10px;">
+                                    </div>
 
-                                <div id="div_pre-troncales" style="display: none;">  Pre-Troncales 
-                                    <select id="">
-                                        <option value="">X101</option>
-                                        <option value="">X102</option>
-                                        <option value="">X103</option>
-                                        <option value="">X104</option>
-                                        <option value="">X105</option>
-                                        <option value="">X106</option>
-                                    </select>
-                                </div>
+                                    <div id="div_pre-troncales" style="display: none;">  Pre-Troncales 
+                                        <select id="">
+                                            <option value="">X101</option>
+                                            <option value="">X102</option>
+                                            <option value="">X103</option>
+                                            <option value="">X104</option>
+                                            <option value="">X105</option>
+                                            <option value="">X106</option>
+                                        </select>
+                                    </div>
 
-                                <div style="margin: 10px;">
-                                </div>
+                                    <div style="margin: 10px;">
+                                    </div>
 
-                                <div id="div_alimentadoras" style="display: none;">  Alimentadoras 
-                                    <select id="">
-                                        <option value="">A102</option>
-                                        <option value="">A103</option>
-                                        <option value="">A104</option>
-                                        <option value="">A105</option>
-                                        <option value="">A107</option>
-                                        <option value="">A108</option>
-                                        <option value="">A109</option>
-                                        <option value="">A111</option>
-                                        <option value="">A114</option>
-                                        <option value="">A117</option>
-                                    </select>
-                                </div>
+                                    <div id="div_alimentadoras" style="display: none;">  Alimentadoras 
+                                        <select id="">
+                                            <option value="">A102</option>
+                                            <option value="">A103</option>
+                                            <option value="">A104</option>
+                                            <option value="">A105</option>
+                                            <option value="">A107</option>
+                                            <option value="">A108</option>
+                                            <option value="">A109</option>
+                                            <option value="">A111</option>
+                                            <option value="">A114</option>
+                                            <option value="">A117</option>
+                                        </select>
+                                    </div>
 
-                                <div style="margin: 10px;">
-                                </div>
+                                    <div style="margin: 10px;">
+                                    </div>
 
-                                <div id="div_circulares" style="display: none;">  Circulares 
-                                    <select id="">
-                                        <option value="">C015</option>
-                                        <option value="">Ruta Circular RC</option>
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                                    <div id="div_circulares" style="display: none;">  Circulares 
+                                        <select id="">
+                                            <option value="">C015</option>
+                                            <option value="">Ruta Circular RC</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
+        </section>
+        <!-- lightModal -->
+        <div class="lightModal">
+            <div class="lightModal-inner">
+                <button class="lightModal-close" role="button">&times;</button>
+                <h3 class="lightModal-title"></h3>
+                <img class="lightModal-image" src="http://placehold.it/350x150" alt="Title here">
+            </div>
         </div>
-    </section>
-    <!-- lightModal -->
-    <div class="lightModal">
-        <div class="lightModal-inner">
-            <button class="lightModal-close" role="button">&times;</button>
-            <h3 class="lightModal-title"></h3>
-            <img class="lightModal-image" src="http://placehold.it/350x150" alt="Title here">
-        </div>
-    </div>
-    <!-- / lightModal -->
-    <script src="js/jquery.js" type="text/javascript"></script>
-    <script src="js/bootstrap.js" type="text/javascript"></script>
-    <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
-    <script src="js/Visibility.js" type="text/javascript"></script>
-    <script src="js/principalJavaScript.js" type="text/javascript"></script>
+        <!-- / lightModal -->
+        <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
+        <script src="js/Visibility.js" type="text/javascript"></script>
+        <script src="js/principalJavaScript.js" type="text/javascript"></script>
 
-</body>
+    </body>
 </html>

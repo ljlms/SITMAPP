@@ -14,7 +14,15 @@
         <script type="text/javascript" src="js/visualizar_ruta.js"> // Script externo
         </script>
         <link href="css/principalStyle.css" rel="stylesheet" type="text/css"/>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8"></script>
+        <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8"></script>-->
+        <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+        <style>
+           #map {
+                width: 700px;
+                height: 550px;
+            }
+        </style>
     </head>
     <body> 
         <!-- Java Space -->  
@@ -86,39 +94,40 @@
                 <div class="row">
                     <div class="col-md-8"> 
                         <div id="map"></div>
-                    </div>
+                        <script>
+            function showPosition(position) {
+                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
 
-                    <script>
-            findMe()
-            function findMe() {
-                var output = document.getElementById('map');
-                // Verificar si soporta geolocalizacion
-                if (navigator.geolocation) {
-                    output.innerHTML = "<p>Tu navegador soporta Geolocalizacion</p>";
-                } else {
-                    output.innerHTML = "<p>Tu navegador no soporta Geolocalizacion</p>";
-                }
-                //Obtenemos latitud y longitud
-                function localizacion(posicion) {
-                    var latitude = posicion.coords.latitude;
-                    var longitude = posicion.coords.longitude;
-                    var imgURL = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&size=600x300&markers=color:red%7C" + latitude + "," + longitude + "&key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8";
-                    output.innerHTML = "<img src='" + imgURL + "'>";
-
-                }
-                function error() {
-                    output.innerHTML = "<p>No se pudo obtener tu ubicación</p>";
-                }
-                navigator.geolocation.getCurrentPosition(localizacion, error);
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                    maxZoom: 18
+                }).addTo(map);
+                L.control.scale().addTo(map);
+                L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
             }
-                    </script>
 
+            function geo_error() {
+                alert("Sorry, no position available.");
+            }
+
+            function acucuracy() {
+                var geo_options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 27000
+                };
+            }
+
+            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+
+                        </script>
+                    </div>
                     <div>
                         <br>
                     </div>	
                     <div class="col-md-4">
-                        <table class="table" style="text-align: center; border: 1px solid black">
-                            <th style="text-align: center; border: 1px solid black">
+                        <table class="table table-bordered" style="text-align: center;">
+                            <th style="text-align: center;">
                                 <label for=""><h3>Visualizar Articulados</h3></label>
                             </th>
                             <tr>  

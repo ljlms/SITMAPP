@@ -113,7 +113,7 @@
                         <% } else {%>
                         <div style="text-align: center">
                             <h2>Debe registrar un articulado</h2>
-                            <button><a href="Añadir_Articulado.jsp"> Registrar Articulado </a> </button>
+                            <a href="Añadir_Articulado.jsp"> Ir a Registrar Articulado </a>
                         </div>
                         <% }%>
                         <div class="form-group col-md-8"></div>

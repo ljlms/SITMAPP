@@ -16,6 +16,8 @@
         <link href="css/principalStyle.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript" src="ver_horarios.js"> // Script externo
         </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     </head>
     <body> 
         <%
@@ -56,8 +58,8 @@
                                 <img src="templates/icons8-info.svg" class="iconos" ></a>
                             </i></a></li>
 
-                    <li><a href="Home_Administrador.jsp"><i>   
-                                <img src="templates/icons8-puzzle.svg" class="iconos" ></a>
+                    <li id="adm_home"><a href="Home_Administrador.jsp"><i>   
+                                <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos" ></a>
                             </i></a></li>
                     <li><a href="#"><i>   
                                 <img src="templates/icons8-settings-50.svg" class="iconos" ></a>
@@ -67,6 +69,13 @@
                                 <img src="templates/icons8-key.svg" class="iconos" ></a>
                             </i></a></li>
                 </ul>
+
+                <script>
+            var tipo = '<%=valor%>';
+            if (tipo === 'usuario') {
+                $('#adm_home').hide();
+            }
+                </script>
 
                 <div class="right">
                     <p>Copyright © 2019.</p>
@@ -137,7 +146,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- lightModal -->
         <div class="lightModal">
             <div class="lightModal-inner">

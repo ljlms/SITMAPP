@@ -62,7 +62,7 @@ public class UsuarioController {
              */
             connect = JdbcConnect.connect();
             PreparedStatement pst = connect.prepareStatement("Select * "
-                    + "from usuario order by 2");
+                    + "from usuario order by 8");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Usuario c = new Usuario();
