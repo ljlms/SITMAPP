@@ -100,5 +100,5 @@ public class Historialconductor implements Serializable {
     public String toString() {
         return "sitmapp.entity.Historialconductor[ articuladoIdArticulado=" + articuladoIdArticulado + " ]";
     }
-    
+
 }

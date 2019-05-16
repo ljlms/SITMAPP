@@ -50,16 +50,6 @@ public class UsuarioController {
         ArrayList<Usuario> listado = new ArrayList<>();
         Connection connect;
         try {
-            /*
-            -idusuario-
-            nombre
-            apellidos
-            nombreusuario
-            -contraseña-
-            correo
-            telefono
-            tipousuario
-             */
             connect = JdbcConnect.connect();
             PreparedStatement pst = connect.prepareStatement("Select * "
                     + "from usuario order by 8");

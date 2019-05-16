@@ -15,8 +15,8 @@ import sitmapp.entity.Historialconductor;
  * @author MANUEL PONTON RICO
  */
 public class HistorialConductorDao {
-    
-           Historialconductor Historial = new Historialconductor();
+
+    Historialconductor Historial = new Historialconductor();
     HistorialConductorJpaController tjc = new HistorialConductorJpaController();
     String mensaje = "";
 
@@ -33,24 +33,24 @@ public class HistorialConductorDao {
         return mensaje;
     }
 
-    public String EditarHistorialconductor(int id, String placa, String estado, int idEmpresa, String nombreEmpresa, int idConductor, int idRuta) {
-        try {
-            Historial.setIdHistorialconductor(Integer.BYTES);
-            Historial.setPlaca(placa);
-            Historial.setEstado(estado);
-            Historial.setIdEmpresa(idEmpresa);
-            Historial.setNombreEmpresa(nombreEmpresa);
-            Historial.setIdConductor(idConductor);
-            Historial.setIdRuta(idRuta);
-
-            tjc.edit(Historial);
-            mensaje = "Se ha editado corrrectamente";
-        } catch (Exception e) {
-            System.out.println("Error al editar persona: " + e.getMessage());
-            mensaje = "No se ha editado correctamente";
-        }
-        return mensaje;
-    }
+//    public String EditarHistorialconductor(int id, String placa, String estado, int idEmpresa, String nombreEmpresa, int idConductor, int idRuta) {
+//        try {
+//            Historial.setIdHistorialconductor(Integer.BYTES);
+//            Historial.setPlaca(placa);
+//            Historial.setEstado(estado);
+//            Historial.setIdEmpresa(idEmpresa);
+//            Historial.setNombreEmpresa(nombreEmpresa);
+//            Historial.setIdConductor(idConductor);
+//            Historial.setIdRuta(idRuta);
+//
+//            tjc.edit(Historial);
+//            mensaje = "Se ha editado corrrectamente";
+//        } catch (Exception e) {
+//            System.out.println("Error al editar persona: " + e.getMessage());
+//            mensaje = "No se ha editado correctamente";
+//        }
+//        return mensaje;
+//    }
 
     public String EliminarHistorialconductor(int id) {
 
@@ -69,7 +69,5 @@ public class HistorialConductorDao {
         List<Historialconductor> usuarios = tjc.findHistorialconductorEntities();
         return usuarios;
     }
-    
-    
-    
+
 }

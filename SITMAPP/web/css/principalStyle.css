@@ -267,8 +267,9 @@ form input[type="submit"]:hover {
         z-index: 9999
     }
     .header .logo {
-        margin-top: 30px;
-        width: 100%
+        margin-top: 10px;
+        margin-bottom: 25px;
+        width: 90%
     }
     .header .logo a {
         height: 90px;
@@ -278,7 +279,7 @@ form input[type="submit"]:hover {
         color: #333
     }
     .header nav ul {
-        margin: 50px 0 0;
+        margin: 10px 0 0;
         padding: 0;
         display: block;
         overflow: hidden;

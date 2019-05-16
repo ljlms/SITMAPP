@@ -10,30 +10,61 @@ package sitmapp.models;
  * @author E201
  */
 public class Parada {
-   private String latitud;
-   private String Logitud;
-   private String Nombre;
+    private int IdParada;
+    private String Nombre;
+    private String Tipo;
+    private Double Latitud;
+    private Double Longitud;
 
-    public Parada(String latitud, String Logitud, String Nombre) {
-        this.latitud = latitud;
-        this.Logitud = Logitud;
+    public Parada(int IdParada, String Nombre, String Tipo, Double Latitud, Double Longitud) {
+        this.IdParada = IdParada;
+        this.Nombre = Nombre;
+        this.Tipo = Tipo;
+        this.Latitud = Latitud;
+        this.Longitud = Longitud;
+    }
+
+    public Parada() {
+    }
+
+    public int getIdParada() {
+        return IdParada;
+    }
+
+    public void setIdParada(int IdParada) {
+        this.IdParada = IdParada;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
         this.Nombre = Nombre;
     }
 
-    public String getLatitud() {
-        return latitud;
+    public String getTipo() {
+        return Tipo;
     }
 
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
+    public void setTipo(String Tipo) {
+        this.Tipo = Tipo;
     }
 
-    public String getLogitud() {
-        return Logitud;
+    public Double getLatitud() {
+        return Latitud;
     }
 
-    public void setLogitud(String Logitud) {
-        this.Logitud = Logitud;
+    public void setLatitud(Double Latitud) {
+        this.Latitud = Latitud;
     }
-   
+
+    public Double getLongitud() {
+        return Longitud;
+    }
+
+    public void setLongitud(Double Longitud) {
+        this.Longitud = Longitud;
+    }
+    
 }

@@ -7,11 +7,18 @@ package sitmapp.controllers.parada;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import sitmapp.controllers.ParadaJpaController;
+import sitmapp.models.Parada;
 
 /**
  *
@@ -30,19 +37,29 @@ public class PRegistrar extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PRegistrar</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PRegistrar at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            String nombre_parada = request.getParameter("nombre_parada");
+            String tipo_parada = request.getParameter("tipo_parada");
+            double latitude = Double.parseDouble(request.getParameter("latitud_parada"));
+            double longitude = Double.parseDouble(request.getParameter("longitud_parada"));
+            int id = 0;
+            System.out.println(nombre_parada);
+            System.out.println(tipo_parada);
+            System.out.println(latitude);
+            System.out.println(longitude);
+            System.out.println(id);
+            
+            Parada parada = new Parada(id,nombre_parada, tipo_parada, latitude, longitude);
+            ParaderoController.save(parada);
+            
+            HttpSession session = request.getSession();
+            
+            RequestDispatcher rd = request.getRequestDispatcher("Administrar_Paradas.jsp");
+            rd.forward(request, response);
         }
     }
 
@@ -58,7 +75,11 @@ public class PRegistrar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(PRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -72,7 +93,11 @@ public class PRegistrar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(PRegistrar.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

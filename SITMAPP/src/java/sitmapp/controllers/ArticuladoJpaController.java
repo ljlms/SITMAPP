@@ -43,7 +43,7 @@ public class ArticuladoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            HistorialConductor historialConductor = articulado.getHistorialConductor();
+            Historialconductor historialConductor = articulado.getHistorialConductor();
             if (historialConductor != null) {
                 historialConductor = em.getReference(historialConductor.getClass(), historialConductor.getArticuladoIdArticulado());
                 articulado.setHistorialConductor(historialConductor);
@@ -72,8 +72,8 @@ public class ArticuladoJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Articulado persistentArticulado = em.find(Articulado.class, articulado.getIdArticulado());
-            HistorialConductor historialConductorOld = persistentArticulado.getHistorialConductor();
-            HistorialConductor historialConductorNew = articulado.getHistorialConductor();
+            Historialconductor historialConductorOld = persistentArticulado.getHistorialConductor();
+            Historialconductor historialConductorNew = articulado.getHistorialConductor();
             List<String> illegalOrphanMessages = null;
             if (historialConductorOld != null && !historialConductorOld.equals(historialConductorNew)) {
                 if (illegalOrphanMessages == null) {
@@ -128,7 +128,7 @@ public class ArticuladoJpaController implements Serializable {
                 throw new NonexistentEntityException("The articulado with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            HistorialConductor historialConductorOrphanCheck = articulado.getHistorialConductor();
+            Historialconductor historialConductorOrphanCheck = articulado.getHistorialConductor();
             if (historialConductorOrphanCheck != null) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();

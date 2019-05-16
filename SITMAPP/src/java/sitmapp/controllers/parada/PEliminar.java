@@ -7,6 +7,7 @@ package sitmapp.controllers.parada;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,16 +34,12 @@ public class PEliminar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PEliminar</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PEliminar at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
+            int id = Integer.parseInt(request.getParameter("Id"));
+            ParaderoController.delete(id);
+            RequestDispatcher rd = request.getRequestDispatcher("Administrar_Paradas.jsp");
+            rd.forward(request, response);
+            
         }
     }
 

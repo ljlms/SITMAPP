@@ -18,9 +18,9 @@
         <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
         <style>
-           #map {
-                width: 700px;
-                height: 550px;
+            #map {
+                width: 500px;
+                height: 450px;
             }
         </style>
     </head>
@@ -90,21 +90,40 @@
         </header>
 
         <section class="wrapper clearfix" data-section="home">
+
+            <div class="container">
+                <h1 style="margin: 2%"> <strong> Añadir Parada </strong> </h1>
+            </div>
+
             <div class="container">
                 <br>
                 <div class="row">
-                    <div class="col-md-8"> 
-                        <div id="map"></div>
+                    <div class="col-md-7"> 
+                        <!-- Map IMG Space -->
+                        <div id='map'>
+                        </div>
+                        <!-- Map script Space -->
                         <script>
             function showPosition(position) {
-                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
 
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
                     maxZoom: 18
                 }).addTo(map);
+
                 L.control.scale().addTo(map);
-                L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+
+                //How to add a marker
+                map.on('click', function (e) {
+                    var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                    $('#latitude').val(e.latlng.lat);
+                    $('#longitude').val(e.latlng.lng);
+                    //How to add a marker
+                    marker.on('click', function () {
+                        map.removeLayer(marker)
+                    });
+                });
             }
 
             function geo_error() {
@@ -120,90 +139,49 @@
             }
 
             navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
-
                         </script>
                     </div>
-                    <div>
-                        <br>
-                    </div>	
-                    <div class="col-md-4">
-                        <table class="table table-bordered" style="text-align: center;">
-                            <th style="text-align: center;">
-                                <label for=""><h3>Visualizar Articulados</h3></label>
-                            </th>
-                            <tr>  
-                                <td>
-                                    <div>
-                                        <h4>Tipo Ruta</h4>
-                                        <select id="tipo_ruta" onchange="tipo_ruta()">
-                                            <option value="nada"></option>                        
-                                            <option value="t_troncal">Troncales</option>
-                                            <option value="t_pre">Pre-Troncales</option>
-                                            <option value="t_alimentadoras">Alimentadoras</option>
-                                            <option value="t_circulares">Circulares</option>
-                                        </select>
+                    <!--                    <div>
+                                            <br>
+                                        </div>	-->
+                    <div class="col-md-5">
+                        <form method="post" action="PRegistrar">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label><strong>Nombre:</strong></label>
+                                    <input class="form-control" type="text" name="nombre_parada" placeholder="Ingrese nombre...">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label><strong>Tipo:</strong></label>
+                                    <input class="form-control" type="text" name="tipo_parada" placeholder="Ingrese tipo...">
+                                </div>
+                            </div>
+                            <!--Lat & Lng-->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label><strong>Latitud:</strong></label>
+                                    <input class="form-control" type="number" name="latitud_parada" id="latitude" readonly required placeholder="Seleccione en el mapa...">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label><strong>Longitud:</strong></label>
+                                    <input style="margin-bottom: 2%" class="form-control" type="number" name="longitud_parada" id="longitude" readonly required placeholder="Seleccione en el mapa...">
+                                    <small style="font-family: sans-serif; font-size: 10px">Nota: Crear un solo marcador.</small>
+                                </div>
+                            </div>
+                            <!--Lat & Lng-->    
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <input type="submit" class="form-control btn btn-primary">
+                                </div>
+                            </div>
 
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div>
-                                        <h4>Seleccione Articulado</h4>
-                                    </div>
-                                    <div id="div_troncales" style="display: none;">  Troncales 
-                                        <select id="" >
-                                            <option value="">T100E</option>
-                                            <option value="">T101</option>
-                                            <option value="">T102</option>
-                                            <option value="">T103</option>
-                                        </select>
-                                    </div>
 
-                                    <div style="margin: 10px;">
-                                    </div>
 
-                                    <div id="div_pre-troncales" style="display: none;">  Pre-Troncales 
-                                        <select id="">
-                                            <option value="">X101</option>
-                                            <option value="">X102</option>
-                                            <option value="">X103</option>
-                                            <option value="">X104</option>
-                                            <option value="">X105</option>
-                                            <option value="">X106</option>
-                                        </select>
-                                    </div>
-
-                                    <div style="margin: 10px;">
-                                    </div>
-
-                                    <div id="div_alimentadoras" style="display: none;">  Alimentadoras 
-                                        <select id="">
-                                            <option value="">A102</option>
-                                            <option value="">A103</option>
-                                            <option value="">A104</option>
-                                            <option value="">A105</option>
-                                            <option value="">A107</option>
-                                            <option value="">A108</option>
-                                            <option value="">A109</option>
-                                            <option value="">A111</option>
-                                            <option value="">A114</option>
-                                            <option value="">A117</option>
-                                        </select>
-                                    </div>
-
-                                    <div style="margin: 10px;">
-                                    </div>
-
-                                    <div id="div_circulares" style="display: none;">  Circulares 
-                                        <select id="">
-                                            <option value="">C015</option>
-                                            <option value="">Ruta Circular RC</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                        </form>
                     </div>
                 </div>
             </div>
