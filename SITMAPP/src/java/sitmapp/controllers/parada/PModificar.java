@@ -7,11 +7,13 @@ package sitmapp.controllers.parada;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sitmapp.controllers.ParadaJpaController;
 import sitmapp.models.Parada;
 
@@ -36,17 +38,21 @@ public class PModificar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-//Id=<%=x.getIdParada()%>&Nom=<%=x.getNombre()%>&Lat=<%=x.getLatitud()%>&Lng=<%=x.getLongitud()%>&Tipo=<%=x.getTipo()%>">
-            int id = Integer.parseInt(request.getParameter("Id"));
-            String nombre = request.getParameter("Nom");
-            double lat = Double.parseDouble(request.getParameter("Lat"));
-            double lng = Double.parseDouble(request.getParameter("Lng"));
-            String tipo = request.getParameter("Tipo");
+            int id = Integer.parseInt(request.getParameter("id"));
+            String nom = request.getParameter("nombre_parada");
+            String tipo = request.getParameter("tipo_parada");
+            double lat = Double.parseDouble(request.getParameter("latitud_parada"));
+            double lng = Double.parseDouble(request.getParameter("longitud_parada"));
 
-            Parada parada = new Parada(id, nombre, tipo, lat, lng);
-            
-            
+            Parada parada = new Parada(id, nom, tipo, lat, lng);
 
+            ParaderoController.update(id, parada);
+            
+            HttpSession session = request.getSession();
+            
+            RequestDispatcher rd = request.getRequestDispatcher("Administrar_Paradas.jsp");
+            rd.forward(request, response);
+            
         }
     }
 

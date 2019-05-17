@@ -39,6 +39,9 @@
                 </a>
                 <nav class="menu">
                     <ul>
+                        <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
+                            <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
+                            Admin. Paradas</a></li> 
                         <li id="li_registrar-rutas"> <a href="Administrar_Rutas.jsp">
                                 <img src="templates/icons8-map-editing-48.png" class="iconos_png" alt=""/>
                                 Admin. Rutas</a>   </li> 
@@ -123,7 +126,7 @@
                         <% if (emp.size() > 0) { %>
                         <div class="form-group">
                             <button class="btn btn-light form-control " >
-                                <a href="Añadir_Empresa.jsp">Registrar Empresa</a>
+                                <a href="Añadir_Empresa.jsp" style="font-size: 120%">Registrar Empresa</a>
                             </button>
                         </div>   
                         <br>

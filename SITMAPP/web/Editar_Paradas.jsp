@@ -29,8 +29,11 @@
     <body> 
         <!-- Java Space -->  
         <%
-            Usuario u = (Usuario) session.getAttribute("usuario");
-            String valor = u.getTipo_usuario();
+            int id = Integer.parseInt(request.getParameter("Id"));
+            String nombre = request.getParameter("Nom");
+            double lat = Double.parseDouble(request.getParameter("Lat"));
+            double lng = Double.parseDouble(request.getParameter("Lng"));
+            String tipo = request.getParameter("Tipo");
         %>
 
         <header class="header">
@@ -94,7 +97,7 @@
         <section class="wrapper clearfix" data-section="home">
 
             <div class="container">
-                <h1 style="margin: 2%"> <strong> Añadir Parada </strong> </h1>
+                <h1 style="margin: 2%"> <strong> Editar Parada </strong> </h1>
             </div>
 
             <div class="container">
@@ -107,7 +110,11 @@
                         <!-- Map script Space -->
                         <script>
             function showPosition(position) {
-                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
+                var latitude_init = '<%=lat%>';
+                var longitude_init = '<%=lng%>';
+                var map = L.map('map').setView([latitude_init, longitude_init], 17);
+
+                var init_marker = L.marker([latitude_init, longitude_init]).addTo(map);
 
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
@@ -115,16 +122,16 @@
                 }).addTo(map);
 
                 L.control.scale().addTo(map);
-                var marker=L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+
                 //How to add a marker
                 map.on('click', function (e) {
-                    map.removeLayer(marker);
-                     marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                    map.removeLayer(init_marker); //remove init_marker
+                    init_marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map); // create a new marker with new parameters lat & lng
                     $('#latitude').val(e.latlng.lat);
                     $('#longitude').val(e.latlng.lng);
                     //How to add a marker
-                    marker.on('click', function () {
-                        map.removeLayer(marker)
+                    init_marker.on('click', function () {
+                        map.removeLayer(init_marker)
                     });
                 });
             }
@@ -148,30 +155,36 @@
                                             <br>
                                         </div>	-->
                     <div class="col-md-5">
-                        <form method="post" action="PRegistrar">
+                        <form method="post" action="PModificar">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label><strong>Nombre:</strong></label>
-                                    <input class="form-control" type="text" name="nombre_parada" placeholder="Ingrese nombre...">
+                                    <input class="form-control" type="text" name="nombre_parada" placeholder="Ingrese nombre..." value="<%=nombre%>">
+                                </div>
+                            </div>
+                            <div class="form-row" style="display: none;">
+                                <div class="form-group col-md-12">
+                                    <label><strong>Id:</strong></label>
+                                    <input class="form-control" type="number" name="id" placeholder="Ingrese nombre..." value="<%=id%>">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label><strong>Tipo:</strong></label>
-                                    <input class="form-control" type="text" name="tipo_parada" placeholder="Ingrese tipo...">
+                                    <input class="form-control" type="text" name="tipo_parada" placeholder="Ingrese tipo..." value="<%=tipo%>">
                                 </div>
                             </div>
                             <!--Lat & Lng-->
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label><strong>Latitud:</strong></label>
-                                    <input class="form-control" type="number" name="latitud_parada" id="latitude" readonly required placeholder="Seleccione en el mapa...">
+                                    <input class="form-control" type="number" name="latitud_parada" id="latitude" readonly required placeholder="Seleccione en el mapa..." value="<%=lat%>">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label><strong>Longitud:</strong></label>
-                                    <input style="margin-bottom: 2%" class="form-control" type="number" name="longitud_parada" id="longitude" readonly required placeholder="Seleccione en el mapa...">
+                                    <input style="margin-bottom: 2%" class="form-control" type="number" name="longitud_parada" id="longitude" readonly required placeholder="Seleccione en el mapa..." value="<%=lng%>">
                                 </div>
                             </div>
                             <!--Lat & Lng-->    

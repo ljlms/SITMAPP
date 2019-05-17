@@ -36,6 +36,9 @@
                 </a>
                 <nav class="menu">
                     <ul>
+                        <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
+                            <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
+                            Admin. Paradas</a></li> 
                         <li id="li_registrar-rutas"> <a href="Administrar_Rutas.jsp">
                                 <img src="templates/icons8-map-editing-48.png" class="iconos_png" alt=""/>
                                 Admin. Rutas</a>   </li> 
@@ -120,7 +123,7 @@
                         <% } else {%>
                         <div style="text-align: center">
                             <h2>Debe registrar un usuario</h2>
-                            <a href="Registrar_Usuario.jsp">Registrar Usuario</a>
+                            <a href="Registrar_Usuario.jsp" style="font-size: 120%">Registrar Usuario</a>
                         </div>
                         <% }%>
                     </article>
@@ -128,7 +131,7 @@
                         <%if (usuario.size() > 0) {%>
                         <div style="text-align: center;">
                             <button class="btn form-control btn-light" >
-                                <a href="Registrar_Usuario.jsp">Registrar Usuario</a>
+                                <a href="Registrar_Usuario.jsp" style="font-size: 120%">Registrar Usuario</a>
                             </button>
                         </div>   
                         <div style="text-align: center;">

@@ -32,6 +32,9 @@
                 </a>
                 <nav class="menu">
                     <ul>
+                        <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
+                            <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
+                            Admin. Paradas</a></li> 
                         <li id="li_registrar-rutas"> <a href="Administrar_Rutas.jsp">
                                 <img src="templates/icons8-map-editing-48.png" class="iconos_png" alt=""/>
                                 Admin. Rutas</a>   </li> 
@@ -211,25 +214,10 @@
                     </div>
                     <div class="">
                         <button class="btn form-control btn-light" >
-                            <a href="Añadir_Rutas.jsp">Registrar Ruta</a>
+                            <a href="Añadir_Rutas.jsp" style="font-size: 120%">Registrar Ruta</a>
                         </button>
                     </div>   
-                    <div class="">
-                        <button class="btn  form-control btn-light" >
-                            <a href="Editar_Rutas.jsp">Editar Ruta</a>
-                        </button>
-                    </div>
-                    <div class="">
-                        <button class="btn  form-control btn-light" >
-                            <a href="Consultar_Rutas.jsp">Consultar Ruta</a>
-                        </button>
-                    </div>
-
-                    <div class="">
-                        <button class="btn  form-control btn-light" >
-                            <a href="Eliminar_Rutas.jsp">Eliminar Ruta</a>
-                        </button>
-                    </div>
+                    
                 </aside>
 
             </div>

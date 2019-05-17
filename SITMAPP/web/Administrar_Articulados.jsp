@@ -41,6 +41,9 @@
                 </a>
                 <nav class="menu">
                     <ul>
+                        <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
+                            <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
+                            Admin. Paradas</a></li> 
                         <li id="li_registrar-rutas"> <a href="Administrar_Rutas.jsp">
                                 <img src="templates/icons8-map-editing-48.png" class="iconos_png" alt=""/>
                                 Admin. Rutas</a>   </li> 
@@ -123,7 +126,7 @@
                         <div>
                             <!-- ****************** -->
                             <div style="text-align: center;">
-                                <a href="Añadir_Articulado.jsp">  <button type="button" class="btn btn-light btn-block ">
+                                <a href="Añadir_Articulado.jsp" style="font-size: 120%">  <button type="button" class="btn btn-light btn-block ">
                                         Registrar Articulado
                                     </button></a>
                                 <br>

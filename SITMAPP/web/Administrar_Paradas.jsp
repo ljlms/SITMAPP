@@ -102,7 +102,8 @@
                 <br>
                 <div class="row">
                     <div class="col-md-8"> 
-
+                        
+                        <%if(paradas.size()>0){%>
                         <table class="table table-bordered" style="text-align: center;">
                             <tr>
                                 <td><strong>Id Parada</strong></td> 
@@ -116,18 +117,23 @@
                                 <td><%= x.getIdParada()%></td>
                                 <td><%= x.getNombre()%></td>
                                 <td><%= x.getTipo()%></td>
-                                <td><a style='font-size:24px' class='fas' href="./PModificar?Id=<%=x.getIdParada()%>&Nom=<%=x.getNombre()%>&Lat=<%=x.getLatitud()%>&Lng=<%=x.getLongitud()%>&Tipo=<%=x.getTipo()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
+                                <td><a style='font-size:24px' class='fas' href="./Editar_Paradas.jsp?Id=<%=x.getIdParada()%>&Nom=<%=x.getNombre()%>&Lat=<%=x.getLatitud()%>&Lng=<%=x.getLongitud()%>&Tipo=<%=x.getTipo()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
                                 <td><a style='font-size:24px' class='fas' href="./PEliminar?Id=<%=x.getIdParada()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
                             </tr>
                             <%}%>
                         </table>
+                        <%}else{%>
+                        <div class="container">
+                            <h3><strong>No hay paradas registradas...</strong></h3>
+                        </div>
+                        <%}%>
                     </div>
                     <div>
                         <br>
                     </div>	
                     <div class="col-md-4">
                         <div class="container">
-                            <button class="btn form-control btn-light" >
+                            <button class="btn form-control btn-light" style="width: 200px;margin-left: 5%;font-size: 120%">
                                 <a href="Añadir_Parada.jsp">Registrar Parada</a>
                             </button>
                         </div>
