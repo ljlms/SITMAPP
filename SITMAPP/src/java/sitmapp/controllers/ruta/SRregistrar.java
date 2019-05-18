@@ -7,11 +7,15 @@ package sitmapp.controllers.ruta;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import sitmapp.models.Ruta;
 
 /**
  *
@@ -33,16 +37,40 @@ public class SRregistrar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SRregistrar</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SRregistrar at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+
+            System.out.println("Servlet Registrar Rutas");
+            String nom_ruta = request.getParameter("nombre_ruta");
+            String tip_ruta = request.getParameter("tipo_ruta");
+            String HorarioLunesViernes = request.getParameter("hora_inicio_lunes_viernes") + "-" + request.getParameter("hora_final_lunes_viernes");
+            String HorarioSabado = request.getParameter("hora_inicio_sabados") + "-" + request.getParameter("hora_final_sabados");
+            String HorarioDomingosFestivos = request.getParameter("hora_inicio_domingos_festivos") + "-" + request.getParameter("hora_final_domingos_festivos");
+            int id = 0;
+            String id_paradas[] = request.getParameterValues("paradas[]");//id
+
+            //convertir idparadas a int
+            int size = id_paradas.length;
+            int IDPARADAS[] = new int[size];
+            for (int i = 0; i < size; i++) {
+                IDPARADAS[i] = Integer.parseInt(id_paradas[i]);
+            }
+            //convertir idparadas a int
+
+            Ruta ruta = new Ruta(id, nom_ruta, tip_ruta, null, HorarioLunesViernes, HorarioSabado, HorarioDomingosFestivos);
+            RutaControllers.saveRuta(ruta);//Guarda en ruta
+            id = RutaControllers.IdRutaBack(nom_ruta); //Regresa id Ruta
+            System.out.println("Id ruta es: " + id);
+            RutaControllers.saveParaderosRuta(id, IDPARADAS);
+
+            //prueba
+            for (Ruta ruta1 : RutaControllers.list()) {
+                System.out.println("Id ruta: " + ruta1.getId_ruta());
+                System.out.println("Nombre ruta" + ruta.getId_ruta());
+                System.out.println("Tipo ruta: "+ ruta.getTipo_Ruta());
+            }
+            //prueba
+            HttpSession session = request.getSession();
+            RequestDispatcher rd = request.getRequestDispatcher("Administrar_Rutas.jsp");
+            rd.forward(request, response);
         }
     }
 

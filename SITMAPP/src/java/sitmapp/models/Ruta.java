@@ -12,17 +12,25 @@ import java.util.LinkedList;
  * @author Jhon
  */
 public class Ruta {
-   private String Nombre_Ruta;
-   private String Tipo_Ruta;
-   private int Id_ruta;
-   private LinkedList<Parada> Paradas;
-   private Horario horario;
+    private int Id_ruta;
+    private String Nombre_Ruta;
+    private String Tipo_Ruta;
+    private LinkedList<Parada> Paradas; 
+    private String lunes_viernes;
+    private String sabado;
+    private String domingo_festivo;
 
-    public Ruta(String Nombre_Ruta, String Tipo_Ruta, LinkedList<Parada> Ubicaciones, Horario horario) {
+    public Ruta() {
+    }
+
+    public Ruta(int Id_ruta, String Nombre_Ruta, String Tipo_Ruta, LinkedList<Parada> Paradas, String lunes_viernes, String sabado, String domingo_festivo) {
+        this.Id_ruta = Id_ruta;
         this.Nombre_Ruta = Nombre_Ruta;
         this.Tipo_Ruta = Tipo_Ruta;
-        this.Paradas = Ubicaciones;
-        this.horario = horario;
+        this.Paradas = Paradas;
+        this.lunes_viernes = lunes_viernes;
+        this.sabado = sabado;
+        this.domingo_festivo = domingo_festivo;
     }
 
     public int getId_ruta() {
@@ -32,7 +40,7 @@ public class Ruta {
     public void setId_ruta(int Id_ruta) {
         this.Id_ruta = Id_ruta;
     }
- 
+
     public String getNombre_Ruta() {
         return Nombre_Ruta;
     }
@@ -57,15 +65,29 @@ public class Ruta {
         this.Paradas = Paradas;
     }
 
-    public Horario getHorario() {
-        return horario;
+    public String getLunes_viernes() {
+        return lunes_viernes;
     }
 
-    public void setHorario(Horario horario) {
-        this.horario = horario;
+    public void setLunes_viernes(String lunes_viernes) {
+        this.lunes_viernes = lunes_viernes;
     }
 
-    public Ruta() {
+    public String getSabado() {
+        return sabado;
     }
-   
+
+    public void setSabado(String sabado) {
+        this.sabado = sabado;
+    }
+
+    public String getDomingo_festivo() {
+        return domingo_festivo;
+    }
+
+    public void setDomingo_festivo(String domingo_festivo) {
+        this.domingo_festivo = domingo_festivo;
+    }
+
+    
 }

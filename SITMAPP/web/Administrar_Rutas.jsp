@@ -1,3 +1,6 @@
+<%@page import="sitmapp.models.Parada"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="sitmapp.models.Ruta"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,6 +22,7 @@
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
             String valor = u.getTipo_usuario();
+
         %>
         <section class="wrapper clearfix" data-section="home">
             <header class="header">
@@ -33,8 +37,8 @@
                 <nav class="menu">
                     <ul>
                         <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
-                            <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
-                            Admin. Paradas</a></li> 
+                                <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
+                                Admin. Paradas</a></li> 
                         <li id="li_registrar-rutas"> <a href="Administrar_Rutas.jsp">
                                 <img src="templates/icons8-map-editing-48.png" class="iconos_png" alt=""/>
                                 Admin. Rutas</a>   </li> 
@@ -86,123 +90,10 @@
                                 </td>
                                 <td><label for=""> Tipo Ruta </label>
                                 </td>
-
                                 <td><label> Paraderos </label></td>
                                 <td><label> Horario </label></td>
                                 <td> <label> Editar </label> </td>
                                 <td> <label> Eliminar </label> </td>
-                            </tr>
-                            <tr>
-                                <td> T100E Portal - Centro</td>
-                                <td> Troncales </td>
-
-                                <td> 
-                                    <div>
-                                        La Bodeguita	
-                                    </div> 
-                                    <div>
-                                        Centro 	
-                                    </div>
-                                    <div>
-                                        Maria Auxiliadora 	
-                                    </div>
-                                    <div>
-                                        Cuatro Vientos 	
-                                    </div>
-                                    <div>
-                                        La Castellana 	
-                                    </div>
-                                    <div>
-                                        Madre Bernarda 	
-                                    </div>
-                                    <div>
-                                        Portal 	
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <label for="h_100e_lunes-viernes"><i>Lunes - Viernes</i></label>
-                                        <p id="h_100E_lunes-viernes">6:00 am - 8:00 pm</p>
-                                    </div>
-                                    <div>
-                                        <label for="h_100E_sabado"><i>Sabado</i></label>
-                                        <p id="h_100E_sabado">6:00 am - 10:00 am </p>
-                                    </div>
-                                    <div>
-                                        <label for="h_100E_Domingo-Festivo"><i>Domingo - Festivos</i></label>
-                                        <p id="h_100E_Domingo-Festivo"> No Opera </p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a style='font-size:24px' class='fas' href="#"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a>
-                                </td>
-                                <td>
-                                    <a style='font-size:24px' class='fas' href="#"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td> T101 Portal - Centro</td>
-                                <td> Troncales </td>
-
-                                <td> 
-                                    <div>
-                                        La Bodeguita	
-                                    </div> 
-                                    <div>
-                                        Centro 	
-                                    </div>
-                                    <div>
-                                        Chambacu	
-                                    </div>
-                                    <div>
-                                        La Popa 	
-                                    </div>
-                                    <div>
-                                        Bazurto 	
-                                    </div>
-                                    <div>
-                                        El Prado 	
-                                    </div>
-                                    <div>
-                                        España 	
-                                    </div>
-                                    <div>
-                                        Cuatro Vientos
-                                    </div>
-                                    <div>
-                                        Los Ejecutivos
-                                    </div>
-                                    <div>
-                                        La Castellana
-                                    </div>
-                                    <div>
-                                        Madre Bernarda 
-                                    </div>
-                                    <div>
-                                        Portal
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        <label for="h_1001_lunes-viernes"><i>Lunes - Viernes</i></label>
-                                        <p id="h_100E_lunes-viernes">5:30 am - 11:00 pm</p>
-                                    </div>
-                                    <div>
-                                        <label for="h_1001_sabado"> <i>Sabado</i> </label>
-                                        <p id="h_100E_sabado">5:30 am - 9:00 am </p>
-                                    </div>
-                                    <div>
-                                        <label for="h_1001_Domingo-Festivo"><i>Domingo - Festivos</i></label>
-                                        <p id="h_100E_Domingo-Festivo"> 7:00 am - 8:00 pm </p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a style='font-size:24px' class='fas' href="#"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a>
-                                </td>
-                                <td>
-                                    <a style='font-size:24px' class='fas' href="#"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a>
-                                </td>
                             </tr>
 
                         </table>
@@ -217,7 +108,7 @@
                             <a href="Añadir_Rutas.jsp" style="font-size: 120%">Registrar Ruta</a>
                         </button>
                     </div>   
-                    
+
                 </aside>
 
             </div>

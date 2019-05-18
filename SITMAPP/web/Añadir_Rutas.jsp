@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="sitmapp.models.Parada"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,6 +22,8 @@
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
             String valor = u.getTipo_usuario();
+            ArrayList<Parada> paradas = sitmapp.controllers.parada.ParaderoController.list(); //it returns all paradas saved in db
+
         %>
         <!-- Java Space --> 
         <section class="wrapper clearfix" data-section="home">
@@ -79,48 +83,47 @@
                 <div class="row"> <!-- Primera Fila Troncales - Pretroncales -->
                     <div class="col-md-1"></div>
                     <div class="col-md-9">
-                        <form action="#" method="post" class="form">
+                        <form action="SRregistrar" method="post" class="form">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="nombre">Nombre:</label>
-                                    <input type="text" class="form-control " name="nombre_ruta" id="nombre">
+                                    <label for="nombre"><strong>Nombre:</strong></label>
+                                    <input type="text" class="form-control " name="nombre_ruta" id="nombre" required>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="tipo">Tipo Ruta</label>
-                                    <input type="text" class="form-control" id="tipo" name="tipo_ruta">
+                                    <label for="tipo"><strong>Tipo Ruta:</strong></label>
+                                    <input type="text" class="form-control" id="tipo" name="tipo_ruta" required>
                                 </div>
                             </div>
 
                             <div class="form-row">
-
                                 <div class="form-group col-md-6">
-                                    <label for="nada">Paraderos</label>
+                                    <label for="nada"><strong>Paraderos:</strong></label>
                                     <div id="nada"></div>
                                     <div class="form-check-inline">
-                                        <label class="checkbox-inline" for="p_4v"><input type="checkbox" name="parad_4v" id="p_4v">4 vientos </label> 
-                                        <label class="checkbox-inline" for="p_centro"><input type="checkbox" name="parad_centro" id="p_centro">Centro</label>
-                                        <label class="checkbox-inline" for="p_bod"><input type="checkbox" name="parad_bodeguita" id="p_bod">Bodeguita</label>
-                                    </div>
+                                        <%for (Parada x : paradas) {%>
+                                        <input type="checkbox" name="paradas[]" value="<%=x.getIdParada()%>"><label style="margin-right: 10px;"><%=x.getNombre()%></label>
+                                            <%}%>
+                                    </div><!--idparadas[i] = paradas.get(i).getIdParada();-->
                                 </div>
 
                                 <div class="form-group col-md-6s">
                                     <table>
-                                        <thead><label>Tipo Horarios</label></thead>
+                                        <thead><label><strong>Horarios</strong></label></thead>
                                         <tr>
-                                            <td style="padding: 1%"> Lunes - Viernes </td>
-                                            <td style="padding: 1%"> <input type="time" name="hora_inicio_lunes-vienres" id="lunes-viernes-inicio" min="05:00" max="11:00" step="600"> </td>
-                                            <td style="padding: 1%"> <input type="time" name="hora_final_lunes-viernes" id="lunes-viernes-final" min="12:00"  step="600"></td>
+                                            <td style="padding: 1%"> Lunes - Viernes: </td>
+                                            <td style="padding: 1%"> <input type="time" name="hora_inicio_lunes_viernes" id="lunes-viernes-inicio" min="05:00" max="11:00" step="600"> </td>
+                                            <td style="padding: 1%"> <input type="time" name="hora_final_lunes_viernes" id="lunes-viernes-final" min="12:00"  step="600"></td>
                                         </tr>
 
                                         <tr>
                                             <td style="padding: 1%">Sabados: </td>
-                                            <td style="padding: 1%"><input type="time" name="hora_inicio-sabados" id="sabado-inicio" min="05:00" max="11:00" step="600"></td>
-                                            <td style="padding: 1%"><input type="time" name="hora_final-sabados" id="sabado-final" min="12:00"  step="600"></td>
+                                            <td style="padding: 1%"><input type="time" name="hora_inicio_sabados" id="sabado-inicio" min="05:00" max="11:00" step="600"></td>
+                                            <td style="padding: 1%"><input type="time" name="hora_final_sabados" id="sabado-final" min="12:00"  step="600"></td>
                                         </tr>
                                         <tr>
                                             <td style="padding: 1%">Domingos/Festivos: </td>
-                                            <td style="padding: 1%"><input type="time" name="hora_inicio-domingos-festivos" id="domingos-festivos-inicio" min="05:00" max="11:00" step="600"></td>
-                                            <td style="padding: 1%"><input type="time" name="hora_final-domingos-festivos" id="domingos-festivos-final" min="12:00"  step="600"></td>
+                                            <td style="padding: 1%"><input type="time" name="hora_inicio_domingos_festivos" id="domingos-festivos-inicio" min="05:00" max="11:00" step="600"></td>
+                                            <td style="padding: 1%"><input type="time" name="hora_final_domingos_festivos" id="domingos-festivos-final" min="12:00"  step="600"></td>
                                         </tr>
                                     </table>
 
@@ -138,21 +141,6 @@
                                 <a href="Añadir_Rutas.jsp">Registrar Ruta</a>
                             </button>
                         </div>   
-                        <div class="">
-                            <button class="btn btn-light form-control" >
-                                <a href="Editar_Rutas.jsp">Editar Ruta</a>
-                            </button>
-                        </div>
-                        <div class="">
-                            <button class="btn btn-light form-control" >
-                                <a href="Consultar_Rutas.jsp">Consultar Ruta</a>
-                            </button>
-                        </div>
-                        <div class="">
-                            <button class="btn btn-light form-control" >
-                                <a href="Eliminar_Rutas.jsp">Eliminar Ruta</a>
-                            </button>
-                        </div>
                     </aside>
                 </div>
             </div>
