@@ -22,7 +22,7 @@
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
             String valor = u.getTipo_usuario();
-
+            ArrayList<Ruta> lista = sitmapp.controllers.ruta.RutaControllers.list();
         %>
         <section class="wrapper clearfix" data-section="home">
             <header class="header">
@@ -86,16 +86,33 @@
                     <div class="form-group col-md-12">
                         <table class="table table-light table-striped" style="text-align: center;">
                             <tr>
-                                <td><label for=""> Nombre </label>
+                                <td><label for=""> <strong>Nombre</strong> </label>
                                 </td>
-                                <td><label for=""> Tipo Ruta </label>
+                                <td><label for=""> <strong>Tipo Ruta</strong> </label>
                                 </td>
-                                <td><label> Paraderos </label></td>
-                                <td><label> Horario </label></td>
-                                <td> <label> Editar </label> </td>
-                                <td> <label> Eliminar </label> </td>
+                                <td><label> <strong>Paraderos</strong> </label></td>
+                                <td><label> <strong>Horario</strong> </label></td>
+                                <td> <label> <strong> Editar </strong> </label> </td>
+                                <td> <label> <strong>Eliminar</strong> </label> </td>
                             </tr>
-
+                            <% for (Ruta r : lista) {%>
+                            <tr>
+                                <td><%=r.getNombre_Ruta()%></td>
+                                <td><%=r.getTipo_Ruta()%></td>
+                                <td>
+                                    <%for (String p : sitmapp.controllers.ruta.RutaControllers.listParada(r.getId_ruta())) {%>
+                                    <label><%=p%></label><br>
+                                    <%}%>
+                                </td>
+                                <td>
+                                    <label><strong>Lunes - Viernes: <%=r.getLunes_viernes()%></strong></label><br>
+                                    <label><strong>Sabados: <%=r.getSabado()%></strong></label><br>
+                                    <label><strong>Domingo - Festivos: <%=r.getDomingo_festivo()%></strong></label><br>
+                                </td>
+                                <td><a style='font-size:24px' class='fas' href="./Editar_Paradas.jsp?"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
+                                <td><a style='font-size:24px' class='fas' href="./PEliminar?Id="><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
+                            </tr>
+                            <%}%>
                         </table>
                     </div>
                 </div>

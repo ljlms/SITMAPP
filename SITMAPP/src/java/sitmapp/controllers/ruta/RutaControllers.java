@@ -42,7 +42,7 @@ public class RutaControllers {
         }
     }
 
-    public static void saveParaderosRuta(int IdRuta, int IdParadas[]) {// Guarda los paraderos de las rutas
+    public static void saveParaderosRuta(int IdRuta, int IdParadas[]) {// Guarda los paraderos de las rutas --> Ruta_Parada
         //id-nombre-apellidos-nomusuario-contraseña-correo-telefono-tipousuario-
         Connection connect;
         try {
@@ -82,29 +82,35 @@ public class RutaControllers {
         Connection connect;
         try {
             connect = JdbcConnect.connect();
-            PreparedStatement pst = connect.prepareStatement("Select r.IdRuta, r.NombreRuta, r.TipoRuta, p.IdParada, p.Nombre, P.Ubicacion_Latitud, p.Ubicacion_Longitud, p.Tipo,\n"
-                    + "r.HorarioLunes_Viernes, r.HorarioSabado, r.HorarioDomingo \n"
-                    + "from ruta as r, parada as p, ruta_parada as rp where (r.IdRuta = rp.IdRuta) and (p.IdParada = rp.IdParada);");
+            PreparedStatement pst = connect.prepareStatement("select * from Ruta");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Ruta c = new Ruta();
-                Parada parada = new Parada();
+
                 c.setId_ruta(rs.getInt(1));
                 c.setNombre_Ruta(rs.getString(2));
                 c.setTipo_Ruta(rs.getString(3));
-//
-//                parada.setIdParada(rs.getInt(4));
-//                parada.setNombre(rs.getString(5));
-//                parada.setLatitud(rs.getDouble(6));
-//                parada.setLongitud(rs.getDouble(7));
-//                parada.setTipo(rs.getString(8));
-//
-////                c.getParadas().add(parada);
-
-                c.setLunes_viernes(rs.getString(9));
-                c.setSabado(rs.getString(10));
-                c.setDomingo_festivo(rs.getString(11));
+                c.setLunes_viernes(rs.getString(4));
+                c.setSabado(rs.getString(5));
+                c.setDomingo_festivo(rs.getString(6));
                 listado.add(c);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Ruta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listado;
+    }
+
+    public static ArrayList<String> listParada(int id) {//listar paradas de una ruta en especifica
+        ArrayList<String> listado = new ArrayList<>();
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("select p.Nombre from parada as p,  ruta_parada as rp where (p.IdParada = rp.IdParada) and (rp.IdRuta= "+id+")");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                listado.add(rs.getString(1));
             }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Ruta.class.getName()).log(Level.SEVERE, null, ex);

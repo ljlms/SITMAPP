@@ -56,7 +56,7 @@ public class SRregistrar extends HttpServlet {
             //convertir idparadas a int
 
             Ruta ruta = new Ruta(id, nom_ruta, tip_ruta, null, HorarioLunesViernes, HorarioSabado, HorarioDomingosFestivos);
-            RutaControllers.saveRuta(ruta);//Guarda en ruta
+            RutaControllers.saveRuta(ruta);//Guarda en tabla ruta
             id = RutaControllers.IdRutaBack(nom_ruta); //Regresa id Ruta
             System.out.println("Id ruta es: " + id);
             RutaControllers.saveParaderosRuta(id, IDPARADAS);
