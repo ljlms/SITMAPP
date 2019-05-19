@@ -107,7 +107,7 @@ public class RutaControllers {
         Connection connect;
         try {
             connect = JdbcConnect.connect();
-            PreparedStatement pst = connect.prepareStatement("select p.Nombre from parada as p,  ruta_parada as rp where (p.IdParada = rp.IdParada) and (rp.IdRuta= "+id+")");
+            PreparedStatement pst = connect.prepareStatement("select p.Nombre from parada as p,  ruta_parada as rp where (p.IdParada = rp.IdParada) and (rp.IdRuta= " + id + ")");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 listado.add(rs.getString(1));
@@ -117,6 +117,27 @@ public class RutaControllers {
         }
 
         return listado;
+    }
+
+    public static void delete(int id) {
+        Connection connect;
+        try {
+            
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("Delete from "
+                    + "ruta where IdRuta=?");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            
+            PreparedStatement pst2 = connect.prepareStatement("Delete from "
+                    + "ruta_parada where IdRuta=?");
+            pst2.setInt(1, id);
+            pst2.executeUpdate();
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Parada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
 }

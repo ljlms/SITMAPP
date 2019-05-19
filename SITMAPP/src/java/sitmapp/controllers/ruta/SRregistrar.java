@@ -44,6 +44,17 @@ public class SRregistrar extends HttpServlet {
             String HorarioLunesViernes = request.getParameter("hora_inicio_lunes_viernes") + "-" + request.getParameter("hora_final_lunes_viernes");
             String HorarioSabado = request.getParameter("hora_inicio_sabados") + "-" + request.getParameter("hora_final_sabados");
             String HorarioDomingosFestivos = request.getParameter("hora_inicio_domingos_festivos") + "-" + request.getParameter("hora_final_domingos_festivos");
+            
+            if (HorarioLunesViernes.equalsIgnoreCase("-")) {
+                HorarioLunesViernes = "No Opera";
+            }
+            if (HorarioSabado.equalsIgnoreCase("-")) {
+                HorarioSabado = "No Opera";
+            }
+            if (HorarioDomingosFestivos.equalsIgnoreCase("-")) {
+                HorarioDomingosFestivos = "No Opera";
+            }
+            
             int id = 0;
             String id_paradas[] = request.getParameterValues("paradas[]");//id
 

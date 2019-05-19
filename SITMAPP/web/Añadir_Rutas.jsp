@@ -38,6 +38,9 @@
                 </a>
                 <nav class="menu">
                     <ul>
+                        <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
+                            <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
+                            Admin. Paradas</a></li> 
                         <li id="li_registrar-rutas"> <a href="Administrar_Rutas.jsp">
                                 <img src="templates/icons8-map-editing-48.png" class="iconos_png" alt=""/>
                                 Admin. Rutas</a>   </li> 
@@ -128,6 +131,11 @@
                                     </table>
 
                                 </div>
+                                    
+                                    <div style="margin-bottom: 12px;margin-left: 10px">
+                                       <strong>Nota:</strong> no ingresar hora los días que no opere la ruta.
+                                    </div>
+                                    
                                 <div class="form-group col-md-12">
                                     <input type="submit" name="enviar" id="enviar_input" class="form-control btn btn-primary" value="Añadir">
                                 </div>

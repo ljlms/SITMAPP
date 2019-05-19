@@ -16,21 +16,8 @@ import java.util.logging.Logger;
 import sitmapp.controllers.database.JdbcConnect;
 
 public class ArticuladoController {
-     /*
-    idarticulado
-    codigo_articulado
-    placa
-    estado
-    empresa_idempresa
-    nombre_empresa
-    ubicacion_latitud
-    ubicacion_longitud
-    conductor_idconductor
-    ruta_idruta
-     */
-    //Añadir
+
     public static void save(Articulado articulado) {
-        //id-nombre-apellidos-nomusuario-contraseña-correo-telefono-tipousuario-
         Connection connect;
         try {
             connect = JdbcConnect.connect();

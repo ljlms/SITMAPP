@@ -64,6 +64,11 @@ public class ParaderoController {
                     + "parada where IdParada=?");
             pst.setInt(1, id);
             pst.executeUpdate();
+            
+            PreparedStatement pst2 = connect.prepareStatement("Delete from "
+                    + "ruta_parada where IdParada=?");
+            pst2.setInt(1, id);
+            pst2.executeUpdate();
 
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Parada.class.getName()).log(Level.SEVERE, null, ex);
