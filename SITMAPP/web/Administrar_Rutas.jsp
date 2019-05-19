@@ -109,7 +109,7 @@
                                     <label><strong>Sabados: <%=r.getSabado()%></strong></label><br>
                                     <label><strong>Domingo - Festivos: <%=r.getDomingo_festivo()%></strong></label><br>
                                 </td>
-                                <td><a style='font-size:24px' class='fas' href="./Editar_Paradas.jsp?"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
+                                <td><a style='font-size:24px' class='fas' href="./Editar_Rutas.jsp?Id=<%=r.getId_ruta()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
                                 <td><a style='font-size:24px' class='fas' href="./SREliminar?Id=<%=r.getId_ruta()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
                             </tr>
                             <%}%>
