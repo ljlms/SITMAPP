@@ -17,8 +17,10 @@
         <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGQUFgalVpzmjnc3sWaRg7cJZDaFXqZq8"></script>-->
         <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+        <link rel="stylesheet" href="css/animate.css"><!--Aniamte library-->
+
         <style>
-           #map {
+            #map {
                 width: 700px;
                 height: 550px;
             }
@@ -35,7 +37,7 @@
 
             <div class="logo">
                 <a href="javascript:void(0);">
-                    <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive"/>
+                    <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive animated bounceIn"/>
                 </a>
             </div>
 
