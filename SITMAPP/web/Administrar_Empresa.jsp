@@ -1,4 +1,4 @@
-<%@page import="Empresa.Empresa"%>
+<%@page import="sitmapp.models.Empresa"%>
 <%@page import="sitmapp.controllers.empresa.EmpresaController"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page import="java.util.ArrayList"%>
@@ -23,8 +23,8 @@
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
             String valor = u.getTipo_usuario();
-            //ArrayList<Empresa> emp = EmpresaController.list();
-            ArrayList<Empresa> emp = sitmapp.controllers.empresa.EmpresaController.list();
+     
+            ArrayList<Empresa> emp = EmpresaController.list();
 
         %>
         <section class="wrapper clearfix" data-section="home">

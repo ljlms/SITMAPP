@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sitmapp.controllers.empresa;
+package sitmapp.controllers.ruta;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -12,14 +13,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import sitmapp.models.Empresa;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Jhon Baron
+ * @author MANUEL PONTON RICO
  */
-@WebServlet(name = "EEliminar", urlPatterns = {"/EEliminar"})
-public class EEliminar extends HttpServlet {
+@WebServlet(name = "EliminarParadaRuta", urlPatterns = {"/EliminarParadaRuta"})
+public class EliminarParadaRuta extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +36,14 @@ public class EEliminar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            int nit = Integer.parseInt(request.getParameter("Nit"));
-            String nom = request.getParameter("Nombre");
-            String desc = request.getParameter("Descripcion");
-            
-            Empresa emp = new Empresa(nit, nom, desc);
-            
-            EmpresaController.delete(emp);
-            
-            RequestDispatcher rd = request.getRequestDispatcher("Administrar_Empresa.jsp");
+            int idParada = Integer.parseInt(request.getParameter("IdParada"));
+            int idRuta = Integer.parseInt(request.getParameter("IdRuta"));
+            RutaControllers.BorrarParaderoRutaEspecifica(idRuta, idParada);
+            System.out.println(idParada);
+            System.out.println(idRuta);
+            HttpSession session = request.getSession();
+            request.setAttribute("Id", idRuta);
+            RequestDispatcher rd = request.getRequestDispatcher("Editar_Rutas.jsp?Id="+idRuta);
             rd.forward(request, response);
         }
     }

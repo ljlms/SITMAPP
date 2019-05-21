@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package sitmapp.controllers.empresa;
-
-import Empresa.Empresa;
+import sitmapp.models.Empresa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

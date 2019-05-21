@@ -86,7 +86,7 @@
                 <div class="row"> <!-- Primera Fila Troncales - Pretroncales -->
                     <div class="col-md-1"></div>
                     <div class="col-md-9">
-                        <form action="SRregistrar" method="post" class="form">
+                        <form action="SRregistrar" method="post" class="form formulario">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="nombre"><strong>Nombre:</strong></label>
@@ -137,7 +137,7 @@
                                     </div>
                                     
                                 <div class="form-group col-md-12">
-                                    <input type="submit" name="enviar" id="enviar_input" class="form-control btn btn-primary" value="Añadir">
+                                    <input type="submit" name="enviar" id="enviar_input" class="form-control btn btn-primary" value="Añadir ruta" style="width: 100px;">
                                 </div>
                             </div>
                         </form>

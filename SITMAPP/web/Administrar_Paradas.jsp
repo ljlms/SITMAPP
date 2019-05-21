@@ -1,3 +1,4 @@
+<%@page import="sitmapp.controllers.parada.ParaderoController"%>
 <%@page import="sitmapp.models.Parada"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
@@ -30,8 +31,8 @@
         <!-- Java Space -->  
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
-            String valor = u.getTipo_usuario();
-            ArrayList<Parada> paradas = sitmapp.controllers.parada.ParaderoController.list();
+     
+            ArrayList<Parada> paradas = ParaderoController.list();
         %>
 
         <header class="header">

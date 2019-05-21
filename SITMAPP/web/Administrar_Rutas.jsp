@@ -1,3 +1,4 @@
+<%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Parada"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Ruta"%>
@@ -21,8 +22,7 @@
         <!-- Java Space -->  
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
-            String valor = u.getTipo_usuario();
-            ArrayList<Ruta> lista = sitmapp.controllers.ruta.RutaControllers.list();
+            ArrayList<Ruta> lista = RutaControllers.list();
         %>
         <section class="wrapper clearfix" data-section="home">
             <header class="header">
@@ -100,7 +100,7 @@
                                 <td><%=r.getNombre_Ruta()%></td>
                                 <td><%=r.getTipo_Ruta()%></td>
                                 <td>
-                                    <%for (String p : sitmapp.controllers.ruta.RutaControllers.listParada(r.getId_ruta())) {%>
+                                    <%for (String p : RutaControllers.listParada(r.getId_ruta())) {%>
                                     <label><%=p%></label><br>
                                     <%}%>
                                 </td>
@@ -109,6 +109,7 @@
                                     <label><strong>Sabados: <%=r.getSabado()%></strong></label><br>
                                     <label><strong>Domingo - Festivos: <%=r.getDomingo_festivo()%></strong></label><br>
                                 </td>
+                            
                                 <td><a style='font-size:24px' class='fas' href="./Editar_Rutas.jsp?Id=<%=r.getId_ruta()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
                                 <td><a style='font-size:24px' class='fas' href="./SREliminar?Id=<%=r.getId_ruta()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
                             </tr>

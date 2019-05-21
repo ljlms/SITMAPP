@@ -5,7 +5,7 @@
  */
 package sitmapp.controllers.empresa;
 
-import Empresa.Empresa;
+import sitmapp.models.Empresa;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;

@@ -1,3 +1,4 @@
+<%@page import="sitmapp.models.Empresa"%>
 <%@page import="sitmapp.controllers.empresa.EmpresaController"%>
 <%@page import="sitmapp.controllers.articulado.ArticuladoController"%>
 <%@page import="sitmapp.models.Usuario"%>
@@ -12,7 +13,7 @@
     ArrayList<Articulado> art = ArticuladoController.list();
     //ArrayList<Empresa> emp = EmpresaController.list();
     //ArrayList<Empresa.Empresa> emp = sitmapp.controllers.empresa.EmpresaController.list();
-    ArrayList<Empresa.Empresa> emp = sitmapp.controllers.empresa.EmpresaController.list();
+    ArrayList<Empresa> emp =EmpresaController.list();
 %>
 <!DOCTYPE html>
 <html>

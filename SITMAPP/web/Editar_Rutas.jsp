@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Ruta"%>
 <%@page import="sitmapp.models.Parada"%>
 <%@page import="java.util.ArrayList"%>
@@ -23,44 +25,33 @@
         <!-- Java Space -->  
         <%
             int id = Integer.parseInt(request.getParameter("Id"));
-            ArrayList<Ruta> listado = sitmapp.controllers.ruta.RutaControllers.list();
-            Ruta ruta = new Ruta();
-            for (Ruta r : listado) {
-                if (r.getId_ruta() == id) {
-                    ruta = r;
-                }
-            }
-
-            boolean lunes_viernes_no_opera = false;
-            boolean sabado_no_opera = false;
-            boolean domingo_festivo_no_opera = false;
-
+            Ruta ruta = RutaControllers.BusquedaRuta(id);
+            ArrayList<Parada> paraderos = RutaControllers.BusquedaParadasDeRutaEspecifica(id);
+            ArrayList<Integer> paraderos_todos = RutaControllers.listTodasParadasId();
+            String lunes_viernes_inicio = "";
+            String lunes_viernes_final = "";
+            String sabado_inicio = "";
+            String sabado_final = "";
+            String domingo_festivo_inicio = "";
+            String domingo_festivo_final = "";
             if (!ruta.getLunes_viernes().equalsIgnoreCase("No Opera")) {
                 String lunes_viernes[] = ruta.getLunes_viernes().split("-");
+                lunes_viernes_inicio = lunes_viernes[0];
+                lunes_viernes_final = lunes_viernes[1];
             }
 
             if (!ruta.getSabado().equalsIgnoreCase("No Opera")) {
-               String sabado[] = ruta.getSabado().split("-");
+                String sabado[] = ruta.getSabado().split("-");
+                sabado_inicio = sabado[0];
+                sabado_final = sabado[1];
+
             }
 
             if (!ruta.getDomingo_festivo().equalsIgnoreCase("No Opera")) {
-                 String domingo_festivo[] = ruta.getDomingo_festivo().split("-");
+                String domingo_festivo[] = ruta.getDomingo_festivo().split("-");
+                domingo_festivo_inicio = domingo_festivo[0];
+                domingo_festivo_final = domingo_festivo[1];
             }
-            
-            
-            
-            if (ruta.getLunes_viernes().equalsIgnoreCase("No Opera")) {
-                
-            }
-
-            if (ruta.getSabado().equalsIgnoreCase("No Opera")) {
-               
-            }
-
-            if (ruta.getDomingo_festivo().equalsIgnoreCase("No Opera")) {
-                
-            }
-
         %>
 
         <header class="header">
@@ -120,37 +111,100 @@
                 </div>
             </div>
         </header>
-
         <section class="wrapper clearfix" data-section="home">
-
             <div class="container">
                 <h1 style="margin-top: 4%; margin-bottom: 3%"> <strong> Editar Ruta </strong> </h1>
             </div>
             <div class="container">
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-8">
-                        <form action="#" method="post">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label><strong>Nombre</strong></label>
-                                    <input type="text" class="form-control" value="<%=ruta.getNombre_Ruta()%>">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label><strong>Tipo</strong></label>
-                                    <input type="text" class="form-control" value="<%=ruta.getTipo_Ruta()%>">
+                <form action="GuardarModificacionesParaderos" method="post"> <!--Inicia el formulario-->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-5" >
+                                <div class="row">
+                                    <div class="form-group" style="width: 100%">
+                                        <label><strong>Nombre</strong></label>
+                                        <input type="text" class="form-control" value="<%=ruta.getNombre_Ruta()%>" name="nombre_ruta">
+                                    </div>    
+                                </div>    
+                                <div class="row">
+                                    <div class="form-group" style="width: 100%">
+                                        <label><strong>Tipo</strong></label>
+                                        <input type="text" class="form-control" value="<%=ruta.getTipo_Ruta()%>" name="tipo_ruta">
+                                    </div>  
                                 </div>    
                             </div>
-                            <div class="row">
+                            <div class="col-md-1">
+                                <br>
                             </div>
-                        </form>
-                    </div>
-                    <div class="col-md-3">
+                            <div class="col-md-5">
+                                <table class="table table-bordered" style="text-align: center; width: 190%">
+                                    <tr>
+                                        <td colspan="3"><strong>Horarios</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lunes - Viernes</td>
+                                        <td><input class="form-control" type="time" value="<%=lunes_viernes_inicio%>" name="lunes_inicio"></td>
+                                        <td><input class="form-control" type="time" value="<%=lunes_viernes_final%>" name="lunes_final"></td>
+                                    </tr>
 
+                                    <tr>
+                                        <td>Sabados</td>
+                                        <td><input class="form-control" type="time" value="<%=sabado_inicio%>" name="sabado_inicio"></td>
+                                        <td><input class="form-control" type="time" value="<%=sabado_final%>" name="sabado_final"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Domingos - Festivos</td>
+                                        <td><input class="form-control" type="time" value="<%=domingo_festivo_inicio%>" name="domingo_festivo_inicio"></td>
+                                        <td><input class="form-control" type="time" value="<%=domingo_festivo_final%>" name="domingo_festivo_final"></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div>
+                        <br>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-5" ><!--Tabla Paraderos que tiene una ruta-->
+                                <table class="table table-bordered" style="text-align: center; width: 140%">
+                                    <tr>
+                                        <td colspan="2"><label><strong>Paraderos Asignados</strong></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label><strong>Nombre</strong></label></td>
+                                        <td><label><strong>Eliminar</strong></label></td>
+                                    </tr>
+                                    <%for (Parada a : paraderos) {%>
+                                    <tr>
+                                        <td><%=a.getNombre()%></td>    
+                                        <td><a style='font-size:24px' class='fas' href="./EliminarParadaRuta?IdParada=<%=a.getIdParada()%>&IdRuta=<%=id%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="20" height="20"></a> </td>
+                                    </tr>
+                                    <%}%>
+                                </table>    
+                            </div><!--Tabla Paraderos que tiene una ruta-->
+                            <div class="col-md-2"><br></div>
+                            <div class="col-md-5"><!--Tabla Paraderos que no tiene una ruta-->
+                                <div>
+                                    <table class="table table-bordered" style="text-align: center; width: 190%">
+                                        <tr>
+                                            <td colspan="2"><label><strong>Paraderos Disponibles</strong></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label><strong>Nombre</strong></label></td>
+                                            <td><label><strong>Añadir</strong></label></td>
+                                        </tr>
+                                     
+                                    </table>    
+                                </div>
+                            </div><!--Tabla Paraderos que no tiene una ruta-->
+                        </div>
+                    </div>
+                </form> <!--Finaliza el formulario-->
             </div>
-
         </section>
         <!-- lightModal -->
         <div class="lightModal">

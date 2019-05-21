@@ -1,7 +1,6 @@
-<%@page import="Empresa.Empresa"%>
+<%@page import="sitmapp.controllers.empresa.EmpresaController"%>
+<%@page import="sitmapp.models.Empresa"%>
 <%@page import="sitmapp.models.Usuario"%>
-<%--<%@page import="sitmapp.models.Empresa"%>
-<%@page import="sitmapp.controllers.empresa.EmpresaController"%>--%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -22,10 +21,7 @@
         <!-- Java Space -->  
         <%
             Usuario u = (Usuario) session.getAttribute("usuario");
-            String valor = u.getTipo_usuario();
-//            ArrayList<Empresa> emp = EmpresaController.list();
-            ArrayList<Empresa> emp = sitmapp.controllers.empresa.EmpresaController.list();
-
+            ArrayList<Empresa> emp = EmpresaController.list();
         %>
         <!-- Java Space --> 
         <section class="wrapper clearfix" data-section="home">
@@ -102,7 +98,7 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label> Empresa a que pertenece </label>
-                                    <select name="idEmpresa" required>
+                                    <select name="idEmpresa"  class="form-control" required>
                                         <option value="" disabled selected>Seleccione...</option>
                                         <%for (Empresa a : emp) {%>
                                         <option value="<%=a.getIdEmpresa()%>"><%=a.getNombre()%></option>

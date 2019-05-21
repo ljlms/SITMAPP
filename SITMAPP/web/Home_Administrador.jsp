@@ -40,7 +40,7 @@
                     <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive animated bounceIn"/>
                 </a>
             </div>
-
+            
             <a href="#" class="toggle_menu" >
                 <i class="fa fa-navicon"></i>
             </a>

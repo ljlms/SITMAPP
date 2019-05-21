@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package sitmapp.controllers.parada;
-
-import Empresa.Empresa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sitmapp.controllers.database.JdbcConnect;
 import sitmapp.models.Parada;
-import sitmapp.models.Usuario;
+
 
 /**
  *

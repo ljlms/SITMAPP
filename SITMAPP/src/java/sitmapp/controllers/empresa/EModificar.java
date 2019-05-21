@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package sitmapp.controllers.empresa;
-
-import Empresa.Empresa;
+import sitmapp.models.Empresa;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -41,9 +40,7 @@ public class EModificar extends HttpServlet {
             String nom = request.getParameter("nom_empresa_edit");
             String desc = request.getParameter("desc_empresa_edit");
             Empresa emp = new Empresa(nit, nom, desc);
-      
             EmpresaController.update(nit_original, emp);
-      
             RequestDispatcher rd = request.getRequestDispatcher("Administrar_Empresa.jsp");
             rd.forward(request, response);
         }

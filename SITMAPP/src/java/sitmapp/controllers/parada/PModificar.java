@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import sitmapp.controllers.ParadaJpaController;
 import sitmapp.models.Parada;
 
 /**
@@ -43,13 +42,9 @@ public class PModificar extends HttpServlet {
             String tipo = request.getParameter("tipo_parada");
             double lat = Double.parseDouble(request.getParameter("latitud_parada"));
             double lng = Double.parseDouble(request.getParameter("longitud_parada"));
-
             Parada parada = new Parada(id, nom, tipo, lat, lng);
-
             ParaderoController.update(id, parada);
-            
-            HttpSession session = request.getSession();
-            
+           HttpSession session = request.getSession();
             RequestDispatcher rd = request.getRequestDispatcher("Administrar_Paradas.jsp");
             rd.forward(request, response);
             
