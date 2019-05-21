@@ -23,7 +23,6 @@ import sitmapp.models.Ruta;
  */
 public class RutaControllers {
 
-  
     public static void saveRuta(Ruta ruta) {//Guarda Ruta
         //id-nombre-apellidos-nomusuario-contraseña-correo-telefono-tipousuario-
         Connection connect;
@@ -119,24 +118,55 @@ public class RutaControllers {
 
         return listado;
     }
-    
-    public static ArrayList<Integer> listTodasParadasId() {//listar todas las paradas registradas-asignadas
-        ArrayList<Integer> listado = new ArrayList<>();
+
+    public static ArrayList<Parada> listTodasParadas() {//listar todas las paradas registradas-asignadas
+        ArrayList<Parada> listado = new ArrayList<>();
         Connection connect;
         try {
             connect = JdbcConnect.connect();
-            PreparedStatement pst = connect.prepareStatement("select idparada from parada;");
+            PreparedStatement pst = connect.prepareStatement("select * from parada;");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                listado.add(rs.getInt(1));
+                Parada parada = new Parada();
+
+                parada.setIdParada(rs.getInt(1));
+                parada.setNombre(rs.getString(2));
+                parada.setTipo(rs.getString(5));
+
+                listado.add(parada);
             }
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(Ruta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Parada.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listado;
     }
-    
-    
+
+    public static ArrayList<Parada> ParadasDiferentes(ArrayList<Parada> paradas_asignadas, ArrayList<Parada> paradas) {
+        ArrayList<Parada> listado = new ArrayList<>();
+        String p_asignadas = "";
+        for (Parada paradas_asignada : paradas_asignadas) {
+            p_asignadas = p_asignadas + "-" + paradas_asignada.getNombre();
+        }
+        String v_split[] = p_asignadas.split("-");
+        for (Parada parada : paradas) {
+            if (!con(v_split, parada.getNombre())) {
+                listado.add(parada);
+                System.out.println("--> " + parada.getNombre());
+            }
+        }
+        return listado;
+    }
+
+    public static boolean con(String arreglo[], String nombre) {
+        int i = 0;
+        boolean respuesta = false;
+        for (String p : arreglo) {
+            if (p.equalsIgnoreCase(nombre)) {
+                respuesta = true;
+            }
+        }
+        return respuesta;
+    }
 
     public static ArrayList<String> listParadasDiferentes(int id) {//listar paradas de una ruta en especifica
         ArrayList<String> listado = new ArrayList<>();

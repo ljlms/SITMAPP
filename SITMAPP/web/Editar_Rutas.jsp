@@ -26,14 +26,17 @@
         <%
             int id = Integer.parseInt(request.getParameter("Id"));
             Ruta ruta = RutaControllers.BusquedaRuta(id);
-            ArrayList<Parada> paraderos = RutaControllers.BusquedaParadasDeRutaEspecifica(id);
-            ArrayList<Integer> paraderos_todos = RutaControllers.listTodasParadasId();
+
+            ArrayList<Parada> paraderos = RutaControllers.BusquedaParadasDeRutaEspecifica(id); //Paradas asignadas.
+            ArrayList<Parada> paraderos_todos = RutaControllers.listTodasParadas(); // Todos los paraderos.
+
             String lunes_viernes_inicio = "";
             String lunes_viernes_final = "";
             String sabado_inicio = "";
             String sabado_final = "";
             String domingo_festivo_inicio = "";
             String domingo_festivo_final = "";
+
             if (!ruta.getLunes_viernes().equalsIgnoreCase("No Opera")) {
                 String lunes_viernes[] = ruta.getLunes_viernes().split("-");
                 lunes_viernes_inicio = lunes_viernes[0];
@@ -193,11 +196,17 @@
                                         <tr>
                                             <td colspan="2"><label><strong>Paraderos Disponibles</strong></label></td>
                                         </tr>
+
                                         <tr>
                                             <td><label><strong>Nombre</strong></label></td>
                                             <td><label><strong>Añadir</strong></label></td>
                                         </tr>
-                                     
+                                        <%for(Parada p : RutaControllers.ParadasDiferentes(paraderos, paraderos_todos)){%>
+                                        <tr>
+                                            <td><%=p.getNombre()%></td>
+                                            <td><input type="checkbox"></td>
+                                        </tr>
+                                        <%}%>
                                     </table>    
                                 </div>
                             </div><!--Tabla Paraderos que no tiene una ruta-->
