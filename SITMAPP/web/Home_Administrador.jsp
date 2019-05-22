@@ -18,6 +18,7 @@
         <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
         <link rel="stylesheet" href="css/animate.css"><!--Aniamte library-->
+        <script src="js/SmartSuppChat.js"></script>
 
         <style>
             #map {
@@ -40,7 +41,7 @@
                     <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive animated bounceIn"/>
                 </a>
             </div>
-            
+
             <a href="#" class="toggle_menu" >
                 <i class="fa fa-navicon"></i>
             </a>

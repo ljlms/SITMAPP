@@ -23,6 +23,29 @@ import sitmapp.models.Ruta;
  */
 public class RutaControllers {
 
+    public static void updateRuta(int id, Ruta ruta) {
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("update "
+                    + "ruta set NombreRuta=?, TipoRuta=?, HorarioLunes_Viernes=?, HorarioSabado=?, HorarioDomingo=?"
+                    + " where IdRuta=" + id + "");
+
+            pst.setString(1, ruta.getNombre_Ruta());
+            pst.setString(2, ruta.getTipo_Ruta());
+            pst.setString(3, ruta.getLunes_viernes());
+            pst.setString(4, ruta.getSabado());
+            pst.setString(5, ruta.getDomingo_festivo());
+
+            pst.executeUpdate();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ruta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ruta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static void saveRuta(Ruta ruta) {//Guarda Ruta
         //id-nombre-apellidos-nomusuario-contraseña-correo-telefono-tipousuario-
         Connection connect;

@@ -32,6 +32,15 @@ public class Ruta {
         this.sabado = sabado;
         this.domingo_festivo = domingo_festivo;
     }
+    
+     public Ruta(String Nombre_Ruta, String Tipo_Ruta, String lunes_viernes, String sabado, String domingo_festivo) { // used in "SRModificar"
+        this.Nombre_Ruta = Nombre_Ruta;
+        this.Tipo_Ruta = Tipo_Ruta;
+        this.lunes_viernes = lunes_viernes;
+        this.sabado = sabado;
+        this.domingo_festivo = domingo_festivo;
+    }
+    
 
     public int getId_ruta() {
         return Id_ruta;

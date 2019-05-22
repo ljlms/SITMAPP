@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sitmapp.models.Ruta;
 
 /**
@@ -36,11 +38,46 @@ public class SRModificar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-      
-     
-                
 
-            
+            int id_ruta = Integer.parseInt(request.getParameter("id_ruta"));
+
+            String nombre = request.getParameter("nombre_ruta");
+            String tipo = request.getParameter("tipo_ruta");
+
+            String HorarioLunesViernes = request.getParameter("lunes_inicio") + "-" + request.getParameter("lunes_final");
+            String HorarioSabado = request.getParameter("sabado_inicio") + "-" + request.getParameter("sabado_final");
+            String HorarioDomingosFestivos = request.getParameter("domingo_festivo_inicio") + "-" + request.getParameter("domingo_festivo_final");
+
+            if (HorarioLunesViernes.equalsIgnoreCase("-")) {
+                HorarioLunesViernes = "No Opera";
+            }
+            if (HorarioSabado.equalsIgnoreCase("-")) {
+                HorarioSabado = "No Opera";
+            }
+            if (HorarioDomingosFestivos.equalsIgnoreCase("-")) {
+                HorarioDomingosFestivos = "No Opera";
+            }
+
+            String id_paradas[] = request.getParameterValues("id_paradas[]");
+//            convertir idparadas a int
+            int size = id_paradas.length;
+            int IDPARADAS[] = new int[size];
+            for (int i = 0; i < size; i++) {
+                IDPARADAS[i] = Integer.parseInt(id_paradas[i]);
+            }
+            Ruta ruta = new Ruta(nombre, tipo, HorarioLunesViernes, HorarioSabado, HorarioDomingosFestivos);
+
+            RutaControllers.updateRuta(id_ruta, ruta);//Actualiza Ruta
+            if (size != 0) {
+                RutaControllers.saveParaderosRuta(id_ruta, IDPARADAS); //Añade paraderos
+            }
+
+            HttpSession session = request.getSession();
+
+            RequestDispatcher rd = request.getRequestDispatcher("Administrar_Rutas.jsp");
+            rd.forward(request, response);
+
+            //convertir idparadas a int
         }
     }
 

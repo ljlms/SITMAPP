@@ -119,7 +119,8 @@
                 <h1 style="margin-top: 4%; margin-bottom: 3%"> <strong> Editar Ruta </strong> </h1>
             </div>
             <div class="container">
-                <form action="GuardarModificacionesParaderos" method="post"> <!--Inicia el formulario-->
+                <form action="SRModificar" method="post"> <!--Inicia el formulario-->
+                    <div style="display: none"><input type="text" value="<%=id%>" name="id_ruta"></div>
                     <div class="container">
                         <div class="row">
                             <div class="col-md-1"></div>
@@ -127,13 +128,13 @@
                                 <div class="row">
                                     <div class="form-group" style="width: 100%">
                                         <label><strong>Nombre</strong></label>
-                                        <input type="text" class="form-control" value="<%=ruta.getNombre_Ruta()%>" name="nombre_ruta">
+                                        <input type="text" class="form-control" value="<%=ruta.getNombre_Ruta()%>" name="nombre_ruta" required>
                                     </div>    
                                 </div>    
                                 <div class="row">
                                     <div class="form-group" style="width: 100%">
                                         <label><strong>Tipo</strong></label>
-                                        <input type="text" class="form-control" value="<%=ruta.getTipo_Ruta()%>" name="tipo_ruta">
+                                        <input type="text" class="form-control" value="<%=ruta.getTipo_Ruta()%>" name="tipo_ruta" required>
                                     </div>  
                                 </div>    
                             </div>
@@ -187,7 +188,8 @@
                                         <td><a style='font-size:24px' class='fas' href="./EliminarParadaRuta?IdParada=<%=a.getIdParada()%>&IdRuta=<%=id%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="20" height="20"></a> </td>
                                     </tr>
                                     <%}%>
-                                </table>    
+                                </table>
+
                             </div><!--Tabla Paraderos que tiene una ruta-->
                             <div class="col-md-2"><br></div>
                             <div class="col-md-5"><!--Tabla Paraderos que no tiene una ruta-->
@@ -201,15 +203,26 @@
                                             <td><label><strong>Nombre</strong></label></td>
                                             <td><label><strong>Añadir</strong></label></td>
                                         </tr>
-                                        <%for(Parada p : RutaControllers.ParadasDiferentes(paraderos, paraderos_todos)){%>
+                                        <%for (Parada p : RutaControllers.ParadasDiferentes(paraderos, paraderos_todos)) {%>
                                         <tr>
                                             <td><%=p.getNombre()%></td>
-                                            <td><input type="checkbox"></td>
+                                            <td><input type="checkbox" value="<%=p.getIdParada()%>" name="id_paradas[]"></td>
                                         </tr>
                                         <%}%>
                                     </table>    
                                 </div>
                             </div><!--Tabla Paraderos que no tiene una ruta-->
+                            <div class="row" style="margin-top: 3%; margin-left: 1%"> <!--Enviar y Cancelar-->
+                                <div class="col-md-5">
+                                    <input type="submit" value="Guardar" class="form-control btn btn-primary formulario" style="width: 150%; margin-right: 3%">
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                                <div class="col-md-5">
+                                    <a href="Administrar_Rutas.jsp"><button type="button" class="form-control btn btn-primary formulario" style="width: 150%; margin-left: 3%; border-color: black;">Cancelar</button></a>
+                                </div>    
+                            </div>
                         </div>
                     </div>
                 </form> <!--Finaliza el formulario-->
