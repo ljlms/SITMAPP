@@ -22,6 +22,32 @@ import sitmapp.controllers.database.JdbcConnect;
  */
 public class UsuarioController {
 
+    public static Usuario listEspecificUser(int id) {
+        Usuario c = new Usuario();
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("Select * "
+                    + "from usuario where IdUsuario="+id+"");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                c.setId_usuario(rs.getInt(1));
+                c.setNombre(rs.getString(2));
+                c.setApellidos(rs.getString(3));
+                c.setNombreUsuario(rs.getString(4));
+                c.setContraseña(rs.getString(5));
+                c.setEmail(rs.getString(6));
+                c.setNumero_telefono(rs.getLong(7));
+                c.setTipo_usuario(rs.getString(8));
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return c;
+    }
+
     public static void update(int id, Usuario usuario) {
         Connection connect;
         try {
@@ -35,7 +61,7 @@ public class UsuarioController {
             pst.setString(5, usuario.getEmail());
             pst.setLong(6, usuario.getNumero_telefono());
             pst.setString(7, usuario.getTipo_usuario());
-            
+
             pst.executeUpdate();
 
         } catch (ClassNotFoundException ex) {
@@ -56,7 +82,7 @@ public class UsuarioController {
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Usuario c = new Usuario();
-                
+
                 c.setId_usuario(rs.getInt(1));
                 c.setNombre(rs.getString(2));
                 c.setApellidos(rs.getString(3));

@@ -15,8 +15,8 @@ public class Articulado {
     private String Codigo_Articulado = "NO ASIGNADO";
     private String Placa = "NO ASIGNADO";
     private String Estado = "NO ASIGNADO";
-    private String Ubicacion_Latitud = "NO ASIGNADO";
-    private String Ubicacion_Longitud = "NO ASIGNADO";
+    private double Ubicacion_Latitud = 0;
+    private double Ubicacion_Longitud = 0;
     private String Nombre_Empresa = "NO ASIGNADO";
     private int empresa_IdEmpresa = 0;
     private int ruta_IdRuta = 0;
@@ -30,6 +30,13 @@ public class Articulado {
         this.Placa = Placa;
         this.Nombre_Empresa = Nombre_Empresa;
         this.empresa_IdEmpresa = empresa_IdEmpresa;
+    }
+    
+    public Articulado(int conductor_Idconductor,int IdArticulado, int ruta_IdRuta, String Placa) {//used in AsignarRutaConductor
+        this.conductor_Idconductor = conductor_Idconductor;
+        this.ruta_IdRuta = ruta_IdRuta;
+        this.IdArticulado = IdArticulado;
+        this.Placa = Placa;
     }
 
     public Articulado(String Codigo_Articulado, String Placa, String Nombre_Empresa, int id, String Estado) {
@@ -64,19 +71,19 @@ public class Articulado {
         this.Estado = Estado;
     }
 
-    public String getUbicacion_Latitud() {
+    public double getUbicacion_Latitud() {
         return Ubicacion_Latitud;
     }
 
-    public void setUbicacion_Latitud(String Ubicacion_Latitud) {
+    public void setUbicacion_Latitud(double Ubicacion_Latitud) {
         this.Ubicacion_Latitud = Ubicacion_Latitud;
     }
 
-    public String getUbicacion_Longitud() {
+    public double getUbicacion_Longitud() {
         return Ubicacion_Longitud;
     }
 
-    public void setUbicacion_Longitud(String Ubicacion_Longitud) {
+    public void setUbicacion_Longitud(double Ubicacion_Longitud) {
         this.Ubicacion_Longitud = Ubicacion_Longitud;
     }
 

@@ -76,14 +76,20 @@
 
         <section class="wrapper clearfix" data-section="home">
             <div class="container" style="margin-top: 3%; margin-bottom: 3%">
-                <h2><strong>Articulados - Rutas</strong></h2>
+                <h2><strong>Menú Principal</strong></h2>
             </div>
             <div class="container">
-                <form action="#" method="post">
+                <form action="AsignarRutaConductor" method="post">
+                    <div style="visibility: hidden;">
+                        <input type="number" class="form-control" name="IdConductor" value="<%=u.getId_usuario()%>">
+                    </div>
                     <div class="row">
                         <div class="col-md-5">
                             <%if (articulado_list.size() > 0) {%>
                             <table class="table table-bordered" style="text-align: center">
+                                <tr>
+                                    <td colspan="4"><strong><label>Articulados Disponibles</label></strong></td>
+                                </tr>
                                 <tr>
                                     <td><label><strong>Codigo</strong></label></td>
                                     <td><label><strong>Placa</strong></label></td>
@@ -91,7 +97,7 @@
                                     <td><label><strong>Asignar</strong></label></td>
                                 </tr>
                                 <%for (Articulado art : articulado_list) {%>
-                                <%if(art.getEstado().equalsIgnoreCase("NO ASIGNADO")){%>
+                                <%if (art.getEstado().equalsIgnoreCase("NO ASIGNADO")) {%>
                                 <tr>
                                     <td><%=art.getCodigo_Articulado()%></td>    
                                     <td><%=art.getPlaca()%></td>    
@@ -108,6 +114,9 @@
                         <div class="col-md-5">
                             <%if (ruta_list.size() > 0) {%>
                             <table style="text-align: center;" class="table table-bordered">
+                                <tr>
+                                    <td colspan="3"><label><strong>Rutas Registradas</strong></label></td>
+                                </tr>
                                 <tr>
                                     <td><label><strong>Nombre</strong></label></td>
                                     <td><label><strong>Tipo</strong></label></td>

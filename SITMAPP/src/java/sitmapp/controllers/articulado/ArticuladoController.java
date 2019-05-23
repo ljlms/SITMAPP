@@ -17,6 +17,64 @@ import sitmapp.controllers.database.JdbcConnect;
 
 public class ArticuladoController {
 
+    public static void FinalizarLocalizacion(int id) {
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("update "
+                    + " articulado set Estado=?,Ubicacion_Latitud=?, Ubicacion_Longitud=?, Id_Conductor=?,"
+                    + "Id_Ruta=?  where IdArticulado=" + id + ";");
+            pst.setString(1, "NO ASIGNADO");
+            pst.setDouble(2, 0);
+            pst.setDouble(3, 0);
+            pst.setInt(4, 0);
+            pst.setInt(5, 0);
+            pst.executeUpdate();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void AsignarRutaConductor(int IdConductor, int IdArticulado, int IdRuta) {
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("update "
+                    + " articulado set Estado=?,Id_Conductor=?, Id_Ruta=? where IdArticulado=" + IdArticulado + ";");
+
+            pst.setString(1, "ASIGNADO");
+            pst.setInt(2, IdConductor);
+            pst.setInt(3, IdRuta);
+            pst.executeUpdate();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void updateLocation(int id, double lat, double lng) {
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("update "
+                    + " articulado set Ubicacion_Latitud=?,Ubicacion_Longitud=? where IdArticulado=" + id + ";");
+            pst.setDouble(1, lat);
+            pst.setDouble(2, lng);
+            pst.executeUpdate();
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static void save(Articulado articulado) {
         Connection connect;
         try {
@@ -30,8 +88,8 @@ public class ArticuladoController {
             pst.setInt(5, articulado.getEmpresa_IdEmpresa());
             pst.setString(6, articulado.getNombre_Empresa());
             System.out.println("NOMBRE EMPRESA: " + articulado.getNombre_Empresa());
-            pst.setString(7, articulado.getUbicacion_Latitud());
-            pst.setString(8, articulado.getUbicacion_Longitud());
+            pst.setDouble(7, articulado.getUbicacion_Latitud());
+            pst.setDouble(8, articulado.getUbicacion_Longitud());
             pst.setInt(9, articulado.getConductor_Idconductor());
             pst.setInt(10, articulado.getRuta_IdRuta());
             pst.executeUpdate();
@@ -52,13 +110,12 @@ public class ArticuladoController {
             pst.setString(2, articulado.getCodigo_Articulado());
             pst.setString(3, articulado.getNombre_Empresa());
             pst.executeUpdate();
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     public static void delete(Articulado articulado) {
@@ -95,8 +152,8 @@ public class ArticuladoController {
                 c.setEstado(rs.getString(4));
                 c.setEmpresa_IdEmpresa(rs.getInt(5));
                 c.setNombre_Empresa(rs.getString(6));
-                c.setUbicacion_Latitud(rs.getString(7));
-                c.setUbicacion_Longitud(rs.getString(8));
+                c.setUbicacion_Latitud(rs.getDouble(7));
+                c.setUbicacion_Longitud(rs.getDouble(8));
                 c.setConductor_Idconductor(rs.getInt(9));
                 c.setRuta_IdRuta(rs.getInt(10));
 
