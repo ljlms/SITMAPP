@@ -47,6 +47,9 @@
             </a>
             <nav class="menu">
                 <ul>
+<!--                    <li id="li_Home-Administrador"> <a href="Home_Administrador.jsp">
+                            <img src="templates/icons8-casa.svg" class="iconos_png" alt="Icono home administrador"/>
+                            Menu Principal</a></li> -->
                     <li id="li_registrar-paradas"> <a href="Administrar_Paradas.jsp">
                             <img src="templates/icons8-map-marker-48.png" class="iconos_png" alt="Icono administrar paradas"/>
                             Admin. Paradas</a></li> 

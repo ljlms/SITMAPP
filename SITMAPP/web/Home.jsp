@@ -17,8 +17,8 @@
         <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-                <link rel="stylesheet" href="css/animate.css"><!--Aniamte library-->
-                <script src="js/SmartSuppChat.js"></script>
+        <link rel="stylesheet" href="css/animate.css"><!--Aniamte library-->
+        <script src="js/SmartSuppChat.js"></script>
         <style>
             #map {
                 width: 700px;
@@ -66,26 +66,38 @@
 
                 <div class="footer clearfix">
                     <ul class="social clearfix">
-                        <li><a href="#"><i>
-                                    <img src="templates/icons8-info.svg" class="iconos" ></a>
-                                </i></a></li>
+                        <li><a href="#">
+                                <img src="templates/icons8-info.svg" class="iconos" ></a>
+                            </i></a></li>
 
-                        <li id="adm_home"><a href="Home_Administrador.jsp"><i>   
-                                    <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos" ></a>
-                                </i></a></li>
-                        <li><a href="#"><i>   
-                                    <img src="templates/icons8-settings-50.svg" class="iconos" ></a>
-                                </i></a></li>
+                        <li id="adm_home"><a href="Home_Administrador.jsp">  
+                                <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos" ></a>
+                            </i></a></li>
 
-                        <li><a href="./USCerrarSesion?var=off"><i>
-                                    <img src="templates/icons8-key.svg" class="iconos" ></a>
-                                </i></a></li>
+                        <li id="driver_home"><a href="Home_Conductor.jsp">  
+                                <img id="img_home" src="templates/icons8-conductor-48.png" class="iconos" ></a>
+                            </i></a></li>
+
+                        <li><a href="#">
+                                <img src="templates/icons8-settings-50.svg" class="iconos" ></a>
+                            </i></a></li>
+
+                        <li><a href="./USCerrarSesion?var=off">
+                                <img src="templates/icons8-key.svg" class="iconos" ></a>
+                            </i></a></li>
                     </ul>
 
                     <script>
             var tipo = '<%=valor%>';
             if (tipo === 'usuario') {
                 $('#adm_home').hide();
+                $('#driver_home').hide();
+            }
+            if (tipo === 'conductor') {
+                $('#adm_home').hide();
+            }
+            if (tipo === 'administrador') {
+                $('#driver_home').hide();
             }
                     </script>
 

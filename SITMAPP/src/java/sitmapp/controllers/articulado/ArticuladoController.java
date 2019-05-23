@@ -82,18 +82,6 @@ public class ArticuladoController {
         ArrayList<Articulado> listado = new ArrayList<>();
         Connection connect;
         try {
-            /*
-            idarticulado
-            codigo_articulado
-            placa
-            estado
-            empresa_idempresa
-            nombre_empresa
-            ubicacion_latitud
-            ubicacion_longitud
-            conductor_idconductor
-            ruta_idruta
-             */
             connect = JdbcConnect.connect();
             PreparedStatement pst = connect.prepareStatement("Select * "
                     + "from articulado order by 2");
