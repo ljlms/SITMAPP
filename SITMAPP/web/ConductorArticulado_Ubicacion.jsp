@@ -35,7 +35,7 @@
     <body> 
         <!-- Java Space -->  
         <%
-//            Usuario u = (Usuario) session.getAttribute("usuario");
+         Usuario u = (Usuario) session.getAttribute("usuario");
 //            String valor = u.getTipo_usuario();
             Articulado articulado = (Articulado) session.getAttribute("articulado");
             Ruta ruta = RutaControllers.BusquedaRuta(articulado.getRuta_IdRuta());
@@ -55,7 +55,10 @@
             </a>
             <nav class="menu">
                 <ul>
-                    <li id="li_Home-Administrador"> <a href="#">
+                     <li id="li_Home-Conductor"> <a href="Home_Conductor.jsp">
+                            <img src="templates/icons8-casa.svg" class="iconos_png" alt="Icono home conductor"/>
+                            Menú Principal</a></li>
+                    <li id="li_Home-Administrador"> <a href="Editar_Perfil_Conductor.jsp">
                             <img src="templates/icons8-conductor-64.png" class="iconos_png" alt="Icono editar perfil"/>
                             Editar Perfil</a></li> 
                 </ul>

@@ -17,6 +17,57 @@ import sitmapp.controllers.database.JdbcConnect;
 
 public class ArticuladoController {
 
+    public static Articulado ArticuladoEspecificoConductor(int id) {
+        Articulado articulado = new Articulado();
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("Select * "
+                    + "from articulado where Id_Conductor=" + id);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+            articulado.setIdArticulado(rs.getInt(1));
+            articulado.setCodigo_Articulado(rs.getString(2));
+            articulado.setPlaca(rs.getString(3));
+            articulado.setEstado(rs.getString(4));
+            articulado.setEmpresa_IdEmpresa(rs.getInt(5));
+            articulado.setNombre_Empresa(rs.getString(6));
+            articulado.setUbicacion_Latitud(rs.getDouble(7));
+            articulado.setUbicacion_Longitud(rs.getDouble(8));
+            articulado.setConductor_Idconductor(rs.getInt(9));
+            articulado.setRuta_IdRuta(rs.getInt(10));
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return articulado;
+    }
+
+    public static Boolean VerificarActividad(int id) {
+        boolean activo = false;
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("Select Id_Conductor "
+                    + "from articulado where Id_conductor =" + id + ";");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                System.out.println("Entra a while");
+                activo = true;
+            }
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("ACTIVO RETURN: " + activo);
+        return activo;
+    }
+
     public static void FinalizarLocalizacion(int id) {
         Connection connect;
         try {

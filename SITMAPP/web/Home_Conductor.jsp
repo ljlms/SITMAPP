@@ -22,6 +22,15 @@
         <link href="css/principalStyle.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="css/animate.css"><!--Animate library-->
         <script src="js/SmartSuppChat.js"></script> <!--Chat Script-->
+        <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> <!--JQuery + AJAX-->
+        <style>
+            #map {
+                width: 400px;
+                height: 450px;
+            }
+        </style>
     </head>
     <body> 
         <!-- Java Space -->  
@@ -81,6 +90,7 @@
             <div class="container" style="margin-top: 3%; margin-bottom: 3%">
                 <h2><strong>Menú Principal</strong></h2>
             </div>
+            <% if (ArticuladoController.VerificarActividad(u.getId_usuario()) == false) {%>
             <div class="container">
                 <form action="AsignarRutaConductor" method="post">
                     <div style="visibility: hidden;">
@@ -110,6 +120,10 @@
                                 <%}%>
                                 <%}%>
                             </table>
+                            <%} else {%>
+                            <div>
+                                <p>No hay articulados registrados en la plataforma</p>
+                            </div>
                             <%}%>
                         </div>
                         <div class="col-md-2"></div>
@@ -133,6 +147,8 @@
                                 </tr>
                                 <%}%>
                             </table>
+                            <%} else {%>
+                            <p>No hay rutas registradas en la plataforma</p>
                             <%}%>
                         </div>
 
@@ -148,6 +164,95 @@
                 </form>
 
             </div>
+            <%} else {%>
+            <!--Java Space-->
+            <%
+                //Articulado que tiene asignado el conductor
+                Articulado articulado = ArticuladoController.ArticuladoEspecificoConductor(u.getId_usuario());
+                //Ruta que tiene asignado el articulado
+                Ruta ruta = RutaControllers.BusquedaRuta(articulado.getRuta_IdRuta());
+            %>
+            <!--Java Space-->
+            <div class="container">
+                <h2 style="color: red"><strong>Advertencia:</strong> usted aún tiene asignado un articulado.</h2>
+                <div class="row">
+                    <div class="col-md-5"><!--Mapa-->
+                        <div id="map"></div>
+                        <p id="demo"></p>
+                        <script>
+            var x = document.getElementById("demo");
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.watchPosition(showPosition);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(position) {
+                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+
+                $.ajax({
+                    url: './UbicacionArticulado',
+                    data: {
+                        'lat': position.coords.latitude,
+                        'lng': position.coords.longitude,
+                        'IdArticulado': <%=articulado.getIdArticulado()%>,
+                    },
+                    type: 'POST',
+                    success: function (result) {
+                        // If your backend page sends something back
+//                alert(result);
+                    }
+                });
+
+                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                    maxZoom: 18
+                }).addTo(map);
+                L.control.scale().addTo(map);
+                L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+            }
+
+            function geo_error() {
+                alert("Sorry, no position available.");
+            }
+
+            function acucuracy() {
+                var geo_options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 27000
+                };
+            }
+            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+                        </script>
+                    </div>
+                    <div class="col-md-5"><!--Tabla-->
+<table class="table table-bordered" style="text-align: center;">
+                            <tr>
+                                <td><label><strong>Ruta</strong></label></td>
+                                <td><label><strong>Cod. Articulado</strong></label></td>
+                                <td><label><strong>Placa</strong></label></td>
+                                <td><label><strong>Conductor</strong></label></td>
+                            </tr>
+                            <tr>
+                                <td><%=ruta.getNombre_Ruta()%></td>
+                                <td><%=articulado.getIdArticulado()%></td>
+                                <td><%=articulado.getPlaca()%></td>
+                                <td><%=u.getNombre()%> <%=u.getApellidos()%></td>
+                            </tr>
+                        </table>
+                            <div class="container" style="margin-top: 3%">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a href="./FinalizarLocalizacion?IdArticulado=<%=articulado.getIdArticulado()%>&IdConductor=<%=u.getId_usuario()%>"><button type="button" class="form-control btn btn-dark formulario">Finalizar</button></a>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+            <%}%>
         </section>
         <!-- lightModal -->
         <div class="lightModal">
