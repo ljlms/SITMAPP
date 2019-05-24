@@ -10,7 +10,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema sitmapp
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `sitmapp` ;
 
 -- -----------------------------------------------------
 -- Schema sitmapp
@@ -21,8 +20,6 @@ USE `sitmapp` ;
 -- -----------------------------------------------------
 -- Table `sitmapp`.`articulado`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`articulado` ;
-
 CREATE TABLE IF NOT EXISTS `sitmapp`.`articulado` (
   `IdArticulado` INT(11) NOT NULL AUTO_INCREMENT,
   `Codigo_Articulado` VARCHAR(45) NULL DEFAULT NULL,
@@ -30,54 +27,32 @@ CREATE TABLE IF NOT EXISTS `sitmapp`.`articulado` (
   `Estado` VARCHAR(45) NOT NULL,
   `Id_Empresa` INT(11) NOT NULL,
   `Nombre_Empresa` VARCHAR(45) NOT NULL,
-  `Ubicacion_Latitud` VARCHAR(50) NULL DEFAULT NULL,
-  `Ubicacion_Longitud` VARCHAR(50) NULL DEFAULT NULL,
+  `Ubicacion_Latitud` DOUBLE NULL DEFAULT NULL,
+  `Ubicacion_Longitud` DOUBLE NULL DEFAULT NULL,
   `Id_Conductor` INT(11) NOT NULL,
   `Id_Ruta` INT(11) NOT NULL,
   PRIMARY KEY (`IdArticulado`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `sitmapp`.`conductor`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`conductor` ;
-
-CREATE TABLE IF NOT EXISTS `sitmapp`.`conductor` (
-  `IdConductor` INT(11) NOT NULL,
-  `Nombre` VARCHAR(45) NOT NULL,
-  `Apellidos` VARCHAR(45) NOT NULL,
-  `NombreUsuario` VARCHAR(45) NOT NULL,
-  `Contraseña` VARCHAR(45) NOT NULL,
-  `Telefono` VARCHAR(10) NOT NULL,
-  `Ubicacion_Latitud` VARCHAR(50) NULL DEFAULT NULL,
-  `Ubicacion_Longitud` VARCHAR(50) NULL DEFAULT NULL,
-  PRIMARY KEY (`IdConductor`))
-ENGINE = InnoDB
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `sitmapp`.`empresa`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`empresa` ;
-
 CREATE TABLE IF NOT EXISTS `sitmapp`.`empresa` (
   `IdEmpresa` INT(11) NOT NULL,
   `Nombre` VARCHAR(45) NOT NULL,
-  `Descripcion` VARCHAR(45) NOT NULL,
+  `Descripcion` TEXT NOT NULL,
   PRIMARY KEY (`IdEmpresa`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `sitmapp`.`historial conductor`
+-- Table `sitmapp`.`historialconductor`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`historial conductor` ;
-
-CREATE TABLE IF NOT EXISTS `sitmapp`.`historial conductor` (
+CREATE TABLE IF NOT EXISTS `sitmapp`.`historialconductor` (
   `Fecha` TIMESTAMP NULL DEFAULT NULL,
   `articulado_IdArticulado` INT(11) NOT NULL,
   PRIMARY KEY (`articulado_IdArticulado`),
@@ -91,32 +66,14 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `sitmapp`.`horario`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`horario` ;
-
-CREATE TABLE IF NOT EXISTS `sitmapp`.`horario` (
-  `IdHorario` INT(11) NOT NULL,
-  `Lunes_Viernes` TIME NULL DEFAULT NULL,
-  `Sabado` TIME NULL DEFAULT NULL,
-  `TipoHorario` VARCHAR(45) NOT NULL,
-  `Domingo_Festivo` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`IdHorario`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
 -- Table `sitmapp`.`noticia`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`noticia` ;
-
 CREATE TABLE IF NOT EXISTS `sitmapp`.`noticia` (
   `IdNoticia` INT(11) NOT NULL,
   `Titulo` VARCHAR(45) NOT NULL,
   `Contenido` TEXT NOT NULL,
   `Fecha` DATE NOT NULL,
-  `Id_Usuario` INT NOT NULL,
+  `Id_Usuario` INT(11) NOT NULL,
   PRIMARY KEY (`IdNoticia`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
@@ -125,33 +82,40 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `sitmapp`.`parada`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`parada` ;
-
 CREATE TABLE IF NOT EXISTS `sitmapp`.`parada` (
-  `IdParada` INT(11) NOT NULL,
+  `IdParada` INT(11) NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(45) NOT NULL,
   `Ubicacion_Latitud` VARCHAR(50) NULL DEFAULT NULL,
   `Ubicacion_Longitud` VARCHAR(50) NULL DEFAULT NULL,
   `Tipo` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdParada`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 19
 DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `sitmapp`.`ruta`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`ruta` ;
-
 CREATE TABLE IF NOT EXISTS `sitmapp`.`ruta` (
   `IdRuta` INT(11) NOT NULL AUTO_INCREMENT,
   `NombreRuta` VARCHAR(45) NOT NULL,
-  `PuntoInicio` VARCHAR(45) NOT NULL,
-  `PuntoFinal` VARCHAR(45) NOT NULL,
-  `Tipo ruta` VARCHAR(45) NULL DEFAULT NULL,
-  `IdHorario` INT(11) NOT NULL,
-  `IdParada` INT NOT NULL,
+  `TipoRuta` VARCHAR(45) NULL DEFAULT NULL,
+  `HorarioLunes_Viernes` VARCHAR(45) NULL DEFAULT NULL,
+  `HorarioSabado` VARCHAR(45) NULL DEFAULT NULL,
+  `HorarioDomingo` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`IdRuta`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 22
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
+-- Table `sitmapp`.`ruta_parada`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sitmapp`.`ruta_parada` (
+  `IdRuta` INT(11) NOT NULL,
+  `IdParada` INT(11) NOT NULL)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = latin1;
 
@@ -159,8 +123,6 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 -- Table `sitmapp`.`usuario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `sitmapp`.`usuario` ;
-
 CREATE TABLE IF NOT EXISTS `sitmapp`.`usuario` (
   `IdUsuario` INT(11) NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(45) NOT NULL,
@@ -172,9 +134,38 @@ CREATE TABLE IF NOT EXISTS `sitmapp`.`usuario` (
   `TipoUsuario` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdUsuario`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = latin1;
 
+USE `sitmapp` ;
+
+-- -----------------------------------------------------
+-- procedure sp_create_user
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `sitmapp`$$
+CREATE DEFINER=`` PROCEDURE `sp_create_user`(in u_nombre varchar(45), u_apellidos varchar(45), u_usuario varchar(45),
+u_contraseña varchar(45), u_correo varchar(320), u_telefono varchar(45), u_tipousuario varchar(45))
+BEGIN
+	INSERT INTO usuario(Nombre, Apellidos, NombreUsuario, Contraseña, Correo, Telefono, TipoUsuario)
+    values(u_nombre, u_apellidos, u_usuario, u_contraseña, u_correo, u_telefono, u_tipousuario);
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure sp_read_all_users
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `sitmapp`$$
+CREATE DEFINER=`` PROCEDURE `sp_read_all_users`()
+BEGIN
+select * from usuario;
+END$$
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
