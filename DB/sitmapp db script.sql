@@ -155,6 +155,19 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
+-- procedure sp_read_all_rutes
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `sitmapp`$$
+CREATE DEFINER=`` PROCEDURE `sp_read_all_rutes`()
+BEGIN
+select * from ruta;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
 -- procedure sp_read_all_users
 -- -----------------------------------------------------
 
@@ -163,6 +176,19 @@ USE `sitmapp`$$
 CREATE DEFINER=`` PROCEDURE `sp_read_all_users`()
 BEGIN
 select * from usuario;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure sp_read_specific_user
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `sitmapp`$$
+CREATE DEFINER=`` PROCEDURE `sp_read_specific_user`(in id_usuario int)
+BEGIN
+select * from usuario where IdUsuario = id_usuario;
 END$$
 
 DELIMITER ;
