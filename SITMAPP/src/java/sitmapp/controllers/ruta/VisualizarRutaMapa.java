@@ -41,7 +41,7 @@ public class VisualizarRutaMapa extends HttpServlet {
 
             int IdRuta = Integer.parseInt(request.getParameter("IdRuta"));
             System.out.println("Ruta Seleccionada:" + IdRuta);
-            request.setAttribute("IdRuta", IdRuta);
+            request.setAttribute("idruta", IdRuta);
         }
 
     }

@@ -27,7 +27,7 @@
         <style>
             #map {
                 width: 600px;
-                height: 550px;
+                height: 520px;
             }
         </style>
     </head>
@@ -57,15 +57,18 @@
                             <a href="Home.jsp">
                                 <img src="templates/icons8-home.svg" class="iconos_nav">
                                 Menu Principal</a></li>
+
+                        <li><a href="Ver_Rutas.jsp">
+                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt=""/>
+                                Rutas</a></li>
+
                         <li><a href="#">
                                 <img src="templates/icons8-news.svg" class="iconos_nav">
                                 Sección de Noticias</a></li>
                         <li><a href="#">
                                 <img src="templates/icons8-speech-bubble.svg" class="iconos_nav">  
                                 Chat</a></li>
-                        <li><a href="Main_rutas.jsp">
-                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt=""/>
-                                Rutas</a></li>
+
                     </ul>
                 </nav>
 
@@ -127,17 +130,20 @@
                             <tr>
                                 <td>
                                     <select name="ruta" id="ruta_select" required>
-                                        <option disabled selected value="0">...</option>
+                                        <option disabled selected value="0"></option>
                                         <%for (Ruta r : RutaControllers.list()) {%>
                                         <option value="<%=r.getId_ruta()%>" id="opt"> <%=r.getNombre_Ruta()%> </option>
                                         <%}%>
                                     </select>
                                 </td>
                             </tr>
+
                             <script>
                                 var opc = 0; // id de la opcion seleccionada
+                                var marker; // marcador
+                                var map;
                                 function showPosition(position) {
-                                    var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+                                    map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
                                     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
                                         maxZoom: 18
@@ -153,18 +159,19 @@
                                             },
                                             type: 'POST',
                                             success: function (result) {
-                                                var marker;
                                                 // java space
-                                <%
-                                    ArrayList<Ruta> rutas = RutaControllers.list();
-                                %>
-                                <%for (Ruta r : rutas) {%>
-                                <%for (Articulado art : ArticuladoController.ArticuladoRutaEspecifica(r.getId_ruta())) {%>
-                                                if (opc == <%=r.getId_ruta()%>) {
+                                                var no_marcadores = 0;
+                                                $('#ruta_select').change(function () {
+                                                    map.removeLayer(marker);
+                                                });
+
+                                <%for (Articulado art : ArticuladoController.list()) {%>
+                                                if (opc == <%=art.getRuta_IdRuta()%>) {
                                                     marker = L.marker([<%=art.getUbicacion_Latitud()%>, <%=art.getUbicacion_Longitud()%>]).addTo(map);
+                                                    no_marcadores++;
                                                 }
                                 <%}%>
-                                <%}%>
+                                                alert('#' + no_marcadores);
                                             }
                                         });
                                     });
