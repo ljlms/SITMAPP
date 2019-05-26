@@ -17,6 +17,39 @@ import sitmapp.controllers.database.JdbcConnect;
 
 public class ArticuladoController {
 
+    public static ArrayList<Articulado> ArticuladoRutaEspecifica(int id) {
+        ArrayList<Articulado> listado = new ArrayList<>();
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("Select * "
+                    + "from articulado where Id_Ruta=" + id);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Articulado articulado = new Articulado();
+                articulado.setIdArticulado(rs.getInt(1));
+                articulado.setCodigo_Articulado(rs.getString(2));
+                articulado.setPlaca(rs.getString(3));
+                articulado.setEstado(rs.getString(4));
+                articulado.setEmpresa_IdEmpresa(rs.getInt(5));
+                articulado.setNombre_Empresa(rs.getString(6));
+                articulado.setUbicacion_Latitud(rs.getDouble(7));
+                articulado.setUbicacion_Longitud(rs.getDouble(8));
+                articulado.setConductor_Idconductor(rs.getInt(9));
+                articulado.setRuta_IdRuta(rs.getInt(10));
+                
+                listado.add(articulado);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listado;
+    }
+
     public static Articulado ArticuladoEspecificoConductor(int id) {
         Articulado articulado = new Articulado();
         Connection connect;
@@ -25,17 +58,17 @@ public class ArticuladoController {
             PreparedStatement pst = connect.prepareStatement("Select * "
                     + "from articulado where Id_Conductor=" + id);
             ResultSet rs = pst.executeQuery();
-            while(rs.next()){
-            articulado.setIdArticulado(rs.getInt(1));
-            articulado.setCodigo_Articulado(rs.getString(2));
-            articulado.setPlaca(rs.getString(3));
-            articulado.setEstado(rs.getString(4));
-            articulado.setEmpresa_IdEmpresa(rs.getInt(5));
-            articulado.setNombre_Empresa(rs.getString(6));
-            articulado.setUbicacion_Latitud(rs.getDouble(7));
-            articulado.setUbicacion_Longitud(rs.getDouble(8));
-            articulado.setConductor_Idconductor(rs.getInt(9));
-            articulado.setRuta_IdRuta(rs.getInt(10));
+            while (rs.next()) {
+                articulado.setIdArticulado(rs.getInt(1));
+                articulado.setCodigo_Articulado(rs.getString(2));
+                articulado.setPlaca(rs.getString(3));
+                articulado.setEstado(rs.getString(4));
+                articulado.setEmpresa_IdEmpresa(rs.getInt(5));
+                articulado.setNombre_Empresa(rs.getString(6));
+                articulado.setUbicacion_Latitud(rs.getDouble(7));
+                articulado.setUbicacion_Longitud(rs.getDouble(8));
+                articulado.setConductor_Idconductor(rs.getInt(9));
+                articulado.setRuta_IdRuta(rs.getInt(10));
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Articulado.class.getName()).log(Level.SEVERE, null, ex);

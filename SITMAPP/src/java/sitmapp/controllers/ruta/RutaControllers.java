@@ -105,7 +105,7 @@ public class RutaControllers {
         Connection connect;
         try {
             connect = JdbcConnect.connect();
-            PreparedStatement pst = connect.prepareStatement("select * from Ruta");
+            PreparedStatement pst = connect.prepareStatement("select * from Ruta order by 2;");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Ruta c = new Ruta();

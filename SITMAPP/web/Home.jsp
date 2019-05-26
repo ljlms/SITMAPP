@@ -1,3 +1,8 @@
+<%@page import="sitmapp.controllers.articulado.ArticuladoController"%>
+<%@page import="sitmapp.models.Articulado"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="sitmapp.models.Ruta"%>
+<%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,7 +26,7 @@
         <script src="js/SmartSuppChat.js"></script>
         <style>
             #map {
-                width: 700px;
+                width: 600px;
                 height: 550px;
             }
         </style>
@@ -86,7 +91,6 @@
                                 <img src="templates/icons8-key.svg" class="iconos" ></a>
                             </i></a></li>
                     </ul>
-
                     <script>
             var tipo = '<%=valor%>';
             if (tipo === 'usuario') {
@@ -100,124 +104,86 @@
                 $('#driver_home').hide();
             }
                     </script>
-
                     <div class="right">
                         <p>Copyright © 2019.</p>
                     </div>
                 </div>
             </header>
-            <br>
+            <div class="container" style="margin-top: 3%; margin-bottom: 2%">
+                <h3><strong>Menú Principal</strong></h3>
+            </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8"> 
+                    <div class="col-md-5"> 
                         <div id="map"></div>
-                        <script>
-                            function showPosition(position) {
-                                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
 
-                                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-                                    maxZoom: 18
-                                }).addTo(map);
-                                L.control.scale().addTo(map);
-                                L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-                            }
-
-                            function geo_error() {
-                                alert("Sorry, no position available.");
-                            }
-
-                            function acucuracy() {
-                                var geo_options = {
-                                    enableHighAccuracy: true,
-                                    maximumAge: 30000,
-                                    timeout: 27000
-                                };
-                            }
-
-                            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
-
-                        </script>
                     </div>
-                    <div class="col-md-4"> 
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
                         <table class="table table-bordered" style="text-align: center;">
-                            <th style="text-align: center;">
-                                <label for=""><h3>Visualizar Articulados</h3></label>
-                            </th>
-                            <tr>   
-                                <td>
-                                    <div>
-                                        <h4>Tipo Ruta</h4>
-                                        <select id="tipo_ruta" onchange="tipo_ruta()">
-                                            <option value="nada"></option>                        
-                                            <option value="t_troncal">Troncales</option>
-                                            <option value="t_pre">Pre-Troncales</option>
-                                            <option value="t_alimentadoras">Alimentadoras</option>
-                                            <option value="t_circulares">Circulares</option>
-                                        </select>
-                                        <div style="margin: 5px;">
-
-                                        </div>
-                                    </div>
-                                </td>
+                            <tr>
+                                <td><strong>Seleccione Ruta</strong></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div>
-                                        <h4>Seleccione Articulado</h4>
-                                    </div>
-                                    <div id="div_troncales" style="display: none;">  Troncales 
-                                        <select id="" >
-                                            <option value="">T100E</option>
-                                            <option value="">T101</option>
-                                            <option value="">T102</option>
-                                            <option value="">T103</option>
-                                        </select>
-                                    </div>
-
-                                    <div style="margin: 10px;">
-                                    </div>
-
-                                    <div id="div_pre-troncales" style="display: none;">  Pre-Troncales 
-                                        <select id="">
-                                            <option value="">X101</option>
-                                            <option value="">X102</option>
-                                            <option value="">X103</option>
-                                            <option value="">X104</option>
-                                            <option value="">X105</option>
-                                            <option value="">X106</option>
-                                        </select>
-                                    </div>
-
-                                    <div style="margin: 10px;">
-                                    </div>
-
-                                    <div id="div_alimentadoras" style="display: none;">  Alimentadoras 
-                                        <select id="">
-                                            <option value="">A102</option>
-                                            <option value="">A103</option>
-                                            <option value="">A104</option>
-                                            <option value="">A105</option>
-                                            <option value="">A107</option>
-                                            <option value="">A108</option>
-                                            <option value="">A109</option>
-                                            <option value="">A111</option>
-                                            <option value="">A114</option>
-                                            <option value="">A117</option>
-                                        </select>
-                                    </div>
-
-                                    <div style="margin: 10px;">
-                                    </div>
-
-                                    <div id="div_circulares" style="display: none;">  Circulares 
-                                        <select id="">
-                                            <option value="">C015</option>
-                                            <option value="">Ruta Circular RC</option>
-                                        </select>
-                                    </div>
+                                    <select name="ruta" id="ruta_select" required>
+                                        <option disabled selected value="0">...</option>
+                                        <%for (Ruta r : RutaControllers.list()) {%>
+                                        <option value="<%=r.getId_ruta()%>" id="opt"> <%=r.getNombre_Ruta()%> </option>
+                                        <%}%>
+                                    </select>
                                 </td>
                             </tr>
+                            <script>
+                                var opc = 0; // id de la opcion seleccionada
+                                function showPosition(position) {
+                                    var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+                                    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                                        maxZoom: 18
+                                    }).addTo(map);
+                                    L.control.scale().addTo(map);
+
+                                    $('#ruta_select').change(function () {
+                                        opc = $('#ruta_select').val();
+                                        $.ajax({
+                                            url: './VisualizarRutaMapa',
+                                            data: {
+                                                'IdRuta': opc
+                                            },
+                                            type: 'POST',
+                                            success: function (result) {
+                                                var marker;
+                                                // java space
+                                <%
+                                    ArrayList<Ruta> rutas = RutaControllers.list();
+                                %>
+                                <%for (Ruta r : rutas) {%>
+                                <%for (Articulado art : ArticuladoController.ArticuladoRutaEspecifica(r.getId_ruta())) {%>
+                                                if (opc == <%=r.getId_ruta()%>) {
+                                                    marker = L.marker([<%=art.getUbicacion_Latitud()%>, <%=art.getUbicacion_Longitud()%>]).addTo(map);
+                                                }
+                                <%}%>
+                                <%}%>
+                                            }
+                                        });
+                                    });
+                                }
+                                function geo_error() {
+                                    alert("Sorry, no position available.");
+                                }
+
+                                function acucuracy() {
+                                    var geo_options = {
+                                        enableHighAccuracy: true,
+                                        maximumAge: 30000,
+                                        timeout: 27000
+                                    };
+                                }
+
+                                navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+
+                            </script>
                         </table>
                     </div>
                 </div>
@@ -232,6 +198,7 @@
             </div>
         </div>
         <!-- / lightModal -->
+
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/bootstrap.js" type="text/javascript"></script>
         <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
