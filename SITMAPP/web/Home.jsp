@@ -142,6 +142,8 @@
                                 var opc = 0; // id de la opcion seleccionada
                                 var marker; // marcador
                                 var map;
+                                var no_marcadores = 0;
+                                var marker_array = [];
                                 function showPosition(position) {
                                     map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
                                     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -160,20 +162,22 @@
                                             type: 'POST',
                                             success: function (result) {
                                                 // java space
-                                                var no_marcadores = 0;
+                                                var i;
                                                 $('#ruta_select').change(function () {
-                                                    map.removeLayer(marker);
+                                                    for (i = 0; i < no_marcadores; i++) {
+                                                        map.removeLayer(marker_array[i]);
+                                                    }
                                                 });
-
                                 <%for (Articulado art : ArticuladoController.list()) {%>
                                                 if (opc == <%=art.getRuta_IdRuta()%>) {
                                                     marker = L.marker([<%=art.getUbicacion_Latitud()%>, <%=art.getUbicacion_Longitud()%>]).addTo(map);
+                                                    marker_array.push(marker);
                                                     no_marcadores++;
                                                 }
                                 <%}%>
-                                                alert('#' + no_marcadores);
                                             }
                                         });
+
                                     });
                                 }
                                 function geo_error() {
