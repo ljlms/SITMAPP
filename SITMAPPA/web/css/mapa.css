@@ -1,0 +1,67 @@
+ 
+
+#map {
+    width: 600px;
+    height: 520px;
+}
+
+@media (max-width: 2000px) {
+
+   #map {
+        width: calc(200% /2);
+        min-height: 100px;
+        line-height: 100px;
+    }
+
+}
+
+@media (max-width: 991px ) {
+
+    #map {
+        width: calc(200% /2);
+        min-height: 100px;
+        line-height: 100px;
+   
+    }
+
+}
+
+
+@media (max-width: 767px) {
+   #map {
+        width: calc(100% /2);
+        min-height: 100px;
+        line-height: 100px;
+   
+    }
+}
+
+@media (max-width: 766px) {
+  #map {
+        width: calc(200% /2);
+ 
+        min-height: 100px;
+        line-height: 100px;
+   
+    }
+}
+
+@media (max-width: 575px) {
+  #map {
+        width: calc(200% /2);
+ 
+        min-height: 100px;
+        line-height: 100px;
+   
+    }
+}
+
+@media (max-width: 300px) {
+    #map {
+        width: calc(200% /1.5);
+    
+        min-height: 100px;
+        line-height: 100px;
+
+    }
+}
