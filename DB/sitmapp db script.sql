@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `sitmapp`.`articulado` (
   `Id_Ruta` INT(11) NOT NULL,
   PRIMARY KEY (`IdArticulado`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -69,13 +69,14 @@ DEFAULT CHARACTER SET = latin1;
 -- Table `sitmapp`.`noticia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sitmapp`.`noticia` (
-  `IdNoticia` INT(11) NOT NULL,
+  `IdNoticia` INT(11) NOT NULL AUTO_INCREMENT,
   `Titulo` VARCHAR(45) NOT NULL,
   `Contenido` TEXT NOT NULL,
-  `Fecha` DATE NOT NULL,
+  `Fecha` VARCHAR(20) NOT NULL,
   `Id_Usuario` INT(11) NOT NULL,
   PRIMARY KEY (`IdNoticia`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -134,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `sitmapp`.`usuario` (
   `TipoUsuario` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`IdUsuario`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 15
+AUTO_INCREMENT = 25
 DEFAULT CHARACTER SET = latin1;
 
 USE `sitmapp` ;
