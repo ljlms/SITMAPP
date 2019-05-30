@@ -4,6 +4,7 @@
 <%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,24 +49,26 @@
                 <a href="#" class="toggle_menu" onclick="navigation()">
                     <i class="fa fa-navicon"></i>
                 </a>
-                <nav class="menu" >
+                                     <nav class="menu" >
                     <ul>
                         <li class="active">
                             <a href="Home.jsp">
                                 <img src="templates/icons8-home.svg" class="iconos_nav">
                                 Menu Principal</a></li>
-
                         <li><a href="Ver_Rutas.jsp">
-                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt=""/>
+                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt="Rutas icono"/>
                                 Rutas</a></li>
-
-                        <li id="noticias"><a href="Ver_Noticias.jsp">
+                        <li><a href="Ver_Noticias.jsp">
                                 <img src="templates/icons8-noticias.svg" class="iconos_png" alt="Noticias icono"/>
                                 Noticias</a></li>
-
-                        <li id="adm_noticias"><a href="Administrar_Noticias.jsp">
+                        <li id="adm_noticias"><a href="Administrar_Noticias.jsp"
+                                >
                                 <img src="templates/icons8-news.svg" class="iconos_nav">
                                 Administrar Noticias</a></li>
+
+                        <li id="li_Home-Conductor"> <a href="Home_Conductor.jsp">
+                                <img src="templates/icons8-conductor-48.png" class="iconos_png" alt="Icono home conductor"/>
+                                Modo conductor</a></li>        
                         <li>
                             <a href="#">
                                 <img src="templates/icons8-info.svg" class="iconos_a" >Informacion</a> 
@@ -73,9 +76,7 @@
                         <li>  <a href="Home_Administrador.jsp"
                                  id="adm_home">  
                                 <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos_a" >Home Administrador</a></li>
-                                <li id="li_Home-Conductor"><a href="Home_Conductor.jsp" id="driver_home">  
 
-                                <img id="img_home" src="templates/icons8-conductor-48.png" class="iconos_a" >Modo conductor</a></li>
                         <li> <a href="Editar_Configuracion.jsp">
                                 <img src="templates/icons8-settings-50.svg" class="iconos_a" >Configuracion</a></li>
                         <li> <a href="./USCerrarSesion?var=off">
@@ -83,27 +84,26 @@
                         </li>
                     </ul>
                 </nav>
+
             </header>
             <script>
                 var tipo = '<%=valor%>';
-                if (tipo === 'usuario') {
-                    $('#adm_home').hide();
-                    $('#driver_home').hide();
-                    $('#adm_noticias').hide();
-                    $('#li_Home-Conductor').hide();
-                }
-                if (tipo === 'conductor') {
-                    $('#adm_home').hide();
-                    $('#adm_noticias').hide();
-                }
-                if (tipo === 'administrador') {
-                    $('#li_Home-Conductor').hide();
-                }
-                if (tipo == 'moderador') {
-                    $('#driver_home').hide();
-                    $('#li_Home-Conductor').hide();
-                    $('#adm_home').hide();
-                }
+                  if (tipo === 'usuario') {
+                      $('#adm_home').hide();
+                      $('#li_Home-Conductor').hide();
+                      $('#adm_noticias').hide();
+                  }
+                  if (tipo === 'conductor') {
+                      $('#adm_home').hide();
+                       $('#adm_noticias').hide();
+                  }
+                  if (tipo === 'administrador') {
+                      $('#li_Home-Conductor').hide();
+                  }
+                  if (tipo === 'moderador') {
+                      $('#li_Home-Conductor').hide();    
+                      $('#adm_home').hide();
+                  }
             </script>
             <!-- Menu -->
             <div class="container" style="margin-top: 3%; margin-bottom: 2%">

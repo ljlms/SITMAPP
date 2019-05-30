@@ -275,7 +275,29 @@ public class RutaControllers {
 
         return listado;
     }
+   public static ArrayList<Parada> ListarTodasParadas() {//listar paradas de una ruta en especifica
+        ArrayList<Parada> listado = new ArrayList<>();
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("select Nombre,Ubicacion_Latitud,Ubicacion_Longitud, Tipo, a.IdRuta from parada as p, ruta_parada as a where p.IdParada =a.IdParada ");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Parada resulta = new Parada();
+              
+                resulta.setNombre(rs.getString(1));
+                resulta.setLatitud(rs.getDouble(2));
+                resulta.setLongitud(rs.getDouble(3));
+                resulta.setTipo(rs.getString(4));
+                  resulta.setIdRuta(rs.getInt(5));
+                listado.add(resulta);
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(Ruta.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        return listado;
+    }
     public static void BorrarParaderoRutaEspecifica(int idRuta, int IdParada) {
         Connection connect;
         try {

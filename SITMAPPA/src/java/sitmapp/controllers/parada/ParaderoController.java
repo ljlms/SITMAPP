@@ -80,7 +80,7 @@ public class ParaderoController {
         try {
             connect = JdbcConnect.connect();
             PreparedStatement pst = connect.prepareStatement("Select * "
-                    + "from parada order by 5");
+                    + "from parada order by 1");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
 

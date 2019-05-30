@@ -5,6 +5,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,18 +25,12 @@
     <body> 
         <!-- Java Space -->  
         <%
-
-            int id = Integer.parseInt(request.getParameter("Id"));
-            String valor = "";
-            String tipo = "";
-            String nombre = "";
-            double lng = 0;
-            double lat = 0;
-          
+            int id = Integer.parseInt(request.getParameter("id"));
             Ruta ruta = RutaControllers.BusquedaRuta(id);
-
-            ArrayList<Parada> paraderos= null ;
-            ArrayList<Parada> paraderos_todos = null;
+            Usuario u = (Usuario) session.getAttribute("usuario");
+            String   valor = u.getTipo_usuario();    
+            ArrayList<Parada> paraderos = RutaControllers.BusquedaParadasDeRutaEspecifica(id); //Paradas asignadas.
+            ArrayList<Parada> paraderos_todos = RutaControllers.listTodasParadas(); // Todos los paraderos.
 
             String lunes_viernes_inicio = "";
             String lunes_viernes_final = "";
@@ -44,54 +39,28 @@
             String domingo_festivo_inicio = "";
             String domingo_festivo_final = "";
 
-            try {
-                Usuario u = (Usuario) session.getAttribute("usuario");
-                valor = u.getTipo_usuario();
-                paraderos= RutaControllers.BusquedaParadasDeRutaEspecifica(id); //Paradas asignadas.
-                paraderos_todos= RutaControllers.listTodasParadas(); 
-                if (!valor.equalsIgnoreCase("administrador")) {
-                    response.sendRedirect("Home.jsp");
-                }
-                id = Integer.parseInt(request.getParameter("Id"));
-                nombre = request.getParameter("Nom");
-                lat = Double.parseDouble(request.getParameter("Lat"));
-                lng = Double.parseDouble(request.getParameter("Lng"));
-                tipo = request.getParameter("Tipo");
-                if (!ruta.getLunes_viernes().equalsIgnoreCase("No Opera")) {
-                    String lunes_viernes[] = ruta.getLunes_viernes().split("-");
-                    lunes_viernes_inicio = lunes_viernes[0];
-                    lunes_viernes_final = lunes_viernes[1];
-                }
-
-                if (!ruta.getSabado().equalsIgnoreCase("No Opera")) {
-                    String sabado[] = ruta.getSabado().split("-");
-                    sabado_inicio = sabado[0];
-                    sabado_final = sabado[1];
-
-                }
-
-                if (!ruta.getDomingo_festivo().equalsIgnoreCase("No Opera")) {
-                    String domingo_festivo[] = ruta.getDomingo_festivo().split("-");
-                    domingo_festivo_inicio = domingo_festivo[0];
-                    domingo_festivo_final = domingo_festivo[1];
-                }
-            } catch (Exception e) {
-                response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
-                //              response.sendRedirect("../index.jsp?error=La sesion cerró, ingrese nuevamente");
+            if (!ruta.getLunes_viernes().equalsIgnoreCase("No Opera")) {
+                String lunes_viernes[] = ruta.getLunes_viernes().split("-");
+                lunes_viernes_inicio = lunes_viernes[0];
+                lunes_viernes_final = lunes_viernes[1];
             }
 
+            if (!ruta.getSabado().equalsIgnoreCase("No Opera")) {
+                String sabado[] = ruta.getSabado().split("-");
+                sabado_inicio = sabado[0];
+                sabado_final = sabado[1];
 
+            }
+
+            if (!ruta.getDomingo_festivo().equalsIgnoreCase("No Opera")) {
+                String domingo_festivo[] = ruta.getDomingo_festivo().split("-");
+                domingo_festivo_inicio = domingo_festivo[0];
+                domingo_festivo_final = domingo_festivo[1];
+            }
         %>
 
         <header class="header">
-
-            <div class="logo">
-                <a href="Home_Administrador.jsp">
-                    <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive animated bounceIn"/>
-                </a>
-            </div>
-
-            <a href="#" class="toggle_menu" onclick="navigation()">
+ <a href="#" class="toggle_menu" onclick="navigation()">
                 <i class="fa fa-navicon"></i>
             </a>
             <nav class="menu">
@@ -134,89 +103,105 @@
             </nav>
 
         </header>
-        <script>
-            var tipo = '<%=valor%>';
-            if (tipo === 'usuario') {
-                $('#adm_home').hide();
-                $('#driver_home').hide();
-            }
-            if (tipo === 'conductor') {
-                $('#adm_home').hide();
-            }
-            if (tipo === 'administrador') {
-
-                $('#li_Home-Conductor').hide();
-            }
-        </script>
+ <script>
+                var tipo = '<%=valor%>';
+                if (tipo === 'usuario') {
+                    $('#adm_home').hide();
+                    $('#li_Home-Conductor').hide();
+                }
+                if (tipo === 'conductor') {
+                    $('#adm_home').hide();
+                }
+                if (tipo === 'administrador') {
+                  
+                    $('#li_Home-Conductor').hide();
+                }
+            </script>
         <section class="wrapper clearfix" data-section="home">
             <div class="container">
                 <h1 style="margin-top: 4%; margin-bottom: 3%"> <strong> Editar Ruta </strong> </h1>
             </div>
             <div class="container">
+                <form action="SRModificar" method="post"> <!--Inicia el formulario-->
+                    <div style="display: none"><input type="text" value="<%=id%>" name="id_ruta"></div>
+                    <div class="container">
+                        <div class="row">
+                           
+                            <div class="col-auto" >
+                               
+                                    <div class="form-group" >
+                                        <label><strong>Nombre</strong></label>
+                                        <input type="text" class="form-control" value="<%=ruta.getNombre_Ruta()%>" name="nombre_ruta" required>
+                                    </div>    
+                          
+                              
+                                    <div class="form-group" >
+                                        <label><strong>Tipo</strong></label>
+                                           <select name="tipo_ruta" class="form-control" style="align-content: center" >
+                                        <option value="Alimentadora">Alimentadora</option>
+                                        <option value="Troncal">Troncal</option>
+                                        <option value="Troncal">PreTroncal</option>
+                                        <option value="Troncal">Circular</option>
 
-                <div> <!-- Primera Fila Troncales - Pretroncales -->
-
-                    <div class="col-md-9">
-                        <form action="SRModificar" method="post" class="form formulario">
-                            <div style="display: none"><input type="text" value="<%=id%>" name="id_ruta"></div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label><strong>Nombre</strong></label>
-                                    <input type="text" class="form-control" value="<%=ruta.getNombre_Ruta()%>" name="nombre_ruta" required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label><strong>Tipo</strong></label>
-                                    <input type="text" class="form-control" value="<%=ruta.getTipo_Ruta()%>" name="tipo_ruta" required>
-                                </div>
+                                    </select>
+                                    </div>  
+                           
                             </div>
+                   
+                            <div class="col-md-5">
+                                <table class="table table-bordered" >
+                                    <tr>
+                                        <td colspan="3"><strong>Horarios</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Lunes - Viernes</td>
+                                        <td><input class="form-control" type="time" value="<%=lunes_viernes_inicio%>" name="lunes_inicio"></td>
+                                        <td><input class="form-control" type="time" value="<%=lunes_viernes_final%>" name="lunes_final"></td>
+                                    </tr>
 
-                            <div class="form-row">
+                                    <tr>
+                                        <td>Sabados</td>
+                                        <td><input class="form-control" type="time" value="<%=sabado_inicio%>" name="sabado_inicio"></td>
+                                        <td><input class="form-control" type="time" value="<%=sabado_final%>" name="sabado_final"></td>
+                                    </tr>
 
+                                    <tr>
+                                        <td>Domingos - Festivos</td>
+                                        <td><input class="form-control" type="time" value="<%=domingo_festivo_inicio%>" name="domingo_festivo_inicio"></td>
+                                        <td><input class="form-control" type="time" value="<%=domingo_festivo_final%>" name="domingo_festivo_final"></td>
+                                    </tr>
 
-                                <div class="form-group col-md-6">
-                                    <table class="table">
-                                        <thead><label><strong>Horarios</strong></label></thead>
-                                        <tr>
-                                            <td>Lunes - Viernes</td>
-                                            <td><input class="form-control" type="time" value="<%=lunes_viernes_inicio%>" name="lunes_inicio"></td>
-                                            <td><input class="form-control" type="time" value="<%=lunes_viernes_final%>" name="lunes_final"></td>
-                                        </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <br>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-5" ><!--Tabla Paraderos que tiene una ruta-->
+                                <table class="table table-bordered" >
+                                    <tr>
+                                        <td colspan="2"><label><strong>Paraderos Asignados</strong></label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label><strong>Nombre</strong></label></td>
+                                        <td><label><strong>Eliminar</strong></label></td>
+                                    </tr>
+                                    <%for (Parada a : paraderos) {%>
+                                    <tr>
+                                        <td><%=a.getNombre()%></td>    
+                                        <td><a style='font-size:24px' class='fas' href="./EliminarParadaRuta?IdParada=<%=a.getIdParada()%>&IdRuta=<%=id%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="20" height="20"></a> </td>
+                                    </tr>
+                                    <%}%>
+                                </table>
 
-                                        <tr>
-                                            <td>Sabados</td>
-                                            <td><input class="form-control" type="time" value="<%=sabado_inicio%>" name="sabado_inicio"></td>
-                                            <td><input class="form-control" type="time" value="<%=sabado_final%>" name="sabado_final"></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Domingos - Festivos</td>
-                                            <td><input class="form-control" type="time" value="<%=domingo_festivo_inicio%>" name="domingo_festivo_inicio"></td>
-                                            <td><input class="form-control" type="time" value="<%=domingo_festivo_final%>" name="domingo_festivo_final"></td>
-                                        </tr>
-                                    </table>
-
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <table class="table border">
-
-                                        <tr>
-                                            <td colspan="2"><label><strong>Paraderos Asignados</strong></label></td>
-                                        </tr>
-                                        <tr>
-                                            <td><label><strong>Nombre</strong></label></td>
-                                            <td><label><strong>Eliminar</strong></label></td>
-                                        </tr>
-                                        <%for (Parada a : paraderos) {%>
-                                        <tr>
-                                            <td><%=a.getNombre()%></td>    
-                                            <td><a style='font-size:24px' class='fas' href="./EliminarParadaRuta?IdParada=<%=a.getIdParada()%>&IdRuta=<%=id%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="20" height="20"></a> </td>
-                                        </tr>
-                                        <%}%>
-                                    </table>
-
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <table class="table border">
+                            </div><!--Tabla Paraderos que tiene una ruta-->
+                            <div class="col-md-2"><br></div>
+                            <div class="col-md-5"><!--Tabla Paraderos que no tiene una ruta-->
+                                <div>
+                                    <table class="table table-bordered" >
                                         <tr>
                                             <td colspan="2"><label><strong>Paraderos Disponibles</strong></label></td>
                                         </tr>
@@ -231,24 +216,26 @@
                                             <td><input type="checkbox" value="<%=p.getIdParada()%>" name="id_paradas[]"></td>
                                         </tr>
                                         <%}%>
-                                    </table>
+                                    </table>    
+                                </div>
+                            </div><!--Tabla Paraderos que no tiene una ruta-->
+                            <div class="row" > <!--Enviar y Cancelar-->
+                                <div class="col-md-5">
+                                    <input type="submit" value="Guardar" class="form-control btn btn-primary formulario" style="width: 150%; margin-right: 3%">
+                                </div>
+                                <div class="col-md-2">
 
                                 </div>
-                                <div style="margin-bottom: 12px;margin-left: 10px">
-                                    <strong>Nota:</strong> no ingresar hora los días que no opere la ruta.
-                                </div>
-
-                                <div class="form-group col-md-12">
-                                    <input type="submit" name="enviar" id="enviar_input" class="form-control  btn-primary" value="Editar ruta" style="width: 100px;">
-                                </div>
+                                <div class="col-md-5">
+                                    <a href="Administrar_Rutas.jsp"><button type="button" class="form-control btn btn-primary formulario" style="width: 150%; margin-left: 3%; border-color: black;">Cancelar</button></a>
+                                </div>    
                             </div>
-                        </form>
+                        </div>
                     </div>
-
-
-                </div>
+                </form> <!--Finaliza el formulario-->
             </div>
         </section>
+        <!-- lightModal -->
         <div class="lightModal">
             <div class="lightModal-inner">
                 <button class="lightModal-close" role="button">&times;</button>

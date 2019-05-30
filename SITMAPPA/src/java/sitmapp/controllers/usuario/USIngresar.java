@@ -32,41 +32,14 @@ public class USIngresar extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    Usuario iniciar_sesion = null;
+    String error = null;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String error = null;
-            String correo = request.getParameter("correo_usuario");
-            String contraseña = request.getParameter("contra_usuario");
-            Usuario iniciar_sesion = null;
-            System.out.println("Correo: " + correo);
-            System.out.println("Contraseña: " + contraseña);
 
-            try {
-                iniciar_sesion = UsuarioController.Iniciar_Sesion(correo, contraseña);
-            } catch (Exception e) {
-                error = "Estamos teniendo problemas tecnicos, intenta nuevamente dentro de unos minutos";
-                System.out.println(error);
-                request.setAttribute("error", error);
-                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-                rd.forward(request, response);
-            }
-
-            if (iniciar_sesion == null) {
-                error = "Usuario o contraseña incorrecto, intenta nuevamente";
-                System.out.println(error);
-                request.setAttribute("error", error);
-                RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-                rd.forward(request, response);
-
-            } else {
-
-                HttpSession session = request.getSession();
-                session.setAttribute("usuario", iniciar_sesion);
-                RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
-                rd.forward(request, response);
-            }
         }
     }
 
@@ -82,7 +55,10 @@ public class USIngresar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+   
+        RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+        rd.forward(request, response);
+             processRequest(request, response);
     }
 
     /**
@@ -96,6 +72,29 @@ public class USIngresar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+ response.setContentType("text/html;charset=UTF-8");
+        String correo = request.getParameter("correo_usuario");
+        String contraseña = request.getParameter("contra_usuario");
+
+        try {
+            iniciar_sesion = UsuarioController.Iniciar_Sesion(correo, contraseña);
+            if (iniciar_sesion == null) {
+                response.sendRedirect("errorSesion?error=El usuario o contrasena incorrecto, intenta nuevamente");
+            } else {
+
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", iniciar_sesion);
+                
+                RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
+                rd.forward(request, response);
+            }
+        } catch (Exception e) {
+            error = "Estamos teniendo problemas tecnicos, intenta nuevamente dentro de unos minutos";
+            System.out.println(error);
+            request.setAttribute("error", error);
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            rd.forward(request, response);
+        }
         processRequest(request, response);
     }
 

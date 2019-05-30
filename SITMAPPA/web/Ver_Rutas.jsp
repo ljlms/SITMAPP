@@ -2,6 +2,7 @@
 <%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,7 +23,7 @@
 
     </head>
     <body> 
-        <%
+             <%
             String valor = "";
             try {
                 Usuario u = (Usuario) session.getAttribute("usuario");
@@ -31,7 +32,7 @@
             } catch (Exception e) {
 
                 response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
-                //              response.sendRedirect("../index.jsp?error=La sesion cerró, ingrese nuevamente");
+     //              response.sendRedirect("../index.jsp?error=La sesion cerró, ingrese nuevamente");
 
             }
         %>
@@ -39,10 +40,10 @@
         <section class="wrapper clearfix" data-section="home">
             <header class="header">
                 <div class="logo">
-                    <a href="Home.jsp">
-                        <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive animated bounceIn"/>
-                    </a>
-                </div>
+                <a href="Home.jsp">
+                    <img src="templates/Map logo.png" alt="Logo Sitmapp" class="responsive animated bounceIn"/>
+                </a>
+            </div>
                 <a href="#" class="toggle_menu" onclick="navigation()">
                     <i class="fa fa-navicon"></i>
                 </a>
@@ -52,18 +53,20 @@
                             <a href="Home.jsp">
                                 <img src="templates/icons8-home.svg" class="iconos_nav">
                                 Menu Principal</a></li>
-
                         <li><a href="Ver_Rutas.jsp">
-                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt=""/>
+                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt="Rutas icono"/>
                                 Rutas</a></li>
-
                         <li><a href="Ver_Noticias.jsp">
                                 <img src="templates/icons8-noticias.svg" class="iconos_png" alt="Noticias icono"/>
                                 Noticias</a></li>
-
-                        <li id="adm_noticias"><a href="Administrar_Noticias.jsp">
+                        <li id="adm_noticias"><a href="Administrar_Noticias.jsp"
+                                >
                                 <img src="templates/icons8-news.svg" class="iconos_nav">
                                 Administrar Noticias</a></li>
+
+                        <li id="li_Home-Conductor"> <a href="Home_Conductor.jsp">
+                                <img src="templates/icons8-conductor-48.png" class="iconos_png" alt="Icono home conductor"/>
+                                Modo conductor</a></li>        
                         <li>
                             <a href="#">
                                 <img src="templates/icons8-info.svg" class="iconos_a" >Informacion</a> 
@@ -71,9 +74,7 @@
                         <li>  <a href="Home_Administrador.jsp"
                                  id="adm_home">  
                                 <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos_a" >Home Administrador</a></li>
-                        <li id="li_Home-Conductor"><a href="Home_Conductor.jsp" id="driver_home">  
 
-                                <img id="img_home" src="templates/icons8-conductor-48.png" class="iconos_a" >Modo conductor</a></li>
                         <li> <a href="Editar_Configuracion.jsp">
                                 <img src="templates/icons8-settings-50.svg" class="iconos_a" >Configuracion</a></li>
                         <li> <a href="./USCerrarSesion?var=off">
@@ -82,28 +83,25 @@
                     </ul>
                 </nav>
 
-
             </header>
-
             <script>
                 var tipo = '<%=valor%>';
-                if (tipo === 'usuario') {
-                    $('#adm_home').hide();
-                    $('#driver_home').hide();
-                    $('#adm_noticias').hide();
-                }
-                if (tipo === 'conductor') {
-                    $('#adm_home').hide();
-                    $('#adm_noticias').hide();
-                }
-                if (tipo === 'administrador') {
-                    $('#li_Home-Conductor').hide();
-                }
-                if (tipo == 'moderador') {
-                    $('#driver_home').hide();
-                    $('#li_Home-Conductor').hide();
-                    $('#adm_home').hide();
-                }
+                  if (tipo === 'usuario') {
+                      $('#adm_home').hide();
+                      $('#li_Home-Conductor').hide();
+                      $('#adm_noticias').hide();
+                  }
+                  if (tipo === 'conductor') {
+                      $('#adm_home').hide();
+                       $('#adm_noticias').hide();
+                  }
+                  if (tipo === 'administrador') {
+                      $('#li_Home-Conductor').hide();
+                  }
+                  if (tipo === 'moderador') {
+                      $('#li_Home-Conductor').hide();    
+                      $('#adm_home').hide();
+                  }
             </script>
             <!-- Menu -->
             <div class="container" style="margin-top: 3%; margin-bottom: 2%">
@@ -114,9 +112,9 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
                         <table style="text-align: center;" class="table table-striped">
-
+                           
                             <%if (RutaControllers.list().size() > 0) {%>
-                            <tr>
+                             <tr>
                                 <td><label for=""> <strong>Nombre</strong> </label>
                                 </td>
                                 <td><label for=""> <strong>Tipo Ruta</strong> </label>

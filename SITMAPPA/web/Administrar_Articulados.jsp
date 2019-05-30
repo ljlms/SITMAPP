@@ -5,6 +5,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -100,7 +101,7 @@
             var tipo = '<%=valor%>';
             if (tipo === 'usuario') {
                 $('#adm_home').hide();
-                $('#driver_home').hide();
+                $('#li_Home-Conductor').hide();
             }
             if (tipo === 'conductor') {
                 $('#adm_home').hide();
@@ -169,7 +170,13 @@
 
 
                     <%}%>
-
+                    <div class="col-md-3">
+                        <div >
+                            <button class="btn form-control btn-light" style="width: 200px;margin-left: 5%;font-size: 120%">
+                                <a href="Añadir_Articulado.jsp">Registrar Articulados</a>
+                            </button>
+                        </div>
+                    </div>
                     <%} else {%>
                     <div class="alert alert-danger" role="alert">
                         <h3><strong>No hay empresas registradas</strong></h3>
@@ -185,20 +192,21 @@
                         <br>
 
                     </div>
-                    <div class="col-auto">
+
+                </div>
+                <div>
+                    <br>
+                </div>	
+
+                <div class="col-auto">
+                    <div >
                         <button class="btn form-control btn-light" style="width: 200px;margin-left: 5%;font-size: 120%">
                             <a href="Añadir_Empresa.jsp">Registrar Empresas</a>
                         </button>
                     </div>
                 </div>
                 <%}%>
-                <div class="col-md-3">
-                    <div >
-                        <button class="btn form-control btn-light" style="width: 200px;margin-left: 5%;font-size: 120%">
-                            <a href="Añadir_Articulado.jsp">Registrar Articulados</a>
-                        </button>
-                    </div>
-                </div>
+
             </div>
         </div>
 

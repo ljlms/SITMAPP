@@ -1,7 +1,9 @@
+<%@page import="sitmapp.controllers.parada.ParaderoController"%>
 <%@page import="sitmapp.models.Parada"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -90,20 +92,20 @@
             </nav>
 
         </header>
- <script>
-                var tipo = '<%=valor%>';
-                if (tipo === 'usuario') {
-                    $('#adm_home').hide();
-                    $('#driver_home').hide();
-                }
-                if (tipo === 'conductor') {
-                    $('#adm_home').hide();
-                }
-                if (tipo === 'administrador') {
-                  
-                    $('#li_Home-Conductor').hide();
-                }
-            </script>
+        <script>
+            var tipo = '<%=valor%>';
+            if (tipo === 'usuario') {
+                $('#adm_home').hide();
+                $('#li_Home-Conductor').hide();
+            }
+            if (tipo === 'conductor') {
+                $('#adm_home').hide();
+            }
+            if (tipo === 'administrador') {
+
+                $('#li_Home-Conductor').hide();
+            }
+        </script>
 
         <section class="wrapper clearfix" data-section="home">
 
@@ -160,7 +162,7 @@
                             <!--Lat & Lng-->    
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <input type="submit" class="form-control btn btn-primary">
+                                    <input type="submit" class="form-control btn btn-primary" value="Añadir">
                                 </div>
                             </div>
                             <%String error = (String) request.getAttribute("error");
@@ -176,35 +178,69 @@
             </div>
         </section>
         <script>
-            var map = L.map('map').setView([10.395452, -75.472949], 18);
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-                maxZoom: 15
-            }).addTo(map);
-            L.control.scale().addTo(map);
-            var marker = L.marker([10.395452, -75.472949]).addTo(map);
-//How to add a marker
-            map.on('click', function (e) {
-                map.removeLayer(marker);
-                marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-                $('#latitude').val(e.latlng.lat);
-                $('#longitude').val(e.latlng.lng);
-                //How to add a marker
-                marker.on('click', function () {
-                    map.removeLayer(marker)
-                });
-            });
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+            } else {
+                alert("La Geolocalización no es soportada por este navegador");
+            }
+
             function showPosition(position) {
-                map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 17);
+                ejecucion(position.coords.latitude, position.coords.longitude);
+            }
+            function geo_error(error) {
+                var lat = 10.411944;
+                var log = -75.445639;
+                var errores = {1: 'Permiso denegado', 2: 'Posición no disponible', 3: 'Expiró el tiempo de respuesta'};
+                alert("Ubicacion: " + errores[error.code]);
+                ejecucion(lat, log);
+            }
+            function ejecucion(lat, log) {
+                var opc = 0; // id de la opcion seleccionada
+                var marker; // marcador
+                var map;
+                var no_marcadores = 0;
+                var marker_array = [];
+
+                ////////////////////////////////
+                map = L.map('map').setView([lat, log], 17);
 
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-                    maxZoom: 18
+                    maxZoom: 19
                 }).addTo(map);
 
                 L.control.scale().addTo(map);
-                var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-//How to add a marker
+                var LeafIcon = L.Icon.extend({
+                    options: {
+                        iconSize: [38, 38],
+                        shadowSize: [50, 64],
+                        iconAnchor: [40, 40],
+                        shadowAnchor: [4, 62],
+                        popupAnchor: [-3, -76]
+                    }
+                });
+
+                var paradero = new LeafIcon({iconUrl: 'templates/icons8-trolleybus-64.png'}),
+                        estacion = new LeafIcon({iconUrl: 'templates/icons8-railway-station-48.png'});
+            <%for (Parada par : ParaderoController.list()) {%>
+            <% if (par.getTipo().equalsIgnoreCase("estacion")) {%>
+                marker = L.marker([<%=par.getLatitud()%>, <%=par.getLongitud()%>], {icon: estacion}).addTo(map);
+                marker_array.push(marker);
+                no_marcadores++;
+
+            <%} else {%>
+
+
+                marker = L.marker([<%=par.getLatitud()%>, <%=par.getLongitud()%>], {icon: paradero}).addTo(map);
+                marker_array.push(marker);
+                no_marcadores++;
+
+
+            <%}%>
+
+            <%}%>
+
+                marker = L.marker([lat, log]).addTo(map);
                 map.on('click', function (e) {
                     map.removeLayer(marker);
                     marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
@@ -215,12 +251,8 @@
                         map.removeLayer(marker)
                     });
                 });
-            }
-
-            function geo_error() {
 
             }
-
             function acucuracy() {
                 var geo_options = {
                     enableHighAccuracy: true,
@@ -229,7 +261,7 @@
                 };
             }
 
-            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+
         </script>
         <!-- lightModal -->
         <div class="lightModal">

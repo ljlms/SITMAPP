@@ -3,6 +3,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -41,7 +42,7 @@
 
         %>
 
-      <header class="header">
+        <header class="header">
 
             <div class="logo">
                 <a href="Home_Administrador.jsp">
@@ -92,20 +93,20 @@
             </nav>
 
         </header>
- <script>
-                var tipo = '<%=valor%>';
-                if (tipo === 'usuario') {
-                    $('#adm_home').hide();
-                    $('#driver_home').hide();
-                }
-                if (tipo === 'conductor') {
-                    $('#adm_home').hide();
-                }
-                if (tipo === 'administrador') {
-                  
-                    $('#li_Home-Conductor').hide();
-                }
-            </script>
+        <script>
+            var tipo = '<%=valor%>';
+            if (tipo === 'usuario') {
+                $('#adm_home').hide();
+                $('#li_Home-Conductor').hide();
+            }
+            if (tipo === 'conductor') {
+                $('#adm_home').hide();
+            }
+            if (tipo === 'administrador') {
+
+                $('#li_Home-Conductor').hide();
+            }
+        </script>
 
         <section class="wrapper clearfix" data-section="home">
             <div class="container">
@@ -116,7 +117,7 @@
                 <div class="row">
                     <div class="col-md-8"> 
                         <%if (paradas.size() > 0) {%>
-                        <table class="table table-striped" style="text-align: center;">
+                        <table class="table table-striped " style="text-align: center;">                  
                             <tr>
                                 <td><strong>Id Parada</strong></td> 
                                 <td><strong>Nombre</strong></td> 
@@ -124,7 +125,9 @@
                                 <td><strong>Editar</strong></td>
                                 <td><strong>Eliminar</strong></td>
                             </tr>                       
-                            <%for (Parada x : paradas) {%>
+                            <%for (Parada x : paradas) {
+
+                                    if (x.getTipo().equalsIgnoreCase("Estacion")) {%>
                             <tr>
                                 <td><%= x.getIdParada()%></td>
                                 <td><%= x.getNombre()%></td>
@@ -132,8 +135,30 @@
                                 <td><a style='font-size:24px' class='fas' href="./Editar_Paradas.jsp?Id=<%=x.getIdParada()%>&Nom=<%=x.getNombre()%>&Lat=<%=x.getLatitud()%>&Lng=<%=x.getLongitud()%>&Tipo=<%=x.getTipo()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
                                 <td><a style='font-size:24px' class='fas' href="./PEliminar?Id=<%=x.getIdParada()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
                             </tr>
+
+                            <%  } %>
                             <%}%>
+
+
                         </table>
+                            <br>
+                        <table class="table table-striped " style="text-align: center;">    
+                            
+                            <%for (Parada x : paradas) {
+
+                                    if (x.getTipo().equalsIgnoreCase("Paradero")) {%>
+                            <tr>
+                                <td><%= x.getIdParada()%></td>
+                                <td><%= x.getNombre()%></td>
+                                <td><%= x.getTipo()%></td>
+                                <td><a style='font-size:24px' class='fas' href="./Editar_Paradas.jsp?Id=<%=x.getIdParada()%>&Nom=<%=x.getNombre()%>&Lat=<%=x.getLatitud()%>&Lng=<%=x.getLongitud()%>&Tipo=<%=x.getTipo()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
+                                <td><a style='font-size:24px' class='fas' href="./PEliminar?Id=<%=x.getIdParada()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
+                            </tr>
+
+                            <%  } %>
+                            <%}%>   
+                        </table>
+
                         <%} else {%>
                         <div class="alert alert-danger" role="alert">
                             <h3><strong>No hay paradas registradas</strong></h3>
@@ -147,7 +172,7 @@
                             <br>
                             <br>
                             <br>
-                     
+
                         </div>
                         <%}%>
                     </div>
@@ -163,21 +188,21 @@
                     </div>
                 </div>
             </div>
-       
-    </section>
-    <!-- lightModal -->
-    <div class="lightModal">
-        <div class="lightModal-inner">
-            <button class="lightModal-close" role="button">&times;</button>
-            <h3 class="lightModal-title"></h3>
-            <img class="lightModal-image" src="http://placehold.it/350x150" alt="Title here">
+
+        </section>
+        <!-- lightModal -->
+        <div class="lightModal">
+            <div class="lightModal-inner">
+                <button class="lightModal-close" role="button">&times;</button>
+                <h3 class="lightModal-title"></h3>
+                <img class="lightModal-image" src="http://placehold.it/350x150" alt="Title here">
+            </div>
         </div>
-    </div>
-    <!-- / lightModal -->
-    <script src="js/jquery.js" type="text/javascript"></script>
-    <script src="js/bootstrap.js" type="text/javascript"></script>
-    <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
-    <script src="js/Visibility.js" type="text/javascript"></script>
-    <script src="js/principalJavaScript.js" type="text/javascript"></script>
-</body>
+        <!-- / lightModal -->
+        <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
+        <script src="js/Visibility.js" type="text/javascript"></script>
+        <script src="js/principalJavaScript.js" type="text/javascript"></script>
+    </body>
 </html>

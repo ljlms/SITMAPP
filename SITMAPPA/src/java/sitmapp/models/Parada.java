@@ -10,11 +10,13 @@ package sitmapp.models;
  * @author E201
  */
 public class Parada {
+
     private int IdParada;
     private String Nombre;
     private String Tipo;
     private Double Latitud;
     private Double Longitud;
+    private int idRuta;
 
     public Parada(int IdParada, String Nombre, String Tipo, Double Latitud, Double Longitud) {
         this.IdParada = IdParada;
@@ -23,13 +25,14 @@ public class Parada {
         this.Latitud = Latitud;
         this.Longitud = Longitud;
     }
-    public Parada( String Nombre, String Tipo, Double Latitud, Double Longitud) {
-    
+
+    public Parada(String Nombre, String Tipo, Double Latitud, Double Longitud) {
         this.Nombre = Nombre;
         this.Tipo = Tipo;
         this.Latitud = Latitud;
         this.Longitud = Longitud;
     }
+
     public Parada() {
     }
 
@@ -72,5 +75,13 @@ public class Parada {
     public void setLongitud(Double Longitud) {
         this.Longitud = Longitud;
     }
-    
+
+    public int getIdRuta() {
+        return idRuta;
+    }
+
+    public void setIdRuta(int idRuta) {
+        this.idRuta = idRuta;
+    }
+
 }

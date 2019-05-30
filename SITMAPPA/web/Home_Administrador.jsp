@@ -1,9 +1,12 @@
+<%@page import="sitmapp.controllers.parada.ParaderoController"%>
+<%@page import="sitmapp.models.Parada"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Articulado"%>
 <%@page import="sitmapp.controllers.articulado.ArticuladoController"%>
 <%@page import="sitmapp.models.Ruta"%>
 <%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Usuario"%>
+<%@ page errorPage="index.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -24,16 +27,15 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
         <link rel="stylesheet" href="css/animate.css"><!--Aniamte library-->
         <script src="js/SmartSuppChat.js"></script>
-        <script src="js/jquery.js" type="text/javascript"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 
     </head>
     <body> 
         <!-- Java Space -->  
         <%
             String valor = "";
-            ArrayList<Articulado> articulados = null;
-            ArrayList<Ruta> rutas = null;
+            ArrayList<Articulado>  articulados = ArticuladoController.list();
+            ArrayList<Ruta> rutas  = RutaControllers.list();
             try {
                 Usuario u = (Usuario) session.getAttribute("usuario");
                 valor = u.getTipo_usuario();
@@ -41,8 +43,8 @@
                     response.sendRedirect("Home.jsp");
 
                 }
-                rutas = RutaControllers.list();
-                articulados = ArticuladoController.list();
+              
+                
             } catch (Exception e) {
 
                 response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
@@ -102,39 +104,34 @@
             </nav>
 
         </header>
-        <script>
-            var tipo = '<%=valor%>';
-            if (tipo === 'usuario') {
-                $('#adm_home').hide();
-                $('#driver_home').hide();
-            }
-            if (tipo === 'conductor') {
-                $('#adm_home').hide();
-            }
-            if (tipo === 'administrador') {
-
-                $('#li_Home-Conductor').hide();
-            }
-        </script>
+<script>
+                var tipo = '<%=valor%>';
+                if (tipo === 'usuario') {
+                    $('#adm_home').hide();
+                    $('#li_Home-Conductor').hide();
+                }
+                if (tipo === 'conductor') {
+                    $('#adm_home').hide();
+                }
+                if (tipo === 'administrador') {
+                  
+                    $('#li_Home-Conductor').hide();
+                }
+            </script>
         <section class="wrapper clearfix" data-section="home">
-            <div class="container" style="margin-top: 3%; margin-bottom: 2%">
-                <h3><strong>Home Administrador</strong></h3>
-            </div>
             <div class="container">
+                <br>
                 <div class="row">
-                    <!--<div class="col-xs-0 col-sm-1 col-md-2 col-lg-2"></div>-->
                     <%if (rutas.size() > 0) {%>
                     <div class="col-xs-12 col-sm-12  col-md-9 col-lg-9"> 
                         <%} else {%>
                         <div class="col-xs-12 col-sm-12  col-md-12 col-lg-12"> 
                             <%}%>
-                            <div >   
+                            <div>   
                                 <div id="map"></div>
                             </div>
-
-
                         </div>
-
+                     
                         <%if (rutas.size() > 0) {%>
                         <div class="col-md-3">
                             <table class="table table-bordered" style="text-align: center;">
@@ -159,24 +156,76 @@
 
                     </div>
                 </div>
-            </div> 
         </section>
         <script>
-            var opc = 0; // id de la opcion seleccionada
-            var marker; // marcador
-            var map;
-            var no_marcadores = 0;
-            var marker_array = [];
+                       if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+            } else {
+                alert("La Geolocalización no es soportada por este navegador");
+            }
+
             function showPosition(position) {
-                map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
+                ejecucion(position.coords.latitude, position.coords.longitude);
+            }
+            function geo_error(error) {
+                var lat = 10.411944;
+                var log = -75.445639;
+                var errores = {1: 'Permiso denegado', 2: 'Posición no disponible', 3: 'Expiró el tiempo de respuesta'};
+                alert("Ubicacion: " + errores[error.code]);
+                ejecucion(lat, log);
+            }
+            function ejecucion(lat, log) {
+                var opc = 0; // id de la opcion seleccionada
+                var marker; // marcador
+                var map;
+                var salida;
+                var no_marcadores = 0;
+                var marker_array = [];
+                map = L.map('map').setView([lat, log], 13);
                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
                     maxZoom: 18
                 }).addTo(map);
                 L.control.scale().addTo(map);
+                var LeafIcon = L.Icon.extend({
+                    options: {
+                        iconSize: [38, 38],
+                        shadowSize: [50, 64],
+                        iconAnchor: [40, 40],
+                        shadowAnchor: [4, 62],
+                        popupAnchor: [-3, -76]
+                    }
+                });
 
+                var paradero = new LeafIcon({iconUrl: 'templates/icons8-trolleybus-64.png'}),
+                        estacion = new LeafIcon({iconUrl: 'templates/icons8-railway-station-48.png'});
+            <%for (Parada par : ParaderoController.list()) {
+            %>
+
+
+            <% if (par.getTipo().equalsIgnoreCase("estacion")) {%>
+                marker = L.marker([<%=par.getLatitud()%>, <%=par.getLongitud()%>], {icon: estacion}).addTo(map);
+                marker_array.push(marker);
+                no_marcadores++;
+
+            <%} else {%>
+
+
+                marker = L.marker([<%=par.getLatitud()%>, <%=par.getLongitud()%>], {icon: paradero}).addTo(map);
+                marker_array.push(marker);
+                no_marcadores++;
+
+
+            <%}
+                }%>
                 $('#ruta_select').change(function () {
+                    for (i = 0; i < no_marcadores; i++) {
+                        map.removeLayer(marker_array[i]);
+                    }
+
                     opc = $('#ruta_select').val();
+
+
                     $.ajax({
                         url: './VisualizarRutaMapa',
                         data: {
@@ -196,17 +245,35 @@
                                 marker = L.marker([<%=art.getUbicacion_Latitud()%>, <%=art.getUbicacion_Longitud()%>]).addTo(map);
                                 marker_array.push(marker);
                                 no_marcadores++;
+
                             }
             <%}%>
+            <%for (Parada pa : RutaControllers.ListarTodasParadas()) {%>
+
+                            if (opc == <%=pa.getIdRuta()%>) {
+            <% if (pa.getTipo().equalsIgnoreCase("estacion")) {%>
+                                marker = L.marker([<%=pa.getLatitud()%>, <%=pa.getLongitud()%>], {icon: estacion}).addTo(map).bindPopup();
+                                marker_array.push(marker);
+                                no_marcadores++;
+
+            <%} else {%>
+
+
+                                marker = L.marker([<%=pa.getLatitud()%>, <%=pa.getLongitud()%>], {icon: paradero}).addTo(map);
+                                marker_array.push(marker);
+                                no_marcadores++;
+
+
+            <%}%>
+                            }
+
+            <%}%>
+
+
                         }
                     });
-
                 });
             }
-            function geo_error() {
-                alert("Sorry, no position available.");
-            }
-
             function acucuracy() {
                 var geo_options = {
                     enableHighAccuracy: true,
@@ -214,9 +281,6 @@
                     timeout: 27000
                 };
             }
-
-            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
-
         </script>
         <!-- lightModal -->
         <div class="lightModal">

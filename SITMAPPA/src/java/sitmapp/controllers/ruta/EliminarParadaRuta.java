@@ -42,9 +42,9 @@ public class EliminarParadaRuta extends HttpServlet {
             System.out.println(idParada);
             System.out.println(idRuta);
             HttpSession session = request.getSession();
-            request.setAttribute("Id", idRuta);
-            RequestDispatcher rd = request.getRequestDispatcher("Editar_Rutas.jsp?Id="+idRuta);
-            rd.forward(request, response);
+          
+            response.sendRedirect("Editar_Rutas.jsp?id="+idRuta);
+       
         }
     }
 

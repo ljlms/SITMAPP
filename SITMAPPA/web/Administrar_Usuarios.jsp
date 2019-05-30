@@ -2,6 +2,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -94,7 +95,7 @@
                 var tipo = '<%=valor%>';
                 if (tipo === 'usuario') {
                     $('#adm_home').hide();
-                    $('#driver_home').hide();
+                    $('#li_Home-Conductor').hide();
                 }
                 if (tipo === 'conductor') {
                     $('#adm_home').hide();

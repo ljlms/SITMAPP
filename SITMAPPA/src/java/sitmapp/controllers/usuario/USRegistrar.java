@@ -29,34 +29,26 @@ public class USRegistrar extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *@author Jhon Barón, Luigui Carabarllo, Manuel Pontón
+     *
+     * @author Jhon Barón, Luigui Carabarllo, Manuel Pontón
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-      /**
-
+    /**
+     *
      * Servlet para registrar un nuevo usuario
-     * @param request, El parámetro request recupera los elementos que vienen de JSP y son capturados en variables para luego crear un objeto Usuario y guardarlo en la base de datos
+     *
+     * @param request, El parámetro request recupera los elementos que vienen de
+     * JSP y son capturados en variables para luego crear un objeto Usuario y
+     * guardarlo en la base de datos
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String nombre = request.getParameter("nombre_usuario");
-            String apellido = request.getParameter("apellidos_usuario");
-            long telefono = Long.parseLong(request.getParameter("telefono_usuario"));
-            String correo = request.getParameter("correo_usuario");
-            String nombreusuario = request.getParameter("usuario");
-            String contraseña = request.getParameter("pass_usuario");
-            String tipousuario = request.getParameter("tipo_usuario");
-            Usuario user = new Usuario(nombre, apellido, nombreusuario, contraseña, correo, telefono, tipousuario);
-            UsuarioController.save(user);
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", user);
-            RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
             rd.forward(request, response);
 
         }
@@ -75,10 +67,10 @@ public class USRegistrar extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+
             processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(USRegistrar.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(USRegistrar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -95,13 +87,57 @@ public class USRegistrar extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+
+            response.setContentType("text/html;charset=UTF-8");
+            String nombre = request.getParameter("nombre_usuario");
+            String apellido = request.getParameter("apellidos_usuario");
+            long telefono = Long.parseLong(request.getParameter("telefono_usuario"));
+            String correo = request.getParameter("correo_usuario");
+            String nombreusuario = request.getParameter("usuario");
+            String contraseña = request.getParameter("pass_usuario");
+            String tipousuario = request.getParameter("tipo_usuario");
+            String error = null;
+            for (Usuario object : UsuarioController.ValidarUsuario()) {
+                if (object.getEmail().equalsIgnoreCase(correo)) {
+                    error = "\n Debe ingresar otro correo electronico";
+                    System.out.println("COREOOOOOOOOOOOO");
+                }
+                if (object.getNombreUsuario().equalsIgnoreCase(nombreusuario)) {
+                    error = "\n Debe ingresar otro nombre de usuario";
+                    System.out.println("USUARIOOOOOOOO");
+                }
+                if (object.getNumero_telefono() == telefono) {
+                    error = "\n Debe ingresar otro numero de telefono";
+                    System.out.println("Telefonooooooooooo");
+                }
+            }
+            if (error != null) {
+                request.setAttribute("error", error);
+                RequestDispatcher rd = request.getRequestDispatcher("Registrar_Usuario.jsp");
+                rd.forward(request, response);
+            }
+
+            Usuario user = new Usuario(nombre, apellido, nombreusuario, contraseña, correo, telefono, tipousuario);
+            UsuarioController.save(user);
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", user);
+
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+
+            rd.forward(request, response);
             processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(USRegistrar.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-        } catch (SQLException ex) {
-            Logger.getLogger(USRegistrar.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
+            String error = "Estamos teniendo problemas tecnicos, intenta nuevamente dentro de unos minutos";
+            System.out.println(error);
+            request.setAttribute("error", error);
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            rd.forward(request, response);
+        } catch (Exception e) {
+            Logger.getLogger(USRegistrar.class.getName()).log(Level.SEVERE, null, e);
+            e.printStackTrace();
+            response.sendRedirect("errorSesion?error=No se pudo registrar usuario");
         }
     }
 

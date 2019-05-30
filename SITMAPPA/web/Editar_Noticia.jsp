@@ -4,6 +4,7 @@
 <%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>

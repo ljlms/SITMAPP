@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,7 +21,7 @@
         </div>
         <div class="container">
 
-     
+
             <form class="form-row" action="USRegistrar" method="post" >
                 <div class="col-xs-0 col-sm-0 col-md-1 col-lg-1"></div>
                 <div class="col-xs-2 col-sm-5 col-md-5 col-lg-7 logo">
@@ -31,30 +32,36 @@
 
                     <div class="form-group">
                         <label><strong><h3>Crear cuenta</h3></strong></label>
-
+                        <%String error = (String) request.getAttribute("error");
+                            if (error != null) {
+                        %>
+                        <div class="alert alert-danger" role="alert">
+                            <%=error%>
+                        </div>
+                        <%}%>
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" >Nombre:</span>
                             </div>
                             <input type="text"  class="form-control" placeholder="José" name="nombre_usuario" required>
                             <!--<input type="text" onblur="validarNombreUsuario(this)" class="form-control" placeholder="José" name="nombre_usuario" required>-->
-                        
+
                         </div>
-<!--                        <script type="text/javascript">
-                            function validarNombreUsuario(nombre_usuario) {
-                                var url='/validarNombreUsuario';
-                                var parametros='usuario='+nombre_usuario.value;
-                                var ajax = new jQuery().ajax(
-                                        )
-                                
-                            }
-    
-}
+                        <!--                        <script type="text/javascript">
+                                                    function validarNombreUsuario(nombre_usuario) {
+                                                        var url='/validarNombreUsuario';
+                                                        var parametros='usuario='+nombre_usuario.value;
+                                                        var ajax = new jQuery().ajax(
+                                                                )
+                                                        
+                                                    }
                             
-                            
-                        </script>-->
-                        
-                        
+                        }
+                                                    
+                                                    
+                                                </script>-->
+
+
                         <div></div>
 
                         <div class="input-group mb-2">
@@ -124,8 +131,8 @@
             </form>
         </div>
 
-         <script src="js/jquery.js" type="text/javascript"></script>
-    <script src="js/bootstrap.js" type="text/javascript"></script>
-    <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
-        </body>
+        <script src="js/jquery.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+        <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
+    </body>
 </html>

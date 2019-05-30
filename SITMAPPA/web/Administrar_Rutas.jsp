@@ -4,6 +4,7 @@
 <%@page import="sitmapp.models.Ruta"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -95,7 +96,7 @@
                 var tipo = '<%=valor%>';
                 if (tipo === 'usuario') {
                     $('#adm_home').hide();
-                    $('#driver_home').hide();
+                    $('#li_Home-Conductor').hide();
                 }
                 if (tipo === 'conductor') {
                     $('#adm_home').hide();
@@ -104,7 +105,7 @@
                     $('#li_Home-Conductor').hide();
                 }
                 if (tipo == 'moderador') {
-                    $('#driver_home').hide();
+                    $('#li_Home-Conductor').hide();
                     $('#li_Home-Conductor').hide();
                     $('#adm_home').hide();
                 }
@@ -144,7 +145,7 @@
                                     <label><strong>Domingo - Festivos: <%=r.getDomingo_festivo()%></strong></label><br>
                                 </td>
 
-                                <td><a style='font-size:24px' class='fas' href="./Editar_Rutas.jsp?Id=<%=r.getId_ruta()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
+                                <td><a style='font-size:24px' class='fas' href="./Editar_Rutas.jsp?id=<%=r.getId_ruta()%>"><img src="templates/icons8-edit.svg" class="icono_edit" width="30" height="30"></a></td>
                                 <td><a style='font-size:24px' class='fas' href="./SREliminar?Id=<%=r.getId_ruta()%>"><img src="templates/icons8-remove.svg" class="icono_edit" width="30" height="30"></a> </td>
                             </tr>
                             <%}%>

@@ -6,6 +6,7 @@
 <%@page import="sitmapp.models.Articulado"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,11 +36,29 @@
     <body> 
         <!-- Java Space -->  
         <%
-         Usuario u = (Usuario) session.getAttribute("usuario");
-//            String valor = u.getTipo_usuario();
+  
             Articulado articulado = (Articulado) session.getAttribute("articulado");
             Ruta ruta = RutaControllers.BusquedaRuta(articulado.getRuta_IdRuta());
             Usuario usuario = UsuarioController.listEspecificUser(articulado.getConductor_Idconductor());
+            
+            String valor="";
+                Usuario u =null;
+            try {
+                 u = (Usuario) session.getAttribute("usuario");
+                valor = u.getTipo_usuario();
+                     if (!valor.equalsIgnoreCase("conductor")) {
+                    response.sendRedirect("Home.jsp");
+
+                }
+          
+            } catch (Exception e) {
+
+                response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
+                //              response.sendRedirect("../index.jsp?error=La sesion cerró, ingrese nuevamente");
+
+            }
+
+
         %>
 
         <header class="header">
@@ -53,41 +72,59 @@
             <a href="#" class="toggle_menu" >
                 <i class="fa fa-navicon"></i>
             </a>
-            <nav class="menu">
-                <ul>
-                     <li id="li_Home-Conductor"> <a href="Home_Conductor.jsp">
-                            <img src="templates/icons8-casa.svg" class="iconos_png" alt="Icono home conductor"/>
-                            Menú Principal</a></li>
-                    <li id="li_Home-Administrador"> <a href="Editar_Perfil_Conductor.jsp">
-                            <img src="templates/icons8-conductor-64.png" class="iconos_png" alt="Icono editar perfil"/>
-                            Editar Perfil</a></li> 
-                </ul>
-            </nav>
+             <nav class="menu" >
+                    <ul>
+                        <li class="active">
+                            <a href="Home.jsp">
+                                <img src="templates/icons8-home.svg" class="iconos_nav">
+                                Menu Principal</a></li>
+                        <li><a href="Ver_Rutas.jsp">
+                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt="Rutas icono"/>
+                                Rutas</a></li>
+                        <li><a href="Ver_Noticias.jsp">
+                                <img src="templates/icons8-noticias.svg" class="iconos_png" alt="Noticias icono"/>
+                                Noticias</a></li>
+                        <li><a href="Administrar_Noticias.jsp">
+                                <img src="templates/icons8-news.svg" class="iconos_nav">
+                                Administrar Noticias</a></li>
 
-            <div class="footer clearfix">
-                <ul class="social clearfix">
-                    <li><a href="#"><i>
-                                <img src="templates/icons8-info.svg" class="iconos" ></a>
-                            </i></a></li>
+                        <li id="li_Home-Conductor"> <a href="Home_Conductor.jsp">
+                                <img src="templates/icons8-conductor-48.png" class="iconos_png" alt="Icono home conductor"/>
+                                Modo conductor</a></li>        
+                        <li>
+                            <a href="#">
+                                <img src="templates/icons8-info.svg" class="iconos_a" >Informacion</a> 
+                        </li> 
+                        <li>  <a href="Home_Administrador.jsp"
+                                 id="adm_home">  
+                                <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos_a" >Home Administrador</a></li>
 
-                    <li><a href="Home.jsp"><i>   
-                                <img src="templates/icons8-external-link.svg" class="iconos" ></a>
-                            </i></a></li>
-                    <li><a href="#"><i>   
-                                <img src="templates/icons8-settings-50.svg" class="iconos" ></a>
-                            </i></a></li>
-
-                    <li><a href="./USCerrarSesion?var=off"><i>
-                                <img src="templates/icons8-key.svg" class="iconos" ></a>
-                            </i></a></li>
-                </ul>
-
-                <div class="right">
-                    <p>Copyright © 2019.</p>
-                </div>
-            </div>
+                        <li> <a href="Editar_Configuracion.jsp">
+                                <img src="templates/icons8-settings-50.svg" class="iconos_a" >Configuracion</a></li>
+                        <li> <a href="./USCerrarSesion?var=off">
+                                <img src="templates/icons8-key.svg" class="iconos_a" >Cerrar sesion</a></li>
+                        </li>
+                    </ul>
+                </nav>
         </header>
-
+<script>
+                var tipo = '<%=valor%>';
+                  if (tipo === 'usuario') {
+                      $('#adm_home').hide();
+                      $('#li_Home-Conductor').hide();
+                  }
+                  if (tipo === 'conductor') {
+                      $('#adm_home').hide();
+                  }
+                  if (tipo === 'administrador') {
+                      $('#li_Home-Conductor').hide();
+                  }
+                  if (tipo == 'moderador') {
+                      $('#li_Home-Conductor').hide();
+                      $('#li_Home-Conductor').hide();
+                      $('#adm_home').hide();
+                  }
+            </script>
         <section class="wrapper clearfix" data-section="home">
             <div class="container" style="margin-top: 3%; margin-bottom: 3%">
                 <h2><strong>Ubicación Articulado</strong></h2>

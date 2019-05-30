@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import sitmapp.models.Usuario;
 
 /**
@@ -36,22 +37,7 @@ public class ConfigurarEditar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String nom = request.getParameter("nombre");
-            String ape = request.getParameter("apellidos");
-            String usuario = request.getParameter("usuario");
-            String contra = request.getParameter("pass");
-            String correo = request.getParameter("correo");
-            Long tel = Long.parseLong(request.getParameter("telefono"));
-            String tipo  = request.getParameter("tipo");
-            int id = Integer.parseInt(request.getParameter("idusuario"));
-            
-            Usuario user = new Usuario(nom, ape, usuario,contra, correo, tel, tipo);
-            
-            UsuarioController.update(id, user);
-            
-            RequestDispatcher rd  = request.getRequestDispatcher("Home.jsp");
-            rd.forward(request, response);
-            
+
         }
     }
 
@@ -67,6 +53,8 @@ public class ConfigurarEditar extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        response.sendRedirect("Home.jsp");
         processRequest(request, response);
     }
 
@@ -81,7 +69,30 @@ public class ConfigurarEditar extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        String nom = request.getParameter("nombre");
+        String ape = request.getParameter("apellidos");
+        String usuario = request.getParameter("usuario");
+        String contra = request.getParameter("pass");
+        String correo = request.getParameter("correo");
+        Long tel = Long.parseLong(request.getParameter("telefono"));
+        String tipo = request.getParameter("tipo");
+        int id = Integer.parseInt(request.getParameter("idusuario"));
+
+      
+  
+        
+        
+        {
+
+        Usuario user = new Usuario(nom, ape, usuario, contra, correo, tel, tipo);
+        UsuarioController.update(id, user);
+        HttpSession session = request.getSession();
+        session.setAttribute("usuario", user);
+        RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
+        rd.forward(request, response);
+
+        processRequest(request, response);}
     }
 
     /**

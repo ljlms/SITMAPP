@@ -4,7 +4,9 @@
 <%@page import="sitmapp.models.Ruta"%>
 <%@page import="sitmapp.controllers.ruta.RutaControllers"%>
 <%@page import="sitmapp.models.Usuario"%>
+<%@ page errorPage="index.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,7 +33,7 @@
             try {
                 Usuario u = (Usuario) session.getAttribute("usuario");
                 valor = u.getTipo_usuario();
-                user = UsuarioController.listEspecificUser(u.getId_usuario());
+                user = u;
 
             } catch (Exception e) {
                 response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
@@ -56,14 +58,20 @@
                             <a href="Home.jsp">
                                 <img src="templates/icons8-home.svg" class="iconos_nav">
                                 Menu Principal</a></li>
-
                         <li><a href="Ver_Rutas.jsp">
-                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt=""/>
+                                <img src="templates/icons8-waypoint-map-48.png" class="iconos_png" alt="Rutas icono"/>
                                 Rutas</a></li>
-
-                        <li><a href="#">
+                        <li><a href="Ver_Noticias.jsp">
+                                <img src="templates/icons8-noticias.svg" class="iconos_png" alt="Noticias icono"/>
+                                Noticias</a></li>
+                        <li id="adm_noticias"><a href="Administrar_Noticias.jsp"
+                                                 >
                                 <img src="templates/icons8-news.svg" class="iconos_nav">
-                                Sección de Noticias</a></li>
+                                Administrar Noticias</a></li>
+
+                        <li id="li_Home-Conductor"> <a href="Home_Conductor.jsp">
+                                <img src="templates/icons8-conductor-48.png" class="iconos_png" alt="Icono home conductor"/>
+                                Modo conductor</a></li>        
                         <li>
                             <a href="#">
                                 <img src="templates/icons8-info.svg" class="iconos_a" >Informacion</a> 
@@ -71,9 +79,7 @@
                         <li>  <a href="Home_Administrador.jsp"
                                  id="adm_home">  
                                 <img id="img_home" src="templates/icons8-puzzle.svg" class="iconos_a" >Home Administrador</a></li>
-                        <li><a href="Home_Conductor.jsp" id="driver_home">  
 
-                                <img id="img_home" src="templates/icons8-conductor-48.png" class="iconos_a" >Modo conductor</a></li>
                         <li> <a href="Editar_Configuracion.jsp">
                                 <img src="templates/icons8-settings-50.svg" class="iconos_a" >Configuracion</a></li>
                         <li> <a href="./USCerrarSesion?var=off">
@@ -82,23 +88,22 @@
                     </ul>
                 </nav>
 
-
             </header>
-
             <script>
                 var tipo = '<%=valor%>';
                 if (tipo === 'usuario') {
                     $('#adm_home').hide();
-                    $('#driver_home').hide();
+                    $('#li_Home-Conductor').hide();
+                    $('#adm_noticias').hide();
                 }
                 if (tipo === 'conductor') {
                     $('#adm_home').hide();
+                    $('#adm_noticias').hide();
                 }
                 if (tipo === 'administrador') {
                     $('#li_Home-Conductor').hide();
                 }
-                if (tipo == 'moderador') {
-                    $('#driver_home').hide();
+                if (tipo === 'moderador') {
                     $('#li_Home-Conductor').hide();
                     $('#adm_home').hide();
                 }
@@ -107,6 +112,13 @@
             <div class="container" style="margin-top: 3%; margin-bottom: 2%">
                 <h3><label><strong>Editar Perfil</strong></label></h3>
             </div>
+            <%String error = (String) request.getAttribute("error");
+                if (error != null) {
+            %>
+            <div class="alert alert-danger" role="alert">
+                <%=error%>
+            </div>
+            <%}%>
             <div class="container">
                 <div class="row">
                     <div class="col-md-10">
@@ -142,14 +154,14 @@
                                     <input type="tel" class="form-control" name="telefono" value="<%=user.getNumero_telefono()%>" required>
                                 </div>
                             </div>
-                                <div class="row">
-                                    <div class="form-group col-md-6">
-                                        <br>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <br>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-5">
-                                    <input type="submit" class="form-control formulario btn btn-primary">
+                                    <input type="submit" class="form-control formulario btn btn-primary" value="Editar">
                                 </div>
                                 <div class="col-md-1"></div>
                                 <div class="form-group col-md-5">
@@ -160,6 +172,7 @@
                                 <input type="number" name="idusuario" value="<%=user.getId_usuario()%>">
                                 <input type="text" name="tipo" value="<%=user.getTipo_usuario()%>">
                             </div>
+
                         </form>
                     </div>
                 </div>

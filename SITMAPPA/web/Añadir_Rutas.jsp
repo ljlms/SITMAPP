@@ -3,7 +3,7 @@
 <%@page import="sitmapp.models.Parada"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,7 +22,7 @@
         <!-- Java Space -->  
         <%
 
-            ArrayList<Parada> paradas = null;
+            ArrayList<Parada> paradas =ParaderoController.list();
 
             String valor = "";
 
@@ -32,7 +32,7 @@
                 if (!valor.equalsIgnoreCase("administrador")) {
                     response.sendRedirect("Home.jsp");
                 }
-                paradas = ParaderoController.list();
+            
             } catch (Exception e) {
 
                 response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
@@ -98,7 +98,7 @@
                 var tipo = '<%=valor%>';
                 if (tipo === 'usuario') {
                     $('#adm_home').hide();
-                    $('#driver_home').hide();
+                    $('#li_Home-Conductor').hide();
                 }
                 if (tipo === 'conductor') {
                     $('#adm_home').hide();
@@ -123,7 +123,13 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="tipo"><strong>Tipo Ruta:</strong></label>
-                                    <input type="text" class="form-control" id="tipo" name="tipo_ruta" required>
+                                         <select name="tipo_ruta" class="form-control" style="align-content: center" >
+                                        <option value="Alimentadora">Alimentadora</option>
+                                        <option value="Troncal">Troncal</option>
+                                        <option value="Troncal">PreTroncal</option>
+                                        <option value="Troncal">Circular</option>
+
+                                    </select>
                                 </div>
                             </div>
 

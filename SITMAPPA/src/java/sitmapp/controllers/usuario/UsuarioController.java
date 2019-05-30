@@ -28,7 +28,7 @@ public class UsuarioController {
         try {
             connect = JdbcConnect.connect();
             PreparedStatement pst = connect.prepareStatement("Select * "
-                    + "from usuario where IdUsuario="+id+"");
+                    + "from usuario where IdUsuario=" + id + "");
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 c.setId_usuario(rs.getInt(1));
@@ -72,6 +72,36 @@ public class UsuarioController {
 
     }
 
+    public static ArrayList<Usuario> ValidarUsuario() {
+        ArrayList<Usuario> listado = new ArrayList<>();
+        Connection connect;
+        try {
+            connect = JdbcConnect.connect();
+            PreparedStatement pst = connect.prepareStatement("select Correo, Telefono, NombreUsuario,IdUsuario from usuario");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Usuario c = new Usuario();
+
+                c.setEmail(rs.getString(1));
+                c.setNumero_telefono(rs.getInt(2));
+                c.setNombreUsuario(rs.getString(3));
+                c.setId_usuario(rs.getInt(4));
+
+                listado.add(c);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return listado;
+    }
+
+    
+    
+    
+    
     public static ArrayList<Usuario> list() {
         ArrayList<Usuario> listado = new ArrayList<>();
         Connection connect;

@@ -1,7 +1,9 @@
+<%@page import="sitmapp.controllers.parada.ParaderoController"%>
 <%@page import="sitmapp.models.Parada"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="sitmapp.models.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page errorPage="index.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -42,14 +44,14 @@
                 nombre = request.getParameter("Nom");
                 lat = Double.parseDouble(request.getParameter("Lat"));
                 lng = Double.parseDouble(request.getParameter("Lng"));
-                 tipo = request.getParameter("Tipo");
+                tipo = request.getParameter("Tipo");
             } catch (Exception e) {
                 response.sendRedirect("errorSesion?error=La sesion ha cerrado, ingrese nuevamente");
                 //              response.sendRedirect("../index.jsp?error=La sesion cerró, ingrese nuevamente");
             }
 
         %>
-       <header class="header">
+        <header class="header">
 
             <div class="logo">
                 <a href="Home_Administrador.jsp">
@@ -100,20 +102,20 @@
             </nav>
 
         </header>
- <script>
-                var tipo = '<%=valor%>';
-                if (tipo === 'usuario') {
-                    $('#adm_home').hide();
-                    $('#driver_home').hide();
-                }
-                if (tipo === 'conductor') {
-                    $('#adm_home').hide();
-                }
-                if (tipo === 'administrador') {
-                  
-                    $('#li_Home-Conductor').hide();
-                }
-            </script>
+        <script>
+            var tipo = '<%=valor%>';
+            if (tipo === 'usuario') {
+                $('#adm_home').hide();
+                $('#li_Home-Conductor').hide();
+            }
+            if (tipo === 'conductor') {
+                $('#adm_home').hide();
+            }
+            if (tipo === 'administrador') {
+
+                $('#li_Home-Conductor').hide();
+            }
+        </script>
 
         <section class="wrapper clearfix" data-section="home">
 
@@ -131,46 +133,102 @@
                         <!-- Map script Space -->
                         <script>
 
+                            var opc = 0; // id de la opcion seleccionada
+                            var marker; // marcador
+                            var map;
+                            var no_marcadores = 0;
+                            var marker_array = [];
 
-            var latitude_init = '<%=lat%>';
-            var longitude_init = '<%=lng%>';
-            var map = L.map('map').setView([latitude_init, longitude_init], 17);
+                            if (navigator.geolocation) {
+                                navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+                            } else {
+                                alert("La Geolocalización no es soportada por este navegador");
+                            }
 
-            var init_marker = L.marker([latitude_init, longitude_init]).addTo(map);
+                            function showPosition(position) {
+                                ejecucion(position.coords.latitude, position.coords.longitude);
+                            }
+                            function geo_error(error) {
+                                var lat = 10.411944;
+                                var log = -75.445639;
+                                var errores = {1: 'Permiso denegado', 2: 'Posición no disponible', 3: 'Expiró el tiempo de respuesta'};
+                                alert("Ubicacion: " + errores[error.code]);
+                                ejecucion(lat, log);
+                            }
+                            function ejecucion(lat, log) {
 
-            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-                maxZoom: 18
-            }).addTo(map);
+                                var latitude_init = '<%=lat%>';
+                                var longitude_init = '<%=lng%>';
+                                var map = L.map('map').setView([latitude_init, longitude_init], 17);
 
-            L.control.scale().addTo(map);
+                                var init_marker = L.marker([latitude_init, longitude_init]).addTo(map);
 
-            //How to add a marker
-            map.on('click', function (e) {
-                map.removeLayer(init_marker); //remove init_marker
-                init_marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map); // create a new marker with new parameters lat & lng
-                $('#latitude').val(e.latlng.lat);
-                $('#longitude').val(e.latlng.lng);
-                //How to add a marker
-                init_marker.on('click', function () {
-                    map.removeLayer(init_marker)
-                });
-            });
+                                L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                                    maxZoom: 18
+                                }).addTo(map);
+
+                                L.control.scale().addTo(map);
+
+                                //How to add a marker
+                                map.on('click', function (e) {
+                                    map.removeLayer(init_marker); //remove init_marker
+                                    init_marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map); // create a new marker with new parameters lat & lng
+                                    $('#latitude').val(e.latlng.lat);
+                                    $('#longitude').val(e.latlng.lng);
+                                    //How to add a marker
+                                    init_marker.on('click', function () {
+                                        map.removeLayer(init_marker)
+                                    });
+                                });
 
 
-            function geo_error() {
 
-            }
 
-            function acucuracy() {
-                var geo_options = {
-                    enableHighAccuracy: true,
-                    maximumAge: 30000,
-                    timeout: 27000
-                };
-            }
 
-            navigator.geolocation.watchPosition(showPosition, geo_error, acucuracy);
+
+
+
+
+                                var LeafIcon = L.Icon.extend({
+                                    options: {
+                                        iconSize: [38, 38],
+                                        shadowSize: [50, 64],
+                                        iconAnchor: [40, 40],
+                                        shadowAnchor: [4, 62],
+                                        popupAnchor: [-3, -76]
+                                    }
+                                });
+
+                                var paradero = new LeafIcon({iconUrl: 'templates/icons8-trolleybus-64.png'}),
+                                        estacion = new LeafIcon({iconUrl: 'templates/icons8-railway-station-48.png'});
+                            <%for (Parada par : ParaderoController.list()) {%>
+                            <% if (par.getTipo().equalsIgnoreCase("estacion")) {%>
+                                marker = L.marker([<%=par.getLatitud()%>, <%=par.getLongitud()%>], {icon: estacion}).addTo(map);
+                                marker_array.push(marker);
+                                no_marcadores++;
+
+                            <%} else {%>
+
+
+                                marker = L.marker([<%=par.getLatitud()%>, <%=par.getLongitud()%>], {icon: paradero}).addTo(map);
+                                marker_array.push(marker);
+                                no_marcadores++;
+
+
+                            <%}%>
+
+                            <%}%>
+
+
+                            }
+                            function acucuracy() {
+                                var geo_options = {
+                                    enableHighAccuracy: true,
+                                    maximumAge: 30000,
+                                    timeout: 27000
+                                };
+                            }
                         </script>
                     </div>
                     <!--                    <div>
@@ -194,8 +252,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <label><strong>Tipo:</strong></label>
-                                    <input class="form-control" type="text" name="tipo_parada" placeholder="Ingrese tipo..." required value="<%=tipo%>">
-                                </div>
+                                    <select name="tipo_parada" class="form-control" style="align-content: center" >
+                                        <option value="Estacion">Estacion</option>
+                                        <option value="Paradero">Paradero</option>
+
+                                    </select>  </div>
                             </div>
                             <!--Lat & Lng-->
                             <div class="form-row">
